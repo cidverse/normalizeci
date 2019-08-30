@@ -26,3 +26,12 @@ jobs:
     - name: Build
       run: |
         go-build
+    - name: Publish
+      env:
+        BINTRAY_ORGANZATION: envcli
+        BINTRAY_REPOSITORY: golang
+        BINTRAY_PACKAGE: modular-pipeline
+        BINTRAY_USERNAME: philippheuer
+        BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
+      run: |
+        bintray-publish
