@@ -1,0 +1,28 @@
+# docs: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: CI
+
+on: [push]
+
+jobs:
+  # stages
+  build:
+    # runtime environment
+    runs-on: ubuntu-latest
+    
+    # jobs
+    steps:
+    # checkout
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    # prepare environment
+    - name: Prepare Environment
+      run: |
+        curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sh
+    # pipeline steps
+    - name: Test
+      run: |
+        go-test
+    - name: Build
+      run: |
+        go-build
