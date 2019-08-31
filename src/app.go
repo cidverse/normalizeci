@@ -72,7 +72,7 @@ func main() {
 		common.CheckForError(err)
 
 		// print via stdout
-		s := fmt.Sprintf("export %s=%s\n", entrySplit[0], entrySplit[1])
+		s := fmt.Sprintf("export %s=\"%s\"\n", entrySplit[0], entrySplit[1])
 		io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 	}
 }
