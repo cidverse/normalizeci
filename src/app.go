@@ -15,8 +15,11 @@ import (
 	"github.com/PhilippHeuer/normalize-ci/pkg/gitlabci"
 )
 
-// App Properties
+// Version will be set at build time
 var Version string
+
+// CommitHash will be set at build time
+var CommitHash string
 
 // Init Hook
 func init() {
