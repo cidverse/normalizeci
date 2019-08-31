@@ -2,12 +2,17 @@
 
 > A tool to turn the continious integration / deployment variables into a common format for generally usable scripts without any dependencies.
 
-## usage
-
-dowonload the provided library and run it ...
+## installation
 
 ```bash
-// TODO
+sudo curl -L -s -o /usr/local/bin/normalizeci https://www.philippheuer.me/linux_amd64
+sudo chmod +x /usr/local/bin/normalizeci
+```
+
+## usage
+
+```bash
+eval $(normalizeci)
 ```
 
 ## normalized variables
