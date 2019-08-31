@@ -83,11 +83,17 @@ func GetSCMArguments(projectDir string) []string {
 	info = append(info, "NCI_COMMIT_SHA_SHORT="+ref.Hash().String()[0:8])
 
 	cIter, _ := repository.Log(&git.LogOptions{From: ref.Hash()})
+	firstCommit := true
 	cIter.ForEach(func(commit *object.Commit) error {
 		commitinfo := strings.Split(commit.Message, "\n")
 
-		info = append(info, "NCI_COMMIT_TITLE="+commitinfo[0])
-		info = append(info, "NCI_COMMIT_DESCRIPTION="+strings.Join(commitinfo[2:], "\n"))
+		// only set for first commit
+		if firstCommit {
+			info = append(info, "NCI_COMMIT_TITLE="+commitinfo[0])
+			info = append(info, "NCI_COMMIT_DESCRIPTION="+strings.Join(commitinfo[2:], "\n"))
+
+			firstCommit = false
+		}
 
 		return nil
 	})
