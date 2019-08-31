@@ -33,6 +33,5 @@ jobs:
         BINTRAY_PACKAGE: normalize-ci
         BINTRAY_USERNAME: philippheuer
         BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
-        DEBUG: "true"
       run: |
         bintray-publish
