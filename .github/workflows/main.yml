@@ -33,5 +33,6 @@ jobs:
         BINTRAY_PACKAGE: modular-pipeline
         BINTRAY_USERNAME: philippheuer
         BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
+        DEBUG: "true"
       run: |
         bintray-publish

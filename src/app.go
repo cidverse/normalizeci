@@ -28,7 +28,7 @@ func init() {
 // CLI Main Entrypoint
 func main() {
 	// detect debug mode
-	debugValue, debugIsSet := os.LookupEnv("DEBUG")
+	debugValue, debugIsSet := os.LookupEnv("NCI_DEBUG")
 	if debugIsSet && strings.ToLower(debugValue) == "true" {
 		log.SetLevel(log.TraceLevel)
 	}
