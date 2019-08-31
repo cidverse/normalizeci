@@ -30,7 +30,7 @@ jobs:
       env:
         BINTRAY_ORGANZATION: envcli
         BINTRAY_REPOSITORY: golang
-        BINTRAY_PACKAGE: modular-pipeline
+        BINTRAY_PACKAGE: normalize-ci
         BINTRAY_USERNAME: philippheuer
         BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
         DEBUG: "true"
