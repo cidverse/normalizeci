@@ -26,6 +26,9 @@ jobs:
     - name: Build
       run: |
         go-build
+    - name: Optimize
+      run: |
+        optimize-upx
     - name: Publish
       env:
         BINTRAY_ORGANZATION: envcli
