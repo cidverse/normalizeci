@@ -68,9 +68,17 @@ func GetSCMArguments(projectDir string) []string {
 		match := pattern.FindStringSubmatch(lastLine)
 		log.Debug("Found a reflog entry showing that there was a checkout based on " + match[1] + " to " + match[2])
 
-		info = append(info, "NCI_COMMIT_REF_TYPE=tag")
-		info = append(info, "NCI_COMMIT_REF_NAME="+match[2])
-		info = append(info, "NCI_COMMIT_REF_SLUG="+GetSlug(match[2]))
+		if len(match[2]) == 40 {
+			// checkout out a specific commit, use origin branch as reference
+			info = append(info, "NCI_COMMIT_REF_TYPE=branch")
+			info = append(info, "NCI_COMMIT_REF_NAME="+match[1])
+			info = append(info, "NCI_COMMIT_REF_SLUG="+GetSlug(match[1]))
+		} else {
+			// checkout of a tag or other named reference
+			info = append(info, "NCI_COMMIT_REF_TYPE=tag")
+			info = append(info, "NCI_COMMIT_REF_NAME="+match[2])
+			info = append(info, "NCI_COMMIT_REF_SLUG="+GetSlug(match[2]))
+		}
 	} else {
 		panic("Unsupported!")
 	}
