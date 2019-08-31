@@ -23,8 +23,9 @@ eval $(normalizeci)
 
 NAME | SLUG
 --- | --- |
-[Azure DevOps Pipeline](docs/system/azure-devops-pipeline.md) | `azure-devops`
-[GitLab CI/CD](docs/system/gitlab-ci.md) | `gitlab-ci`
-[GitHub Actions](docs/system/github-actions.md) | `github-actions`
+[Azure DevOps Pipeline](pkg/azuredevops/README.md) | `azure-devops`
+[GitLab CI/CD](pkg/gitlabci/README.md) | `gitlab-ci`
+[GitHub Actions](pkg/githubactions/README.md) | `github-actions`
+[Local Git Repository](pkg/localgit/README.md) | `local`
 
 *Note:* If none of the above systems is detected, repository information is determined based on the local Git repository.
