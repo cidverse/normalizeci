@@ -18,7 +18,7 @@ func (n Normalizer) GetName() string {
 	return n.name
 }
 
-// Check validates that the current environment is gitlab ci
+// Check if this package can handle the current environment
 func (n Normalizer) Check(env []string) bool {
 	if common.IsEnvironmentSetTo(env, "GITHUB_ACTIONS", "true") {
 		return true

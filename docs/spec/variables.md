@@ -56,6 +56,7 @@ Variable | Description
 `NCI_COMMIT_REF_TYPE` | The reference type. (branch / tag)
 `NCI_COMMIT_REF_NAME` | Human readable name of the current repository reference.
 `NCI_COMMIT_REF_SLUG` | Slug of the current repository reference.
+`NCI_COMMIT_REF_RELEASE` | Release version of the artifact, without leading `v` - should be in format `x.y.z`.
 `NCI_COMMIT_SHA` | A unique hash, that each commit gets.
 `NCI_COMMIT_SHA_SHORT` | A short form of the unique commit hash. (8 chars)
 `NCI_COMMIT_TITLE` | The title of the latest commit on the current reference.

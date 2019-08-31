@@ -13,6 +13,7 @@ import (
 	"github.com/PhilippHeuer/normalize-ci/pkg/azuredevops"
 	"github.com/PhilippHeuer/normalize-ci/pkg/githubactions"
 	"github.com/PhilippHeuer/normalize-ci/pkg/gitlabci"
+	"github.com/PhilippHeuer/normalize-ci/pkg/localgit"
 )
 
 // Version will be set at build time
@@ -41,6 +42,7 @@ func main() {
 	normalizers = append(normalizers, azuredevops.NewNormalizer())
 	normalizers = append(normalizers, githubactions.NewNormalizer())
 	normalizers = append(normalizers, gitlabci.NewNormalizer())
+	normalizers = append(normalizers, localgit.NewNormalizer())
 
 	// get all environment variables
 	var env []string // current environment

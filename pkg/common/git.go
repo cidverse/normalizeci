@@ -75,6 +75,10 @@ func GetSCMArguments(projectDir string) []string {
 		panic("Unsupported!")
 	}
 
+	// release name (=slug, but without leading v for tags)
+	info = append(info, "NCI_COMMIT_REF_RELEASE="+strings.TrimLeft(GetEnvironment(info, "NCI_COMMIT_REF_SLUG"), "v"))
+
+	// commit info
 	info = append(info, "NCI_COMMIT_SHA="+ref.Hash().String())
 	info = append(info, "NCI_COMMIT_SHA_SHORT="+ref.Hash().String()[0:8])
 
