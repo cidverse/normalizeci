@@ -29,6 +29,8 @@ jobs:
     - name: Optimize
       run: |
         optimize-upx
+      env:
+        UPX_ARGS: --brute
     - name: Publish
       env:
         BINTRAY_ORGANZATION: envcli
