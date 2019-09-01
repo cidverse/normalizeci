@@ -18,7 +18,7 @@ jobs:
     # prepare environment
     - name: Prepare Environment
       run: |
-        curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sh
+        curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo sh
     # pipeline steps
     - name: Test
       run: |
