@@ -1,12 +1,11 @@
 # workflow
-name: CI
+name: Release
 
 # trigger
 on:
   push:
-    # Push events on master branch
-    branches:    
-      - master
+    tags:        
+      - v*
 
 # jobs
 jobs:
@@ -32,3 +31,17 @@ jobs:
     - name: Build
       run: |
         go-build
+    - name: Optimize
+      run: |
+        optimize-upx
+      env:
+        UPX_ARGS: --brute
+    - name: Publish
+      env:
+        BINTRAY_ORGANZATION: envcli
+        BINTRAY_REPOSITORY: golang
+        BINTRAY_PACKAGE: normalize-ci
+        BINTRAY_USERNAME: philippheuer
+        BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
+      run: |
+        bintray-publish
