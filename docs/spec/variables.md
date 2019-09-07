@@ -46,6 +46,7 @@ Variable | Description
 --- | --- |
 `NCI_PROJECT_ID` | Unique project id, can be used in deployments.
 `NCI_PROJECT_NAME` | Unique project id, can be used in deployments.
+`NCI_PROJECT_DIR` | Root directory of the project.
 
 ## repository
 

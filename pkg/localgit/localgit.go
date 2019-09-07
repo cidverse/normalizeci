@@ -55,6 +55,7 @@ func (n Normalizer) Normalize(env []string) []string {
 	normalized = append(normalized, "NCI_PROJECT_ID=")
 	normalized = append(normalized, "NCI_PROJECT_NAME=")
 	normalized = append(normalized, "NCI_PROJECT_SLUG=")
+	normalized = append(normalized, "NCI_PROJECT_DIR="+common.GetGitDirectory())
 
 	// repository
 	normalized = append(normalized, common.GetSCMArguments(common.GetGitDirectory())...)
