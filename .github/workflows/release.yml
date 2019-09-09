@@ -21,22 +21,25 @@ jobs:
       with:
         fetch-depth: 1
     # prepare environment
-    - name: Prepare Environment
+    - name: Environment Setup
       run: |
         curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo bash
+        export PROJECT_TYPE=golang-cli
+        export DEPLOYMENT_TYPE=bintray
     # pipeline steps
+    - name: Prepare
+      run: |
+        stage-prepare
+    - name: Build
+      env:
+        UPX_ENABLE: "true"
+        UPX_ARGS: --brute
+      run: |
+        stage-build
     - name: Test
       run: |
-        action-go-test
-    - name: Build
-      run: |
-        action-go-build
-    - name: Optimize
-      run: |
-        action-optimize-upx
-      env:
-        UPX_ARGS: --brute
-    - name: Publish
+        stage-test
+    - name: Package
       env:
         BINTRAY_ORGANZATION: envcli
         BINTRAY_REPOSITORY: golang
@@ -44,4 +47,16 @@ jobs:
         BINTRAY_USERNAME: philippheuer
         BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
       run: |
-        action-bintray-publish
+        stage-package
+    - name: Audit
+      run: |
+        stage-audit
+    - name: Deploy
+      run: |
+        stage-deploy
+    - name: Performance
+      run: |
+        stage-performance
+    - name: CleanUp
+      run: |
+        stage-cleanup

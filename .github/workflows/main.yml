@@ -22,13 +22,32 @@ jobs:
       with:
         fetch-depth: 1
     # prepare environment
-    - name: Prepare Environment
+    - name: Environment Setup
       run: |
         curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo bash
+        export PROJECT_TYPE=golang-cli
     # pipeline steps
-    - name: Test
+    - name: Prepare
       run: |
-        action-go-test
+        stage-prepare
     - name: Build
       run: |
-        action-go-build
+        stage-build
+    - name: Test
+      run: |
+        stage-test
+    - name: Package
+      run: |
+        stage-package
+    - name: Audit
+      run: |
+        stage-audit
+    - name: Deploy
+      run: |
+        stage-deploy
+    - name: Performance
+      run: |
+        stage-performance
+    - name: CleanUp
+      run: |
+        stage-cleanup
