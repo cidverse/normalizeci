@@ -25,29 +25,44 @@ jobs:
     - name: Environment Setup
       run: |
         curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo bash
-        export PROJECT_TYPE=golang-cli
     # pipeline steps
     - name: Prepare
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-prepare
     - name: Build
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-build
     - name: Test
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-test
     - name: Package
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-package
     - name: Audit
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-audit
     - name: Deploy
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
-        stage-deploy
+        stage-deploy production
     - name: Performance
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-performance
     - name: CleanUp
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-cleanup

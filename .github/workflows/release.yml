@@ -28,19 +28,25 @@ jobs:
         export DEPLOYMENT_TYPE=bintray
     # pipeline steps
     - name: Prepare
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-prepare
     - name: Build
       env:
+        PROJECT_TYPE: golang-cli
         UPX_ENABLE: "true"
         UPX_ARGS: --brute
       run: |
         stage-build
     - name: Test
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-test
     - name: Package
       env:
+        PROJECT_TYPE: golang-cli
         BINTRAY_ORGANZATION: envcli
         BINTRAY_REPOSITORY: golang
         BINTRAY_PACKAGE: normalize-ci
@@ -49,14 +55,22 @@ jobs:
       run: |
         stage-package
     - name: Audit
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-audit
     - name: Deploy
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
-        stage-deploy
+        stage-deploy production
     - name: Performance
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-performance
     - name: CleanUp
+      env:
+        PROJECT_TYPE: golang-cli
       run: |
         stage-cleanup
