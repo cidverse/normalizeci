@@ -46,7 +46,17 @@ Variable | Description
 --- | --- |
 `NCI_PROJECT_ID` | Unique project id, can be used in deployments.
 `NCI_PROJECT_NAME` | Unique project id, can be used in deployments.
-`NCI_PROJECT_DIR` | Root directory of the project.
+`NCI_PROJECT_SLUG` | Project slug, that can be used in deployments.
+`NCI_PROJECT_DIR` | Project directory on the local filesystem.
+
+## container registry
+
+Variable | Description
+--- | --- |
+`NCI_CONTAINERREGISTRY_HOST` | The hostname of the container registry.
+`NCI_CONTAINERREGISTRY_USERNAME` | The username used for container registry authentication.
+`NCI_CONTAINERREGISTRY_PASSWORD` | The password used for container registry authentication.
+`NCI_CONTAINERREGISTRY_REPOSITORY` | The repository, that should be used for the current project.
 
 ## repository
 

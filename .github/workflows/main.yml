@@ -28,7 +28,7 @@ jobs:
     # pipeline steps
     - name: Test
       run: |
-        go-test
+        action-go-test
     - name: Build
       run: |
-        go-build
+        action-go-build

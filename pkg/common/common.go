@@ -32,6 +32,18 @@ func IsEnvironmentSetTo(env []string, key string, value string) bool {
 	return false
 }
 
+// HasEnvironment checks if a environment variable is available
+func HasEnvironment(env []string, key string) bool {
+	for _, envvar := range env {
+		z := strings.SplitN(envvar, "=", 2)
+		if key == z[0] {
+			return true
+		}
+	}
+
+	return false
+}
+
 // GetEnvironment gets the value of a environment property
 func GetEnvironment(env []string, key string) string {
 	for _, envvar := range env {
@@ -39,10 +51,18 @@ func GetEnvironment(env []string, key string) string {
 		if key == z[0] {
 			return z[1]
 		}
-
 	}
 
 	return ""
+}
+
+// GetEnvironmentOrDefault tries to keep the original value, keeps the original value if one was set, otherwise the 2nd arg will be set
+func GetEnvironmentOrDefault(env []string, key string, def string) string {
+	if HasEnvironment(env, key) {
+		return GetEnvironment(env, key)
+	} else {
+		return GetEnvironment(env, def)
+	}
 }
 
 // GetSlug turns the provided value into a slug

@@ -13,7 +13,7 @@ jobs:
   build:
     # runtime environment
     runs-on: ubuntu-latest
-    
+
     # jobs
     steps:
     # checkout
@@ -27,13 +27,13 @@ jobs:
     # pipeline steps
     - name: Test
       run: |
-        go-test
+        action-go-test
     - name: Build
       run: |
-        go-build
+        action-go-build
     - name: Optimize
       run: |
-        optimize-upx
+        action-optimize-upx
       env:
         UPX_ARGS: --brute
     - name: Publish
@@ -44,4 +44,4 @@ jobs:
         BINTRAY_USERNAME: philippheuer
         BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
       run: |
-        bintray-publish
+        action-bintray-publish
