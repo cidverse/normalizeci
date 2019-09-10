@@ -24,53 +24,37 @@ jobs:
     - name: Environment Setup
       run: |
         curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo bash
-        export PROJECT_TYPE=golang-cli
-        export DEPLOYMENT_TYPE=bintray
     # pipeline steps
     - name: Prepare
-      env:
-        PROJECT_TYPE: golang-cli
       run: |
         stage-prepare
     - name: Build
       env:
-        PROJECT_TYPE: golang-cli
         UPX_ENABLE: "true"
         UPX_ARGS: --brute
       run: |
         stage-build
     - name: Test
-      env:
-        PROJECT_TYPE: golang-cli
       run: |
         stage-test
     - name: Package
+      run: |
+        stage-package
+    - name: Publish
       env:
-        PROJECT_TYPE: golang-cli
         BINTRAY_ORGANZATION: envcli
         BINTRAY_REPOSITORY: golang
         BINTRAY_PACKAGE: normalize-ci
         BINTRAY_USERNAME: philippheuer
         BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
       run: |
-        stage-package
+        stage-publish
     - name: Audit
-      env:
-        PROJECT_TYPE: golang-cli
       run: |
         stage-audit
-    - name: Deploy
-      env:
-        PROJECT_TYPE: golang-cli
-      run: |
-        stage-deploy production
     - name: Performance
-      env:
-        PROJECT_TYPE: golang-cli
       run: |
         stage-performance
     - name: CleanUp
-      env:
-        PROJECT_TYPE: golang-cli
       run: |
         stage-cleanup
