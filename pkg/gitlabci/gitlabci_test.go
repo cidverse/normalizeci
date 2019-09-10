@@ -119,6 +119,11 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_SLUG", "build")
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_JOB_NAME", "build")
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_JOB_SLUG", "build")
+	// - container registry
+	common.AssertThatEnvEquals(t, normalized, "NCI_CONTAINERREGISTRY_HOST", "registry.gitlab.com")
+	common.AssertThatEnvEquals(t, normalized, "NCI_CONTAINERREGISTRY_REPOSITORY", "registry.gitlab.com/philippheuer/citest")
+	common.AssertThatEnvEquals(t, normalized, "NCI_CONTAINERREGISTRY_USERNAME", "gitlab-ci-token")
+	common.AssertThatEnvEquals(t, normalized, "NCI_CONTAINERREGISTRY_PASSWORD", "secret")
 	// - project
 	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_ID", "13882743")
 	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_NAME", "citest")

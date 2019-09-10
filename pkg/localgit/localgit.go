@@ -51,6 +51,12 @@ func (n Normalizer) Normalize(env []string) []string {
 	normalized = append(normalized, "NCI_PIPELINE_JOB_NAME=")
 	normalized = append(normalized, "NCI_PIPELINE_JOB_SLUG=")
 
+	// container registry
+	normalized = append(normalized, "NCI_CONTAINERREGISTRY_HOST="+common.GetEnvironment(env, "NCI_CONTAINERREGISTRY_HOST"))
+	normalized = append(normalized, "NCI_CONTAINERREGISTRY_REPOSITORY="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_REPOSITORY", common.GetDirectoryNameFromPath(common.GetGitDirectory())))
+	normalized = append(normalized, "NCI_CONTAINERREGISTRY_USERNAME="+common.GetEnvironment(env, "NCI_CONTAINERREGISTRY_USERNAME"))
+	normalized = append(normalized, "NCI_CONTAINERREGISTRY_PASSWORD="+common.GetEnvironment(env, "NCI_CONTAINERREGISTRY_PASSWORD"))
+
 	// project
 	normalized = append(normalized, "NCI_PROJECT_ID=")
 	normalized = append(normalized, "NCI_PROJECT_NAME=")

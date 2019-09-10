@@ -59,8 +59,9 @@ func (n Normalizer) Normalize(env []string) []string {
 	normalized = append(normalized, "NCI_PIPELINE_JOB_NAME="+common.GetEnvironment(env, "CI_JOB_NAME"))
 	normalized = append(normalized, "NCI_PIPELINE_JOB_SLUG="+common.GetSlug(common.GetEnvironment(env, "CI_JOB_NAME")))
 
-	// container registry (deploy tokens have preference over default temporary registry token)
+	// container registry
 	normalized = append(normalized, "NCI_CONTAINERREGISTRY_HOST="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_HOST", common.GetEnvironment(env, "CI_REGISTRY")))
+	normalized = append(normalized, "NCI_CONTAINERREGISTRY_REPOSITORY="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_REPOSITORY", common.GetEnvironment(env, "CI_REGISTRY_IMAGE")))
 	if common.HasEnvironment(env, "CI_DEPLOY_USER") {
 		normalized = append(normalized, "NCI_CONTAINERREGISTRY_USERNAME="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_USERNAME", common.GetEnvironment(env, "CI_DEPLOY_USER")))
 		normalized = append(normalized, "NCI_CONTAINERREGISTRY_PASSWORD="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_PASSWORD", common.GetEnvironment(env, "CI_DEPLOY_PASSWORD")))
@@ -68,7 +69,6 @@ func (n Normalizer) Normalize(env []string) []string {
 		normalized = append(normalized, "NCI_CONTAINERREGISTRY_USERNAME="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_USERNAME", common.GetEnvironment(env, "CI_REGISTRY_USER")))
 		normalized = append(normalized, "NCI_CONTAINERREGISTRY_PASSWORD="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_PASSWORD", common.GetEnvironment(env, "CI_REGISTRY_PASSWORD")))
 	}
-	normalized = append(normalized, "NCI_CONTAINERREGISTRY_REPOSITORY="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_REPOSITORY", common.GetEnvironment(env, "CI_REGISTRY_IMAGE")))
 
 	// project
 	normalized = append(normalized, "NCI_PROJECT_ID="+common.GetEnvironment(env, "CI_PROJECT_ID"))

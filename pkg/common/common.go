@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -61,7 +62,7 @@ func GetEnvironmentOrDefault(env []string, key string, def string) string {
 	if HasEnvironment(env, key) {
 		return GetEnvironment(env, key)
 	} else {
-		return GetEnvironment(env, def)
+		return def
 	}
 }
 
@@ -78,6 +79,14 @@ func GetSlug(value string) string {
 
 	return slug
 	// everything except 0-9 and a-z replaced with -. No leading / trailing -.
+}
+
+// GetDirectoryNameFromPath gets the directory name from a path
+func GetDirectoryNameFromPath(path string) string {
+	dir := filepath.Dir(path)
+    parent := filepath.Base(dir)
+
+	return parent
 }
 
 // AssertThatEnvEquals is a helper function that asserts that a env key has a specific value

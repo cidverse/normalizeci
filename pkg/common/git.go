@@ -98,7 +98,11 @@ func GetSCMArguments(projectDir string) []string {
 		// only set for first commit
 		if firstCommit {
 			info = append(info, "NCI_COMMIT_TITLE="+commitinfo[0])
-			info = append(info, "NCI_COMMIT_DESCRIPTION="+strings.Join(commitinfo[2:], "\n"))
+			if len(commitinfo) >= 3 {
+				info = append(info, "NCI_COMMIT_DESCRIPTION="+strings.Join(commitinfo[2:], "\n"))
+			} else {
+				info = append(info, "NCI_COMMIT_DESCRIPTION=")
+			}
 
 			firstCommit = false
 		}
