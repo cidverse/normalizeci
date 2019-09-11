@@ -43,6 +43,8 @@ func GetSCMArguments(projectDir string) []string {
 	repository, _ := git.PlainOpen(projectDir)
 	remote, remoteErr := repository.Remote("origin")
 	ref, _ := repository.Head()
+	log.Debug("Git Remote " + remote.String())
+	log.Debug("Git Ref " + ref.String())
 
 	// repository kind and remote
 	info = append(info, "NCI_REPOSITORY_KIND=git")
@@ -55,14 +57,15 @@ func GetSCMArguments(projectDir string) []string {
 	// pass
 	if strings.HasPrefix(ref.Name().String(), "refs/heads/") {
 		// branch
+		branchName := ref.Name().String()[11:]
 		info = append(info, "NCI_COMMIT_REF_TYPE=branch")
-		info = append(info, "NCI_COMMIT_REF_NAME="+strings.TrimLeft(ref.Name().String(), "refs/heads/"))
-		info = append(info, "NCI_COMMIT_REF_SLUG="+GetSlug(strings.TrimLeft(ref.Name().String(), "refs/heads/")))
+		info = append(info, "NCI_COMMIT_REF_NAME="+branchName)
+		info = append(info, "NCI_COMMIT_REF_SLUG="+GetSlug(branchName))
 	} else if ref.Name().String() == "HEAD" {
 		// detached HEAD, look into  the reflog to determinate the true branch
 		gitRefLogFile := projectDir + "/.git/logs/HEAD"
 		lastLine := readLastLine(gitRefLogFile)
-		log.Debug(lastLine)
+		log.Debug("RefLog - LastLine: " + lastLine)
 
 		pattern := regexp.MustCompile(`.*checkout: moving from (?P<FROM>.*) to (?P<TO>.*)$`)
 		match := pattern.FindStringSubmatch(lastLine)
