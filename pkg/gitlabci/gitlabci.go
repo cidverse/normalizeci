@@ -2,7 +2,8 @@ package gitlabci
 
 import (
 	"runtime"
-
+	"strings"
+	
 	"github.com/PhilippHeuer/normalize-ci/pkg/common"
 )
 
@@ -77,7 +78,18 @@ func (n Normalizer) Normalize(env []string) []string {
 	normalized = append(normalized, "NCI_PROJECT_DIR="+common.GetGitDirectory())
 
 	// repository
-	normalized = append(normalized, common.GetSCMArguments(common.GetGitDirectory())...)
+	if common.HasEnvironment(env, "CI_COMMIT_TAG") {
+		normalized = append(normalized, "NCI_COMMIT_REF_TYPE=tag")
+	} else {
+		normalized = append(normalized, "NCI_COMMIT_REF_TYPE=branch")
+	}
+	normalized = append(normalized, "NCI_COMMIT_REF_NAME="+common.GetEnvironment(env, "CI_COMMIT_REF_NAME"))
+	normalized = append(normalized, "NCI_COMMIT_REF_SLUG="+common.GetSlug(common.GetEnvironment(env, "CI_COMMIT_REF_NAME")))
+	normalized = append(normalized, "NCI_COMMIT_REF_RELEASE="+strings.TrimLeft(common.GetSlug(common.GetEnvironment(env, "CI_COMMIT_REF_NAME")), "v"))
+	normalized = append(normalized, "NCI_COMMIT_TITLE="+common.GetEnvironment(env, "CI_COMMIT_TITLE"))
+	normalized = append(normalized, "NCI_COMMIT_DESCRIPTION="+common.GetEnvironment(env, "CI_COMMIT_DESCRIPTION"))
+	normalized = append(normalized, "NCI_COMMIT_SHA="+common.GetEnvironment(env, "CI_COMMIT_SHA"))
+	normalized = append(normalized, "NCI_COMMIT_SHA_SHORT="+common.GetEnvironment(env, "CI_COMMIT_SHORT_SHA"))
 
 	return normalized
 }

@@ -24,8 +24,10 @@ var CommitHash string
 
 // Init Hook
 func init() {
-	// Logging
-	log.SetOutput(os.Stdout)
+	// Output to Stderr to not pollute stdout redirects with logs
+	log.SetOutput(os.Stderr)
+
+	// Only log the warning severity or above.
 	log.SetLevel(log.WarnLevel)
 }
 
