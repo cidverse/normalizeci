@@ -40,15 +40,25 @@ func GetSCMArguments(projectDir string) []string {
 
 	// open repository from local path
 	log.Debug("Using git repository at " + projectDir)
-	repository, _ := git.PlainOpen(projectDir)
-	remote, remoteErr := repository.Remote("origin")
-	ref, _ := repository.Head()
-	log.Debug("Git Remote " + remote.String())
+	repository, repositoryErr := git.PlainOpen(projectDir)
+	if repositoryErr != nil {
+		log.Warn("No repository!")
+		return getDefaultInfo()
+	}
+
+	// get current reference
+	ref, refErr := repository.Head()
+	if refErr != nil {
+		log.Warn("Empty repository!")
+		return getDefaultInfo()
+	}
 	log.Debug("Git Ref " + ref.String())
 
 	// repository kind and remote
 	info = append(info, "NCI_REPOSITORY_KIND=git")
-	if remoteErr == nil {
+	remote, remoteErr := repository.Remote("origin")
+	log.Debug("Git Remote " + remote.String())
+	if remoteErr == nil && remote != nil && remote.Config() != nil && len(remote.Config().URLs) > 0 {
 		info = append(info, "NCI_REPOSITORY_REMOTE="+remote.Config().URLs[0])
 	} else {
 		info = append(info, "NCI_REPOSITORY_REMOTE=local")
@@ -136,4 +146,21 @@ func readLastLine(filename string) string {
 	}
 
 	return lastLine
+}
+
+func getDefaultInfo() []string {
+	var info []string
+
+	info = append(info, "NCI_REPOSITORY_KIND=none")
+	info = append(info, "NCI_REPOSITORY_REMOTE=local")
+	info = append(info, "NCI_COMMIT_REF_TYPE=unknown")
+	info = append(info, "NCI_COMMIT_REF_NAME=unknown")
+	info = append(info, "NCI_COMMIT_REF_SLUG=unknown")
+	info = append(info, "NCI_COMMIT_REF_RELEASE=unknown")
+	info = append(info, "NCI_COMMIT_SHA=")
+	info = append(info, "NCI_COMMIT_SHA_SHORT=")
+	info = append(info, "NCI_COMMIT_TITLE=")
+	info = append(info, "NCI_COMMIT_DESCRIPTION=")
+
+	return info
 }
