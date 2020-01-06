@@ -2,42 +2,31 @@ package common
 
 import (
 	"testing"
-	"io/ioutil"
 	"os"
-
 	"gopkg.in/src-d/go-git.v4"
 )
 
 func TestOnInvalidGitDirectory(t *testing.T) {
-	var scmArgs = GetSCMArguments(GetGitDirectory()+"/../invalidpath")
-
 	// log all normalized values
+	var scmArgs = GetSCMArguments(GetGitDirectory()+"/tmp/invaliddir")
 	for _, envvar := range scmArgs {
 		t.Log(envvar)
 	}
 }
 
 func TestOnEmptyGitRepository(t *testing.T) {
-	// create empty repo
-	dir, dirErr := ioutil.TempDir("", "normalizeci")
-	if dirErr != nil {
-		t.Errorf(dirErr.Error())
-	}
-
-	// init empty repo
-	_, gitErr := git.PlainInit(dir, false)
-	if gitErr != nil {
-		t.Errorf(gitErr.Error())
+	// create git repo
+	var tmpDir = GetGitDirectory()+"/tmp/empty"
+	os.RemoveAll(GetGitDirectory()+"/tmp/empty")
+	_, err := git.PlainInit(tmpDir, true)
+	if err != nil {
+		t.Errorf(err.Error())
 	}
 	
-	// call func
-	var scmArgs = GetSCMArguments(dir)
-
 	// log all normalized values
+	var scmArgs = GetSCMArguments(tmpDir)
 	for _, envvar := range scmArgs {
-		t.Log("Args:"+envvar)
+		t.Log(envvar)
 	}
-
-	// clean up
-	defer os.RemoveAll(dir)
+	os.RemoveAll(GetGitDirectory()+"/tmp/empty")
 }

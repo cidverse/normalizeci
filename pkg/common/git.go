@@ -42,15 +42,32 @@ func GetSCMArguments(projectDir string) []string {
 	log.Debug("Using git repository at " + projectDir)
 	repository, repositoryErr := git.PlainOpen(projectDir)
 	if repositoryErr != nil {
-		log.Warn("No repository!")
-		return getDefaultInfo()
+		info = append(info, "NCI_REPOSITORY_KIND=none")
+		info = append(info, "NCI_REPOSITORY_REMOTE=local")
+		info = append(info, "NCI_COMMIT_REF_TYPE=unknown")
+		info = append(info, "NCI_COMMIT_REF_NAME=unknown")
+		info = append(info, "NCI_COMMIT_REF_SLUG=unknown")
+		info = append(info, "NCI_COMMIT_REF_RELEASE=unknown")
+		info = append(info, "NCI_COMMIT_SHA=")
+		info = append(info, "NCI_COMMIT_SHA_SHORT=")
+		info = append(info, "NCI_COMMIT_TITLE=")
+		info = append(info, "NCI_COMMIT_DESCRIPTION=")
+		return info
 	}
 
-	// get current reference
 	ref, refErr := repository.Head()
 	if refErr != nil {
-		log.Warn("Empty repository!")
-		return getDefaultInfo()
+		info = append(info, "NCI_REPOSITORY_KIND=none")
+		info = append(info, "NCI_REPOSITORY_REMOTE=local")
+		info = append(info, "NCI_COMMIT_REF_TYPE=unknown")
+		info = append(info, "NCI_COMMIT_REF_NAME=unknown")
+		info = append(info, "NCI_COMMIT_REF_SLUG=unknown")
+		info = append(info, "NCI_COMMIT_REF_RELEASE=unknown")
+		info = append(info, "NCI_COMMIT_SHA=")
+		info = append(info, "NCI_COMMIT_SHA_SHORT=")
+		info = append(info, "NCI_COMMIT_TITLE=")
+		info = append(info, "NCI_COMMIT_DESCRIPTION=")
+		return info
 	}
 	log.Debug("Git Ref " + ref.String())
 
@@ -146,21 +163,4 @@ func readLastLine(filename string) string {
 	}
 
 	return lastLine
-}
-
-func getDefaultInfo() []string {
-	var info []string
-
-	info = append(info, "NCI_REPOSITORY_KIND=none")
-	info = append(info, "NCI_REPOSITORY_REMOTE=local")
-	info = append(info, "NCI_COMMIT_REF_TYPE=unknown")
-	info = append(info, "NCI_COMMIT_REF_NAME=unknown")
-	info = append(info, "NCI_COMMIT_REF_SLUG=unknown")
-	info = append(info, "NCI_COMMIT_REF_RELEASE=unknown")
-	info = append(info, "NCI_COMMIT_SHA=")
-	info = append(info, "NCI_COMMIT_SHA_SHORT=")
-	info = append(info, "NCI_COMMIT_TITLE=")
-	info = append(info, "NCI_COMMIT_DESCRIPTION=")
-
-	return info
 }

@@ -73,8 +73,8 @@ func main() {
 		err := os.Setenv(entrySplit[0], entrySplit[1])
 		common.CheckForError(err)
 
-		// print via stdout
-		s := fmt.Sprintf("export %s=\"%s\"\n", entrySplit[0], entrySplit[1])
+		// print via stdout and escape values
+		s := fmt.Sprintf("export %s=\"%s\"\n", entrySplit[0], strings.ReplaceAll(entrySplit[1], "\"", "\\\""))
 		io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 	}
 }
