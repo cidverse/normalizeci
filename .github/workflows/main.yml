@@ -24,26 +24,27 @@ jobs:
     # prepare environment
     - name: Environment Setup
       run: |
-        curl https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo bash
+        curl -L -s https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install-prerequisites.sh | sudo bash -s
+        curl -L -s https://raw.githubusercontent.com/EnvCLI/modular-pipeline/master/install.sh | sudo bash -s /usr/local
     # pipeline steps
     - name: Prepare
       run: |
-        stage-prepare
+        mpi stage prepare
     - name: Build
       run: |
-        stage-build
+        mpi stage build
     - name: Test
       run: |
-        stage-test
+        mpi stage test
     - name: Package
       run: |
-        stage-package
+        mpi stage package
     - name: Audit
       run: |
-        stage-audit
+        mpi stage audit
     - name: Performance
       run: |
-        stage-performance
+        mpi stage performance
     - name: CleanUp
       run: |
-        stage-cleanup
+        mpi stage cleanup
