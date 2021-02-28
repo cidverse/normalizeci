@@ -21,7 +21,7 @@ func init() {
 	log.SetOutput(os.Stderr)
 
 	// Only log the warning severity or above.
-	log.SetLevel(log.TraceLevel)
+	log.SetLevel(log.WarnLevel)
 
 	// detect debug mode
 	debugValue, debugIsSet := os.LookupEnv("NCI_DEBUG")
