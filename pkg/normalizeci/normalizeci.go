@@ -2,17 +2,17 @@ package normalizeci
 
 import (
 	"fmt"
-	"github.com/PhilippHeuer/normalize-ci/pkg/common"
+	"github.com/EnvCLI/normalize-ci/pkg/common"
 	log "github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"runtime"
 	"strings"
 
-	"github.com/PhilippHeuer/normalize-ci/pkg/azuredevops"
-	"github.com/PhilippHeuer/normalize-ci/pkg/githubactions"
-	"github.com/PhilippHeuer/normalize-ci/pkg/gitlabci"
-	"github.com/PhilippHeuer/normalize-ci/pkg/localgit"
+	"github.com/EnvCLI/normalize-ci/pkg/azuredevops"
+	"github.com/EnvCLI/normalize-ci/pkg/githubactions"
+	"github.com/EnvCLI/normalize-ci/pkg/gitlabci"
+	"github.com/EnvCLI/normalize-ci/pkg/localgit"
 )
 
 // RunNormalization executes the ci normalization for all supported services

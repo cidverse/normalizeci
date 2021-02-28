@@ -74,8 +74,8 @@ func GetSCMArguments(projectDir string) []string {
 	// repository kind and remote
 	info = append(info, "NCI_REPOSITORY_KIND=git")
 	remote, remoteErr := repository.Remote("origin")
-	log.Debug("Git Remote " + remote.String())
 	if remoteErr == nil && remote != nil && remote.Config() != nil && len(remote.Config().URLs) > 0 {
+		log.Debug("Git Remote " + remote.String())
 		info = append(info, "NCI_REPOSITORY_REMOTE="+remote.Config().URLs[0])
 	} else {
 		info = append(info, "NCI_REPOSITORY_REMOTE=local")

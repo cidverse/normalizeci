@@ -3,7 +3,7 @@ package githubactions
 import (
 	"runtime"
 
-	"github.com/PhilippHeuer/normalize-ci/pkg/common"
+	"github.com/EnvCLI/normalize-ci/pkg/common"
 )
 
 // Normalizer is the implementation of the normalizer

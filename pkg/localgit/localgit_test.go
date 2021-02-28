@@ -3,7 +3,7 @@ package localgit
 import (
 	"testing"
 
-	"github.com/PhilippHeuer/normalize-ci/pkg/common"
+	"github.com/EnvCLI/normalize-ci/pkg/common"
 )
 
 var testEnvironment = []string{

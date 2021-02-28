@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/PhilippHeuer/normalize-ci/pkg/common"
+	"github.com/EnvCLI/normalize-ci/pkg/common"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"strings"
 
-	"github.com/PhilippHeuer/normalize-ci/pkg/normalizeci"
+	"github.com/EnvCLI/normalize-ci/pkg/normalizeci"
 )
 
 // Version will be set at build time
