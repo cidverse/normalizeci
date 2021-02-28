@@ -2,6 +2,7 @@ package githubactions
 
 import (
 	"os"
+	"runtime"
 	"testing"
 
 	"github.com/PhilippHeuer/normalize-ci/pkg/common"
@@ -97,7 +98,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ID", "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1")
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_NAME", "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1")
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_VERSION", "157.1")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", "linux/amd64")
+	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", runtime.GOOS+"/"+runtime.GOARCH)
 	// - pipeline
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_TRIGGER", "push")
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_NAME", "CI")

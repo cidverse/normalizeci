@@ -1,6 +1,7 @@
 package azuredevops
 
 import (
+	"runtime"
 	"testing"
 	"os"
 
@@ -177,7 +178,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ID", "5")
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_NAME", "fv-az679")
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_VERSION", "2.155.1")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", "linux/amd64")
+	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", runtime.GOOS+"/"+runtime.GOARCH)
 	// - pipeline
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_TRIGGER", "push")
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_NAME", "build")

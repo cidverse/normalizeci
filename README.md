@@ -1,20 +1,41 @@
 # normalize.ci
 
-> A cli tool to convert continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.
+> A cli tool to convert continuous integration variables into a common format for generally usable scripts.
 
 This project can also be used as library for other tools.
 
 ## installation
 
+You can download the binaries from the gh release page: https://github.com/EnvCLI/normalize-ci/releases
+
+- linux_386
+- linux_amd64
+- windows_386
+- windows_amd64
+- darwin_386
+- darwin_amd64
+
+Linux:
 ```bash
-sudo curl -L -s -o /usr/local/bin/normalizeci https://www.philippheuer.me/linux_amd64
+sudo curl -L -s -o /usr/local/bin/normalizeci https://github.com/EnvCLI/normalize-ci/releases/download/v1.0.0/linux_amd64
 sudo chmod +x /usr/local/bin/normalizeci
 ```
 
 ## usage
 
+The NormalizeCI CLI will return the commands to set the normalized variables in your current terminal session, so you need to run the response of the command.
+
+Linux/MacOS
+
 ```bash
 eval $(normalizeci)
+```
+
+Windows
+
+```powershell
+$nenv = normalizeci
+Invoke-Expression "$nenv"
 ```
 
 ## normalized variables

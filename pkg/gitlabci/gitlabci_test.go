@@ -1,6 +1,7 @@
 package gitlabci
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/PhilippHeuer/normalize-ci/pkg/common"
@@ -112,7 +113,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ID", "380987")
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_NAME", "shared-runners-manager-6.gitlab.com")
 	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_VERSION", "12.1.0")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", "linux/amd64")
+	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", runtime.GOOS+"/"+runtime.GOARCH)
 	// - pipeline
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_TRIGGER", "push")
 	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_NAME", "build")

@@ -10,6 +10,23 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Normalizer is a common interface to work with all normalizers
+type Normalizer interface {
+	GetName() string
+	Check(env []string) bool
+	Normalize(env []string) []string
+}
+
+// GetFullEnv returns a arrays with all set env variables
+func GetFullEnv() []string {
+	var env []string
+	for _, entry := range os.Environ() {
+		env = append(env, entry)
+	}
+
+	return env
+}
+
 // IsEnvironmentSet checks if the provided env variables are setting a value
 func IsEnvironmentSet(env []string, key string) bool {
 	for _, envvar := range env {
