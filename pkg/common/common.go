@@ -77,14 +77,20 @@ func GetEnvironment(env []string, key string) string {
 // SetEnvironment changes/sets the value of a environment property
 func SetEnvironment(env []string, key string, value string) []string {
 	var newEnv []string
+	wasSet := false
 
 	for _, entry := range env {
 		z := strings.SplitN(entry, "=", 2)
 		if key == z[0] {
 			newEnv = append(newEnv, z[0]+"="+value)
+			wasSet = true
 		} else {
 			newEnv = append(newEnv, z[0]+"="+z[1])
 		}
+	}
+
+	if !wasSet {
+		newEnv = append(newEnv, key+"="+value)
 	}
 
 	return newEnv
