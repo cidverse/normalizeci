@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -47,7 +48,7 @@ func GetSCMArguments(projectDir string) []string {
 		info = append(info, "NCI_COMMIT_REF_TYPE=unknown")
 		info = append(info, "NCI_COMMIT_REF_NAME=unknown")
 		info = append(info, "NCI_COMMIT_REF_SLUG=unknown")
-		info = append(info, "NCI_COMMIT_REF_RELEASE=unknown")
+		info = append(info, "NCI_COMMIT_REF_RELEASE=")
 		info = append(info, "NCI_COMMIT_SHA=")
 		info = append(info, "NCI_COMMIT_SHA_SHORT=")
 		info = append(info, "NCI_COMMIT_TITLE=")
@@ -62,7 +63,7 @@ func GetSCMArguments(projectDir string) []string {
 		info = append(info, "NCI_COMMIT_REF_TYPE=unknown")
 		info = append(info, "NCI_COMMIT_REF_NAME=unknown")
 		info = append(info, "NCI_COMMIT_REF_SLUG=unknown")
-		info = append(info, "NCI_COMMIT_REF_RELEASE=unknown")
+		info = append(info, "NCI_COMMIT_REF_RELEASE=")
 		info = append(info, "NCI_COMMIT_SHA=")
 		info = append(info, "NCI_COMMIT_SHA_SHORT=")
 		info = append(info, "NCI_COMMIT_TITLE=")
@@ -122,14 +123,16 @@ func GetSCMArguments(projectDir string) []string {
 
 	cIter, _ := repository.Log(&git.LogOptions{From: ref.Hash()})
 	firstCommit := true
+	commitCount := 0
 	cIter.ForEach(func(commit *object.Commit) error {
-		commitinfo := strings.Split(commit.Message, "\n")
+		commitInfo := strings.Split(commit.Message, "\n")
+		commitCount++
 
 		// only set for first commit
 		if firstCommit {
-			info = append(info, "NCI_COMMIT_TITLE="+commitinfo[0])
-			if len(commitinfo) >= 3 {
-				info = append(info, "NCI_COMMIT_DESCRIPTION="+strings.Join(commitinfo[2:], "\n"))
+			info = append(info, "NCI_COMMIT_TITLE="+commitInfo[0])
+			if len(commitInfo) >= 3 {
+				info = append(info, "NCI_COMMIT_DESCRIPTION="+strings.Join(commitInfo[2:], "\n"))
 			} else {
 				info = append(info, "NCI_COMMIT_DESCRIPTION=")
 			}
@@ -139,6 +142,9 @@ func GetSCMArguments(projectDir string) []string {
 
 		return nil
 	})
+
+	// commit count
+	info = append(info, "NCI_COMMIT_COUNT=" + strconv.Itoa(commitCount))
 
 	return info
 }

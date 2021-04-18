@@ -72,3 +72,4 @@ Variable | Description
 `NCI_COMMIT_SHA_SHORT` | A short form of the unique commit hash. (8 chars)
 `NCI_COMMIT_TITLE` | The title of the latest commit on the current reference.
 `NCI_COMMIT_DESCRIPTION` | The description of the latest commit on the current reference.
+`NCI_COMMIT_COUNT` | The total amount of commits inside of the current reference, can be used as build number.

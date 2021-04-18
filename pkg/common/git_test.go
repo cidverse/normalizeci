@@ -1,9 +1,9 @@
 package common
 
 import (
-	"testing"
-	"os"
 	"gopkg.in/src-d/go-git.v4"
+	"os"
+	"testing"
 )
 
 func TestOnInvalidGitDirectory(t *testing.T) {
