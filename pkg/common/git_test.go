@@ -1,7 +1,7 @@
 package common
 
 import (
-	"gopkg.in/src-d/go-git.v4"
+	"github.com/go-git/go-git/v5"
 	"os"
 	"testing"
 )

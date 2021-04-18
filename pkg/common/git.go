@@ -2,6 +2,8 @@ package common
 
 import (
 	"bufio"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
 	"io"
 	"os"
 	"path/filepath"
@@ -10,8 +12,6 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/plumbing/object"
 )
 
 // GetGitDirectory finds the first git directory from the current working directory upwards
