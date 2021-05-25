@@ -6,7 +6,7 @@ This project can also be used as library for other tools.
 
 ## installation
 
-You can download the binaries from the gh release page: https://github.com/EnvCLI/normalize-ci/releases
+You can download the binaries from the gh release page: https://github.com/qubid/normalizeci/releases
 
 - linux_386
 - linux_amd64
@@ -17,11 +17,13 @@ You can download the binaries from the gh release page: https://github.com/EnvCL
 
 Linux:
 ```bash
-sudo curl -L -s -o /usr/local/bin/normalizeci https://github.com/EnvCLI/normalize-ci/releases/download/v1.0.0/linux_amd64
+sudo curl -L -s -o /usr/local/bin/normalizeci https://github.com/qubid/normalizeci/releases/download/v1.0.0/linux_amd64
 sudo chmod +x /usr/local/bin/normalizeci
 ```
 
 ## usage
+
+### cli
 
 The NormalizeCI CLI will return the commands to set the normalized variables in your current terminal session, so you need to run the response of the command.
 
@@ -36,6 +38,14 @@ Windows
 ```powershell
 $nenv = normalizeci
 Invoke-Expression "$nenv"
+```
+
+### library
+
+Install the latest version as library:
+
+```bash
+go get -u github.com/qubid/normalizeci
 ```
 
 ## normalized variables
