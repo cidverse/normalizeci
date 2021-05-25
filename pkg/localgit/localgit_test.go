@@ -1,6 +1,8 @@
 package localgit
 
 import (
+	"github.com/rs/zerolog"
+	"os"
 	"testing"
 
 	"github.com/EnvCLI/normalize-ci/pkg/common"
@@ -10,6 +12,12 @@ var testEnvironment = []string{
 	"NCI_CONTAINERREGISTRY_USERNAME=ci-token",
 	"NCI_CONTAINERREGISTRY_PASSWORD=secret",
 	"NCI_CONTAINERREGISTRY_HOST=registry.gitlab.com",
+}
+
+func TestMain(m *testing.M) {
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	code := m.Run()
+	os.Exit(code)
 }
 
 func TestEnvironmentCheck(t *testing.T) {

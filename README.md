@@ -53,6 +53,14 @@ NAME | SLUG
 
 *Note:* If none of the above systems is detected, repository information is determined based on the local Git repository.
 
+## supported repository types
+
+NAME |
+--- |
+`git` |
+
+*Note:* Some information will be extracted directly from the vcs repository, because not all services provide the same level of information.
+
 ## planned systems
 
 *Note:*: If you want to contribute, feel free to pick one of the following services and add a package to normalize their variables.

@@ -1,9 +1,10 @@
 package azuredevops
 
 import (
+	"github.com/rs/zerolog"
+	"os"
 	"runtime"
 	"testing"
-	"os"
 
 	"github.com/EnvCLI/normalize-ci/pkg/common"
 )
@@ -143,7 +144,7 @@ var testEnvironment = []string{
 }
 
 func TestMain(m *testing.M) {
-    common.SetupTestLogger()
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
     code := m.Run()
     os.Exit(code)
 }

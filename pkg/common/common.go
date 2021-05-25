@@ -1,13 +1,12 @@
 package common
 
 import (
+	"github.com/rs/zerolog/log"
 	"net/url"
 	"os"
 	"strings"
 	"testing"
 	"path/filepath"
-
-	log "github.com/sirupsen/logrus"
 )
 
 // Normalizer is a common interface to work with all normalizers
@@ -146,16 +145,18 @@ func CheckForError(err error) {
 func GetHostFromURL(addr string) string {
 	u, err := url.Parse(addr)
 	if err != nil {
-		log.Fatal(err)
-		panic(err)
+		log.Fatal().Err(err).Msg("failed to get host part from url")
 	}
 
 	return u.Host
 }
 
-// SetupTestLogger prepares the logger for test execution
-func SetupTestLogger() {
-	// Logging
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
+// FileExists checks if the file exists and returns a boolean
+func FileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if err != nil {
+		return false
+	}
+
+	return !info.IsDir()
 }

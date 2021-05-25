@@ -1,6 +1,8 @@
 package gitlabci
 
 import (
+	"github.com/rs/zerolog"
+	"os"
 	"runtime"
 	"testing"
 
@@ -81,6 +83,12 @@ var testEnvironment = []string{
 	"CI_RUNNER_REVISION=de7731dd",
 	"CI_RUNNER_EXECUTABLE_ARCH=linux/amd64",
 	"GIT_LFS_SKIP_SMUDGE=1",
+}
+
+func TestMain(m *testing.M) {
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	code := m.Run()
+	os.Exit(code)
 }
 
 func TestEnvironmentCheck(t *testing.T) {

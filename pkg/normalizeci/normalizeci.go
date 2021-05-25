@@ -3,7 +3,7 @@ package normalizeci
 import (
 	"fmt"
 	"github.com/EnvCLI/normalize-ci/pkg/common"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"io"
 	"os"
 	"runtime"
@@ -28,11 +28,11 @@ func RunNormalization(env []string) []string {
 	var normalized []string
 	for _, normalizer := range normalizers {
 		if normalizer.Check(env) == true {
-			log.Debug("Matched " + normalizer.GetName() + ", not checking for any other matches.")
+			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
 			normalized = normalizer.Normalize(env)
 			break
 		} else {
-			log.Debug("Didn't match in " + normalizer.GetName())
+			log.Debug().Msg("Didn't match in " + normalizer.GetName())
 		}
 	}
 

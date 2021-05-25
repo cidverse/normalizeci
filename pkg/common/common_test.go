@@ -1,13 +1,14 @@
 package common
 
 import (
-	"testing"
+	"github.com/rs/zerolog"
 	"os"
+	"testing"
 )
 
 func TestMain(m *testing.M) {
-    SetupTestLogger()
-    code := m.Run()
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	code := m.Run()
     os.Exit(code)
 }
 

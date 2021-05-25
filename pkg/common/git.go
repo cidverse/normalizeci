@@ -4,14 +4,13 @@ import (
 	"bufio"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/rs/zerolog/log"
 	"io"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
-
-	log "github.com/sirupsen/logrus"
 )
 
 // GetGitDirectory finds the first git directory from the current working directory upwards
@@ -21,7 +20,7 @@ func GetGitDirectory() string {
 	directoryParts := strings.Split(currentDirectory, string(os.PathSeparator))
 
 	for projectDirectory == "" {
-		if _, err := os.Stat(filepath.Join(currentDirectory, "/.git")); err == nil {
+		if _, err := os.Stat(filepath.Join(currentDirectory, ".git")); err == nil {
 			return currentDirectory
 		}
 
@@ -40,7 +39,7 @@ func GetSCMArguments(projectDir string) []string {
 	var info []string
 
 	// open repository from local path
-	log.Debug("Using git repository at " + projectDir)
+	log.Debug().Msg("Using git repository at " + projectDir)
 	repository, repositoryErr := git.PlainOpen(projectDir)
 	if repositoryErr != nil {
 		info = append(info, "NCI_REPOSITORY_KIND=none")
@@ -55,6 +54,7 @@ func GetSCMArguments(projectDir string) []string {
 		info = append(info, "NCI_COMMIT_DESCRIPTION=")
 		return info
 	}
+	isShallowClone := FileExists(filepath.Join(projectDir, ".git", "shallow "))
 
 	ref, refErr := repository.Head()
 	if refErr != nil {
@@ -70,13 +70,13 @@ func GetSCMArguments(projectDir string) []string {
 		info = append(info, "NCI_COMMIT_DESCRIPTION=")
 		return info
 	}
-	log.Debug("Git Ref " + ref.String())
+	log.Debug().Msg("Git Ref " + ref.String())
 
 	// repository kind and remote
 	info = append(info, "NCI_REPOSITORY_KIND=git")
 	remote, remoteErr := repository.Remote("origin")
 	if remoteErr == nil && remote != nil && remote.Config() != nil && len(remote.Config().URLs) > 0 {
-		log.Debug("Git Remote " + remote.String())
+		log.Debug().Msg("Git Remote " + remote.String())
 		info = append(info, "NCI_REPOSITORY_REMOTE="+remote.Config().URLs[0])
 	} else {
 		info = append(info, "NCI_REPOSITORY_REMOTE=local")
@@ -93,11 +93,11 @@ func GetSCMArguments(projectDir string) []string {
 		// detached HEAD, look into  the reflog to determinate the true branch
 		gitRefLogFile := projectDir + "/.git/logs/HEAD"
 		lastLine := readLastLine(gitRefLogFile)
-		log.Debug("RefLog - LastLine: " + lastLine)
+		log.Debug().Msg("RefLog - LastLine: " + lastLine)
 
 		pattern := regexp.MustCompile(`.*checkout: moving from (?P<FROM>.*) to (?P<TO>.*)$`)
 		match := pattern.FindStringSubmatch(lastLine)
-		log.Debug("Found a reflog entry showing that there was a checkout based on " + match[1] + " to " + match[2])
+		log.Debug().Msg("Found a reflog entry showing that there was a checkout based on " + match[1] + " to " + match[2])
 
 		if len(match[2]) == 40 {
 			// checkout out a specific commit, use origin branch as reference
@@ -144,7 +144,11 @@ func GetSCMArguments(projectDir string) []string {
 	})
 
 	// commit count
-	info = append(info, "NCI_COMMIT_COUNT=" + strconv.Itoa(commitCount))
+	if !isShallowClone {
+		// can only be set, if the clone isn't shallow
+		info = append(info, "NCI_COMMIT_COUNT=" + strconv.Itoa(commitCount))
+	}
+
 
 	return info
 }

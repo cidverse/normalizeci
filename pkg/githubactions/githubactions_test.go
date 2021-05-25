@@ -1,6 +1,7 @@
 package githubactions
 
 import (
+	"github.com/rs/zerolog"
 	"os"
 	"runtime"
 	"testing"
@@ -63,7 +64,7 @@ var testEnvironment = []string{
 }
 
 func TestMain(m *testing.M) {
-	common.SetupTestLogger()
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	code := m.Run()
 	os.Exit(code)
 }
