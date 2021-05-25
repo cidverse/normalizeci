@@ -1,4 +1,4 @@
-module github.com/EnvCLI/normalize-ci
+module github.com/qubid/normalizeci
 
 go 1.16
 

@@ -2,17 +2,17 @@ package normalizeci
 
 import (
 	"fmt"
-	"github.com/EnvCLI/normalize-ci/pkg/common"
+	"github.com/qubid/normalizeci/pkg/common"
 	"github.com/rs/zerolog/log"
 	"io"
 	"os"
 	"runtime"
 	"strings"
 
-	"github.com/EnvCLI/normalize-ci/pkg/azuredevops"
-	"github.com/EnvCLI/normalize-ci/pkg/githubactions"
-	"github.com/EnvCLI/normalize-ci/pkg/gitlabci"
-	"github.com/EnvCLI/normalize-ci/pkg/localgit"
+	"github.com/qubid/normalizeci/pkg/azuredevops"
+	"github.com/qubid/normalizeci/pkg/githubactions"
+	"github.com/qubid/normalizeci/pkg/gitlabci"
+	"github.com/qubid/normalizeci/pkg/localgit"
 )
 
 // RunNormalization executes the ci normalization for all supported services

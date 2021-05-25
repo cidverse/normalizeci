@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/EnvCLI/normalize-ci/pkg/common"
+	"github.com/qubid/normalizeci/pkg/common"
 )
 
 var testEnvironment = []string{

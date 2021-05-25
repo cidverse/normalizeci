@@ -3,7 +3,7 @@ package azuredevops
 import (
 	"runtime"
 
-	"github.com/EnvCLI/normalize-ci/pkg/common"
+	"github.com/qubid/normalizeci/pkg/common"
 )
 
 // Normalizer is the implementation of the normalizer
