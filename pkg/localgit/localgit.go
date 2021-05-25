@@ -2,12 +2,11 @@ package localgit
 
 import (
 	"github.com/gosimple/slug"
+	"github.com/qubid/normalizeci/pkg/common"
 	"github.com/qubid/normalizeci/pkg/vcsrepository"
 	"os"
 	"path/filepath"
 	"runtime"
-
-	"github.com/qubid/normalizeci/pkg/common"
 )
 
 // Normalizer is the implementation of the normalizer

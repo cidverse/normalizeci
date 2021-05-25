@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/qubid/normalizeci/pkg/common"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"os"
@@ -33,11 +32,8 @@ func init() {
 
 // CLI Main Entrypoint
 func main() {
-	// get all environment variables
-	env := common.GetMachineEnvironment()
-
 	// run normalization
-	var normalized = normalizeci.RunNormalization(env)
+	var normalized = normalizeci.RunDefaultNormalization()
 
 	// set normalized variables in current session
 	normalizeci.SetNormalizedEnvironment(normalized)

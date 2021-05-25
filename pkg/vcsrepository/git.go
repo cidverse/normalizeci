@@ -85,6 +85,26 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 		panic("Unsupported!")
 	}
 
+	// current reference
+	currentRef, currentRefErr := GetReferenceByName(dir, data["NCI_COMMIT_REF_TYPE"], data["NCI_COMMIT_REF_NAME"])
+	if currentRefErr != nil {
+		return nil, errors.New("can't find repository reference for "+data["NCI_COMMIT_REF_TYPE"]+" - "+data["NCI_COMMIT_REF_NAME"])
+	}
+	data["NCI_COMMIT_REF_VCS"] = currentRef
+
+	// previous release
+	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef)
+	if previousReleaseErr == nil {
+		data["NCI_LASTRELEASE_REF_NAME"] =  previousRelease.Name
+		data["NCI_LASTRELEASE_REF_SLUG"] = slug.Make(previousRelease.Name)
+		data["NCI_LASTRELEASE_REF_VCS"] = previousRelease.Reference
+
+		commits, commitsErr := FindCommitsBetweenRefs(dir, currentRef, previousRelease.Reference)
+		if commitsErr == nil {
+			data["NCI_LASTRELEASE_COMMIT_COUNT"] = strconv.Itoa(len(commits))
+		}
+	}
+
 	// release name (=slug, but without leading v for tags)
 	data["NCI_COMMIT_REF_RELEASE"] = strings.TrimLeft(data["NCI_COMMIT_REF_SLUG"], "v")
 

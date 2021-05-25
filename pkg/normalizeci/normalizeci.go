@@ -15,6 +15,11 @@ import (
 	"github.com/qubid/normalizeci/pkg/localgit"
 )
 
+func RunDefaultNormalization() map[string]string {
+	env := common.GetMachineEnvironment()
+	return RunNormalization(env)
+}
+
 // RunNormalization executes the ci normalization for all supported services
 func RunNormalization(env map[string]string) map[string]string {
 	// initialize normalizers

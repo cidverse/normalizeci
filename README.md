@@ -1,8 +1,6 @@
 # normalize.ci
 
-> A cli tool to convert continuous integration variables into a common format for generally usable scripts.
-
-This project can also be used as library for other tools.
+> A cli tool / library / specification to convert CICD variables into a common format for platform agnostic scripts.
 
 ## installation
 
@@ -48,7 +46,13 @@ Install the latest version as library:
 go get -u github.com/qubid/normalizeci
 ```
 
-## normalized variables
+And access the normalized environment, by default it will search for the vcs repo based on the current working directory.
+
+```go
+var normalized = normalizeci.RunDefaultNormalization()
+```
+
+## normalized variables (!)
 
 - [Specification: Variables](docs/spec/variables.md)
 
@@ -65,11 +69,7 @@ NAME | SLUG
 
 ## supported repository types
 
-NAME |
---- |
-`git` |
-
-*Note:* Some information will be extracted directly from the vcs repository, because not all services provide the same level of information.
+- `git`
 
 ## planned systems
 

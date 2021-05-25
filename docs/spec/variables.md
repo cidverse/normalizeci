@@ -3,6 +3,8 @@
 If a system already provides `NCI` compliant variables, then it can set `NCI` to true to prevent this script from being executed.
 In that case it's required to set `NCI_VERSION` to the implemented specification, to allow scripts to run actions if a newer spec is released.
 
+Spec-Version: `0.2.0`
+
 ## common
 
 Variable | Description
@@ -67,9 +69,14 @@ Variable | Description
 `NCI_COMMIT_REF_TYPE` | The reference type. (branch / tag)
 `NCI_COMMIT_REF_NAME` | Human readable name of the current repository reference.
 `NCI_COMMIT_REF_SLUG` | Slug of the current repository reference.
+`NCI_COMMIT_REF_VCS` | Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)
 `NCI_COMMIT_REF_RELEASE` | Release version of the artifact, without leading `v` - should be in format `x.y.z`.
 `NCI_COMMIT_SHA` | A unique hash, that each commit gets.
 `NCI_COMMIT_SHA_SHORT` | A short form of the unique commit hash. (8 chars)
 `NCI_COMMIT_TITLE` | The title of the latest commit on the current reference.
 `NCI_COMMIT_DESCRIPTION` | The description of the latest commit on the current reference.
 `NCI_COMMIT_COUNT` | The total amount of commits inside of the current reference, can be used as build number.
+`NCI_LASTRELEASE_REF_NAME` | Human readable name of the last stable release.
+`NCI_LASTRELEASE_REF_SLUG` | Slug of the last stable release.
+`NCI_LASTRELEASE_REF_VCS` | Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
+`NCI_LASTRELEASE_COMMIT_COUNT` | Holds the count of commits since the last stable release.
