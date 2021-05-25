@@ -34,7 +34,7 @@ func init() {
 // CLI Main Entrypoint
 func main() {
 	// get all environment variables
-	env := common.GetFullEnv()
+	env := common.GetMachineEnvironment()
 
 	// run normalization
 	var normalized = normalizeci.RunNormalization(env)

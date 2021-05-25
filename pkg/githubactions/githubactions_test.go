@@ -2,6 +2,7 @@ package githubactions
 
 import (
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"testing"
@@ -71,43 +72,43 @@ func TestMain(m *testing.M) {
 
 func TestEnvironmentCheck(t *testing.T) {
 	var normalizer = NewNormalizer()
-	if normalizer.Check(testEnvironment) != true {
+	if normalizer.Check(common.GetEnvironmentFrom(testEnvironment)) != true {
 		t.Errorf("Check should succeed with the provided sample data!")
 	}
 }
 
 func TestEnvironmentNormalizer(t *testing.T) {
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(testEnvironment)
+	var normalized = normalizer.Normalize(common.GetEnvironmentFrom(testEnvironment))
 
 	// log all normalized values
-	for _, envvar := range normalized {
-		t.Log(envvar)
+	for key, element := range normalized {
+		t.Log(key+"="+element)
 	}
 
 	// validate fields
 	// - common
-	common.AssertThatEnvEquals(t, normalized, "NCI", "true")
-	common.AssertThatEnvEquals(t, normalized, "NCI_VERSION", normalizer.version)
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVICE_NAME", normalizer.name)
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVICE_SLUG", normalizer.slug)
+	assert.Equal(t, "true", normalized["NCI"])
+	assert.Equal(t, normalizer.version, normalized["NCI_VERSION"])
+	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
+	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
 	// - server
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVER_NAME", "GitHub")
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVER_HOST", "github.com")
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVER_VERSION", "")
+	assert.Equal(t, "GitHub", normalized["NCI_SERVER_NAME"])
+	assert.Equal(t, "github.com", normalized["NCI_SERVER_HOST"])
+	assert.Equal(t, "", normalized["NCI_SERVER_VERSION"])
 	// - worker
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ID", "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_NAME", "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_VERSION", "157.1")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", runtime.GOOS+"/"+runtime.GOARCH)
+	assert.Equal(t, "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1", normalized["NCI_WORKER_ID"])
+	assert.Equal(t, "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "157.1", normalized["NCI_WORKER_VERSION"])
+	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
 	// - pipeline
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_TRIGGER", "push")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_NAME", "CI")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_SLUG", "ci")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_JOB_NAME", "run")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_JOB_SLUG", "run")
+	assert.Equal(t, "push", normalized["NCI_PIPELINE_TRIGGER"])
+	assert.Equal(t, "CI", normalized["NCI_PIPELINE_STAGE_NAME"])
+	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_SLUG"])
+	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_NAME"])
+	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_SLUG"])
 	// - project
-	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_ID", "philippheuer-normalize-ci")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_NAME", "PhilippHeuer/normalize-ci")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_SLUG", "philippheuer-normalize-ci")
+	assert.Equal(t, "philippheuer-normalize-ci", normalized["NCI_PROJECT_ID"])
+	assert.Equal(t, "PhilippHeuer/normalize-ci", normalized["NCI_PROJECT_NAME"])
+	assert.Equal(t, "philippheuer-normalize-ci", normalized["NCI_PROJECT_SLUG"])
 }

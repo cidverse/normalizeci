@@ -1,6 +1,8 @@
 package githubactions
 
 import (
+	"github.com/gosimple/slug"
+	"github.com/qubid/normalizeci/pkg/vcsrepository"
 	"runtime"
 
 	"github.com/qubid/normalizeci/pkg/common"
@@ -19,8 +21,8 @@ func (n Normalizer) GetName() string {
 }
 
 // Check if this package can handle the current environment
-func (n Normalizer) Check(env []string) bool {
-	if common.IsEnvironmentSetTo(env, "GITHUB_ACTIONS", "true") {
+func (n Normalizer) Check(env map[string]string) bool {
+	if env["GITHUB_ACTIONS"] == "true" {
 		return true
 	}
 
@@ -28,61 +30,67 @@ func (n Normalizer) Check(env []string) bool {
 }
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env []string) []string {
-	var normalized []string
+func (n Normalizer) Normalize(env map[string]string) map[string]string {
+	data := make(map[string]string)
 
 	// common
-	normalized = append(normalized, "NCI=true")
-	normalized = append(normalized, "NCI_VERSION="+n.version)
-	normalized = append(normalized, "NCI_SERVICE_NAME="+n.name)
-	normalized = append(normalized, "NCI_SERVICE_SLUG="+n.slug)
+	data["NCI"] = "true"
+	data["NCI_VERSION"] = n.version
+	data["NCI_SERVICE_NAME"] = n.name
+	data["NCI_SERVICE_SLUG"] = n.slug
 
 	// server
-	normalized = append(normalized, "NCI_SERVER_NAME=GitHub")
-	normalized = append(normalized, "NCI_SERVER_HOST=github.com")
-	normalized = append(normalized, "NCI_SERVER_VERSION=")
+	data["NCI_SERVER_NAME"] = "GitHub"
+	data["NCI_SERVER_HOST"] = "github.com"
+	data["NCI_SERVER_VERSION"] = ""
 
 	// worker
-	normalized = append(normalized, "NCI_WORKER_ID="+common.GetEnvironment(env, "RUNNER_TRACKING_ID"))
-	normalized = append(normalized, "NCI_WORKER_NAME="+common.GetEnvironment(env, "RUNNER_TRACKING_ID"))
-	normalized = append(normalized, "NCI_WORKER_VERSION="+common.GetEnvironment(env, "ImageVersion"))
-	normalized = append(normalized, "NCI_WORKER_ARCH="+runtime.GOOS+"/"+runtime.GOARCH)
+	data["NCI_WORKER_ID"] = env["RUNNER_TRACKING_ID"]
+	data["NCI_WORKER_NAME"] = env["RUNNER_TRACKING_ID"]
+	data["NCI_WORKER_VERSION"] = env["ImageVersion"]
+	data["NCI_WORKER_ARCH"] = runtime.GOOS+"/"+runtime.GOARCH
 
 	// pipeline
-	pipelineEvent := common.GetEnvironment(env, "GITHUB_EVENT_NAME")
+	pipelineEvent := env["GITHUB_EVENT_NAME"]
 	switch pipelineEvent {
 	case "push":
-		normalized = append(normalized, "NCI_PIPELINE_TRIGGER=push")
+		data["NCI_PIPELINE_TRIGGER"] = "push"
 	case "pull_request":
-		normalized = append(normalized, "NCI_PIPELINE_TRIGGER=pull_request")
+		data["NCI_PIPELINE_TRIGGER"] = "pull_request"
 	default:
-		normalized = append(normalized, "NCI_PIPELINE_TRIGGER=unknown")
+		data["NCI_PIPELINE_TRIGGER"] = "unknown"
 	}
-	if common.GetEnvironment(normalized, "NCI_PIPELINE_TRIGGER") == "pull_request" {
+	if env["NCI_PIPELINE_TRIGGER"] == "pull_request" {
 		// PR
-		normalized = append(normalized, "NCI_PIPELINE_PULL_REQUEST_ID=unknown") // not supported by GH yet.
+		data["NCI_PIPELINE_PULL_REQUEST_ID"] = "unknown" // not supported by GH yet.
 	}
-	normalized = append(normalized, "NCI_PIPELINE_STAGE_NAME="+common.GetEnvironment(env, "GITHUB_WORKFLOW"))
-	normalized = append(normalized, "NCI_PIPELINE_STAGE_SLUG="+common.GetSlug(common.GetEnvironment(env, "GITHUB_WORKFLOW")))
-	normalized = append(normalized, "NCI_PIPELINE_JOB_NAME="+common.GetEnvironment(env, "GITHUB_ACTION"))
-	normalized = append(normalized, "NCI_PIPELINE_JOB_SLUG="+common.GetSlug(common.GetEnvironment(env, "GITHUB_ACTION")))
+	data["NCI_PIPELINE_STAGE_NAME"] = env["GITHUB_WORKFLOW"]
+	data["NCI_PIPELINE_STAGE_SLUG"] = slug.Make(env["GITHUB_WORKFLOW"])
+	data["NCI_PIPELINE_JOB_NAME"] = env["GITHUB_ACTION"]
+	data["NCI_PIPELINE_JOB_SLUG"] = slug.Make(env["GITHUB_ACTION"])
 
 	// project
-	normalized = append(normalized, "NCI_PROJECT_ID="+common.GetSlug(common.GetEnvironment(env, "GITHUB_REPOSITORY")))
-	normalized = append(normalized, "NCI_PROJECT_NAME="+common.GetEnvironment(env, "GITHUB_REPOSITORY"))
-	normalized = append(normalized, "NCI_PROJECT_SLUG="+common.GetSlug(common.GetEnvironment(env, "GITHUB_REPOSITORY")))
-	normalized = append(normalized, "NCI_PROJECT_DIR="+common.GetGitDirectory())
+	data["NCI_PROJECT_ID"] = slug.Make(env["GITHUB_REPOSITORY"])
+	data["NCI_PROJECT_NAME"] = env["GITHUB_REPOSITORY"]
+	data["NCI_PROJECT_SLUG"] = slug.Make(env["GITHUB_REPOSITORY"])
+	data["NCI_PROJECT_DIR"] = vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
 
 	// repository
-	normalized = append(normalized, common.GetSCMArguments(common.GetGitDirectory())...)
+	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(data["NCI_PROJECT_DIR"])
+	if addDataErr != nil {
+		panic(addDataErr)
+	}
+	for addKey, addElement := range addData {
+		data[addKey] = addElement
+	}
 
-	return normalized
+	return data
 }
 
 // NewNormalizer gets a instance of the normalizer
 func NewNormalizer() Normalizer {
 	entity := Normalizer{
-		version: "0.1.0",
+		version: "0.2.0",
 		name:    "GitHub Actions",
 		slug:    "github-actions",
 	}

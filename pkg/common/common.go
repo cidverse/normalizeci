@@ -4,119 +4,49 @@ import (
 	"github.com/rs/zerolog/log"
 	"net/url"
 	"os"
-	"strings"
-	"testing"
 	"path/filepath"
+	"strings"
 )
 
 // Normalizer is a common interface to work with all normalizers
 type Normalizer interface {
 	GetName() string
-	Check(env []string) bool
-	Normalize(env []string) []string
+	Check(env map[string]string) bool
+	Normalize(env map[string]string) map[string]string
 }
 
-// GetFullEnv returns a arrays with all set env variables
-func GetFullEnv() []string {
-	var env []string
+// GetMachineEnvironment returns a map with all environment variables set on the machine
+func GetMachineEnvironment() map[string]string {
+	data := make(map[string]string)
+
 	for _, entry := range os.Environ() {
-		env = append(env, entry)
+		z := strings.SplitN(entry, "=", 2)
+		data[z[0]] = z[1]
 	}
 
-	return env
+	return data
 }
 
-// IsEnvironmentSet checks if the provided env variables are setting a value
-func IsEnvironmentSet(env []string, key string) bool {
-	for _, envvar := range env {
-		if strings.HasPrefix(envvar, key+"=") {
-			return true
-		}
-	}
-
-	return false
-}
-
-// IsEnvironmentSetTo checks if the provided env variables are setting a value
-func IsEnvironmentSetTo(env []string, key string, value string) bool {
-	for _, envvar := range env {
-		z := strings.SplitN(envvar, "=", 2)
-		if strings.ToLower(key) == strings.ToLower(z[0]) && strings.ToLower(value) == strings.ToLower(z[1]) {
-			return true
-		}
-	}
-
-	return false
-}
-
-// HasEnvironment checks if a environment variable is available
-func HasEnvironment(env []string, key string) bool {
-	for _, envvar := range env {
-		z := strings.SplitN(envvar, "=", 2)
-		if key == z[0] {
-			return true
-		}
-	}
-
-	return false
-}
-
-// GetEnvironment gets the value of a environment property
-func GetEnvironment(env []string, key string) string {
-	for _, envvar := range env {
-		z := strings.SplitN(envvar, "=", 2)
-		if key == z[0] {
-			return z[1]
-		}
-	}
-
-	return ""
-}
-
-// SetEnvironment changes/sets the value of a environment property
-func SetEnvironment(env []string, key string, value string) []string {
-	var newEnv []string
-	wasSet := false
+// GetEnvironmentFrom returns a map with all environment variables contained in env
+func GetEnvironmentFrom(env []string) map[string]string {
+	data := make(map[string]string)
 
 	for _, entry := range env {
 		z := strings.SplitN(entry, "=", 2)
-		if key == z[0] {
-			newEnv = append(newEnv, z[0]+"="+value)
-			wasSet = true
-		} else {
-			newEnv = append(newEnv, z[0]+"="+z[1])
-		}
+		data[z[0]] = z[1]
 	}
 
-	if !wasSet {
-		newEnv = append(newEnv, key+"="+value)
-	}
-
-	return newEnv
+	return data
 }
 
-// GetEnvironmentOrDefault tries to keep the original value, keeps the original value if one was set, otherwise the 2nd arg will be set
-func GetEnvironmentOrDefault(env []string, key string, def string) string {
-	if HasEnvironment(env, key) {
-		return GetEnvironment(env, key)
-	} else {
-		return def
+// GetWorkingDirectory returns the current working directory
+func GetWorkingDirectory() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		panic(err)
 	}
-}
 
-// GetSlug turns the provided value into a slug
-func GetSlug(value string) string {
-	slug := value
-
-	// ToLower
-	slug = strings.ToLower(slug)
-
-	// Replace
-	slug = strings.Replace(slug, "_", "", -1)
-	slug = strings.Replace(slug, "/", "-", -1)
-
-	return slug
-	// everything except 0-9 and a-z replaced with -. No leading / trailing -.
+	return dir
 }
 
 // GetDirectoryNameFromPath gets the directory name from a path
@@ -125,13 +55,6 @@ func GetDirectoryNameFromPath(path string) string {
     parent := filepath.Base(dir)
 
 	return parent
-}
-
-// AssertThatEnvEquals is a helper function that asserts that a env key has a specific value
-func AssertThatEnvEquals(t *testing.T, env []string, key string, value string) {
-	if IsEnvironmentSetTo(env, key, value) == false {
-		t.Errorf(key + " should be " + value)
-	}
 }
 
 // CheckForError checks if a error happend and logs it, and ends the process
@@ -149,14 +72,4 @@ func GetHostFromURL(addr string) string {
 	}
 
 	return u.Host
-}
-
-// FileExists checks if the file exists and returns a boolean
-func FileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if err != nil {
-		return false
-	}
-
-	return !info.IsDir()
 }

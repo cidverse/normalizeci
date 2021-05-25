@@ -1,10 +1,10 @@
 package gitlabci
 
 import (
-	"runtime"
-	"strings"
-	
+	"github.com/gosimple/slug"
 	"github.com/qubid/normalizeci/pkg/common"
+	"github.com/qubid/normalizeci/pkg/vcsrepository"
+	"runtime"
 )
 
 // Normalizer is the implementation of the normalizer
@@ -20,8 +20,8 @@ func (n Normalizer) GetName() string {
 }
 
 // Check if this package can handle the current environment
-func (n Normalizer) Check(env []string) bool {
-	if common.IsEnvironmentSetTo(env, "GITLAB_CI", "true") {
+func (n Normalizer) Check(env map[string]string) bool {
+	if env["GITLAB_CI"] == "true" {
 		return true
 	}
 
@@ -29,75 +29,72 @@ func (n Normalizer) Check(env []string) bool {
 }
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env []string) []string {
-	var normalized []string
+func (n Normalizer) Normalize(env map[string]string) map[string]string {
+	data := make(map[string]string)
 
 	// common
-	normalized = append(normalized, "NCI=true")
-	normalized = append(normalized, "NCI_VERSION="+n.version)
-	normalized = append(normalized, "NCI_SERVICE_NAME="+n.name)
-	normalized = append(normalized, "NCI_SERVICE_SLUG="+n.slug)
+	data["NCI"] = "true"
+	data["NCI_VERSION"] = n.version
+	data["NCI_SERVICE_NAME"] = n.name
+	data["NCI_SERVICE_SLUG"] = n.slug
 
 	// server
-	normalized = append(normalized, "NCI_SERVER_NAME="+common.GetEnvironment(env, "CI_SERVER_NAME"))
-	normalized = append(normalized, "NCI_SERVER_HOST="+common.GetEnvironment(env, "CI_SERVER_HOST"))
-	normalized = append(normalized, "NCI_SERVER_VERSION="+common.GetEnvironment(env, "CI_SERVER_VERSION"))
+	data["NCI_SERVER_NAME"] = env["CI_SERVER_NAME"]
+	data["NCI_SERVER_HOST"] = env["CI_SERVER_HOST"]
+	data["NCI_SERVER_VERSION"] = env["CI_SERVER_VERSION"]
 
 	// worker
-	normalized = append(normalized, "NCI_WORKER_ID="+common.GetEnvironment(env, "CI_RUNNER_ID"))
-	normalized = append(normalized, "NCI_WORKER_NAME="+common.GetEnvironment(env, "CI_RUNNER_DESCRIPTION"))
-	normalized = append(normalized, "NCI_WORKER_VERSION="+common.GetEnvironment(env, "CI_RUNNER_VERSION"))
-	normalized = append(normalized, "NCI_WORKER_ARCH="+runtime.GOOS+"/"+runtime.GOARCH)
+	data["NCI_WORKER_ID"] = env["CI_RUNNER_ID"]
+	data["NCI_WORKER_NAME"] = env["CI_RUNNER_DESCRIPTION"]
+	data["NCI_WORKER_VERSION"] = env["CI_RUNNER_VERSION"]
+	data["NCI_WORKER_ARCH"] = runtime.GOOS+"/"+runtime.GOARCH
 
 	// pipeline
-	normalized = append(normalized, "NCI_PIPELINE_TRIGGER="+common.GetEnvironment(env, "CI_PIPELINE_SOURCE"))
-	if common.GetEnvironment(normalized, "NCI_PIPELINE_TRIGGER") == "pull_request" {
+	data["NCI_PIPELINE_TRIGGER"] = env["CI_PIPELINE_SOURCE"]
+	if env["NCI_PIPELINE_TRIGGER"] == "pull_request" {
 		// PR
-		normalized = append(normalized, "NCI_PIPELINE_PULL_REQUEST_ID="+common.GetEnvironment(env, "CI_MERGE_REQUEST_IID"))
+		data["NCI_PIPELINE_PULL_REQUEST_ID"] = env["CI_MERGE_REQUEST_IID"]
 	}
-	normalized = append(normalized, "NCI_PIPELINE_STAGE_NAME="+common.GetEnvironment(env, "CI_JOB_STAGE"))
-	normalized = append(normalized, "NCI_PIPELINE_STAGE_SLUG="+common.GetSlug(common.GetEnvironment(env, "CI_JOB_STAGE")))
-	normalized = append(normalized, "NCI_PIPELINE_JOB_NAME="+common.GetEnvironment(env, "CI_JOB_NAME"))
-	normalized = append(normalized, "NCI_PIPELINE_JOB_SLUG="+common.GetSlug(common.GetEnvironment(env, "CI_JOB_NAME")))
+
+	data["NCI_PIPELINE_STAGE_NAME"] = env["CI_JOB_STAGE"]
+	data["NCI_PIPELINE_STAGE_SLUG"] = slug.Make(env["CI_JOB_STAGE"])
+	data["NCI_PIPELINE_JOB_NAME"] = env["CI_JOB_NAME"]
+	data["NCI_PIPELINE_JOB_SLUG"] = slug.Make(env["CI_JOB_NAME"])
 
 	// container registry
-	normalized = append(normalized, "NCI_CONTAINERREGISTRY_HOST="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_HOST", common.GetEnvironment(env, "CI_REGISTRY")))
-	normalized = append(normalized, "NCI_CONTAINERREGISTRY_REPOSITORY="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_REPOSITORY", common.GetEnvironment(env, "CI_REGISTRY_IMAGE")))
-	if common.HasEnvironment(env, "CI_DEPLOY_USER") {
-		normalized = append(normalized, "NCI_CONTAINERREGISTRY_USERNAME="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_USERNAME", common.GetEnvironment(env, "CI_DEPLOY_USER")))
-		normalized = append(normalized, "NCI_CONTAINERREGISTRY_PASSWORD="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_PASSWORD", common.GetEnvironment(env, "CI_DEPLOY_PASSWORD")))
+	data["NCI_CONTAINERREGISTRY_HOST"] = env["CI_REGISTRY"]
+	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = env["CI_REGISTRY_IMAGE"]
+
+	if len(env["CI_DEPLOY_USER"]) > 0 {
+		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_DEPLOY_USER"]
+		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_DEPLOY_PASSWORD"]
 	} else {
-		normalized = append(normalized, "NCI_CONTAINERREGISTRY_USERNAME="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_USERNAME", common.GetEnvironment(env, "CI_REGISTRY_USER")))
-		normalized = append(normalized, "NCI_CONTAINERREGISTRY_PASSWORD="+common.GetEnvironmentOrDefault(env, "NCI_CONTAINERREGISTRY_PASSWORD", common.GetEnvironment(env, "CI_REGISTRY_PASSWORD")))
+		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_REGISTRY_USER"]
+		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_REGISTRY_PASSWORD"]
 	}
 
 	// project
-	normalized = append(normalized, "NCI_PROJECT_ID="+common.GetEnvironment(env, "CI_PROJECT_ID"))
-	normalized = append(normalized, "NCI_PROJECT_NAME="+common.GetEnvironment(env, "CI_PROJECT_NAME"))
-	normalized = append(normalized, "NCI_PROJECT_SLUG="+common.GetSlug(common.GetEnvironment(env, "CI_PROJECT_PATH")))
-	normalized = append(normalized, "NCI_PROJECT_DIR="+common.GetGitDirectory())
+	data["NCI_PROJECT_ID"] = env["CI_PROJECT_ID"]
+	data["NCI_PROJECT_NAME"] = env["CI_PROJECT_NAME"]
+	data["NCI_PROJECT_SLUG"] = slug.Make(env["CI_PROJECT_PATH"])
+	data["NCI_PROJECT_DIR"] = vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
 
 	// repository
-	if common.HasEnvironment(env, "CI_COMMIT_TAG") {
-		normalized = append(normalized, "NCI_COMMIT_REF_TYPE=tag")
-	} else {
-		normalized = append(normalized, "NCI_COMMIT_REF_TYPE=branch")
+	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(data["NCI_PROJECT_DIR"])
+	if addDataErr != nil {
+		panic(addDataErr)
 	}
-	normalized = append(normalized, "NCI_COMMIT_REF_NAME="+common.GetEnvironment(env, "CI_COMMIT_REF_NAME"))
-	normalized = append(normalized, "NCI_COMMIT_REF_SLUG="+common.GetSlug(common.GetEnvironment(env, "CI_COMMIT_REF_NAME")))
-	normalized = append(normalized, "NCI_COMMIT_REF_RELEASE="+strings.TrimLeft(common.GetSlug(common.GetEnvironment(env, "CI_COMMIT_REF_NAME")), "v"))
-	normalized = append(normalized, "NCI_COMMIT_TITLE="+common.GetEnvironment(env, "CI_COMMIT_TITLE"))
-	normalized = append(normalized, "NCI_COMMIT_DESCRIPTION="+common.GetEnvironment(env, "CI_COMMIT_DESCRIPTION"))
-	normalized = append(normalized, "NCI_COMMIT_SHA="+common.GetEnvironment(env, "CI_COMMIT_SHA"))
-	normalized = append(normalized, "NCI_COMMIT_SHA_SHORT="+common.GetEnvironment(env, "CI_COMMIT_SHORT_SHA"))
+	for addKey, addElement := range addData {
+		data[addKey] = addElement
+	}
 
-	return normalized
+	return data
 }
 
 // NewNormalizer gets a instance of the normalizer
 func NewNormalizer() Normalizer {
 	entity := Normalizer{
-		version: "0.1.0",
+		version: "0.2.0",
 		name:    "GitLab CI",
 		slug:    "gitlab-ci",
 	}

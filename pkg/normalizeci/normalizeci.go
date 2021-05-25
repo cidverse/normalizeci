@@ -16,7 +16,7 @@ import (
 )
 
 // RunNormalization executes the ci normalization for all supported services
-func RunNormalization(env []string) []string {
+func RunNormalization(env map[string]string) map[string]string {
 	// initialize normalizers
 	var normalizers []common.Normalizer
 	normalizers = append(normalizers, azuredevops.NewNormalizer())
@@ -25,7 +25,7 @@ func RunNormalization(env []string) []string {
 	normalizers = append(normalizers, localgit.NewNormalizer())
 
 	// normalize (iterate over all supported systems and normalize variables if possible)
-	var normalized []string
+	var normalized map[string]string
 	for _, normalizer := range normalizers {
 		if normalizer.Check(env) == true {
 			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
@@ -40,7 +40,7 @@ func RunNormalization(env []string) []string {
 }
 
 // SetNormalizedEnvironment makes the normalized environment available in the current session
-func SetNormalizedEnvironment(normalized []string) {
+func SetNormalizedEnvironment(normalized map[string]string) {
 	if runtime.GOOS == "linux" {
 		setNormalizedEnvironmentLinux(normalized)
 	} else if runtime.GOOS == "windows" {
@@ -48,28 +48,24 @@ func SetNormalizedEnvironment(normalized []string) {
 	}
 }
 
-func setNormalizedEnvironmentLinux(normalized []string) {
-	for _, entry := range normalized {
-		entrySplit := strings.SplitN(entry, "=", 2)
-
-		err := os.Setenv(entrySplit[0], entrySplit[1])
+func setNormalizedEnvironmentLinux(normalized map[string]string) {
+	for key, element := range normalized {
+		err := os.Setenv(key, element)
 		common.CheckForError(err)
 
 		// print via stdout and escape values
-		s := fmt.Sprintf("export %s=\"%s\"\n", entrySplit[0], strings.ReplaceAll(entrySplit[1], "\"", "\\\""))
+		s := fmt.Sprintf("export %s=\"%s\"\n", key, strings.ReplaceAll(element, "\"", "\\\""))
 		io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 	}
 }
 
-func setNormalizedEnvironmentWindows(normalized []string) {
-	for _, entry := range normalized {
-		entrySplit := strings.SplitN(entry, "=", 2)
-
-		err := os.Setenv(entrySplit[0], entrySplit[1])
+func setNormalizedEnvironmentWindows(normalized map[string]string) {
+	for key, element := range normalized {
+		err := os.Setenv(key, element)
 		common.CheckForError(err)
 
 		// print via stdout and escape values
-		s := fmt.Sprintf("Set-Variable -Name %s -Value \"%s\";\n", entrySplit[0], strings.ReplaceAll(entrySplit[1], "\"", "\\\""))
+		s := fmt.Sprintf("Set-Variable -Name %s -Value \"%s\";\n", key, strings.ReplaceAll(element, "\"", "\\\""))
 		io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 	}
 }

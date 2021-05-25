@@ -2,6 +2,7 @@ package azuredevops
 
 import (
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"testing"
@@ -151,43 +152,43 @@ func TestMain(m *testing.M) {
 
 func TestEnvironmentCheck(t *testing.T) {
 	var normalizer = NewNormalizer()
-	if normalizer.Check(testEnvironment) != true {
+	if normalizer.Check(common.GetEnvironmentFrom(testEnvironment)) != true {
 		t.Errorf("Check should succeed with the provided sample data!")
 	}
 }
 
 func TestEnvironmentNormalizer(t *testing.T) {
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(testEnvironment)
+	var normalized = normalizer.Normalize(common.GetEnvironmentFrom(testEnvironment))
 
 	// log all normalized values
-	for _, envvar := range normalized {
-		t.Log(envvar)
+	for key, element := range normalized {
+		t.Log(key+"="+element)
 	}
 
 	// validate fields
 	// - common
-	common.AssertThatEnvEquals(t, normalized, "NCI", "true")
-	common.AssertThatEnvEquals(t, normalized, "NCI_VERSION", normalizer.version)
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVICE_NAME", normalizer.name)
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVICE_SLUG", normalizer.slug)
+	assert.Equal(t, "true", normalized["NCI"])
+	assert.Equal(t, normalizer.version, normalized["NCI_VERSION"])
+	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
+	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
 	// - server
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVER_NAME", "GitHub")
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVER_HOST", "github.com")
-	common.AssertThatEnvEquals(t, normalized, "NCI_SERVER_VERSION", "")
+	assert.Equal(t, "GitHub", normalized["NCI_SERVER_NAME"])
+	assert.Equal(t, "github.com", normalized["NCI_SERVER_HOST"])
+	assert.Equal(t, "", normalized["NCI_SERVER_VERSION"])
 	// - worker
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ID", "5")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_NAME", "fv-az679")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_VERSION", "2.155.1")
-	common.AssertThatEnvEquals(t, normalized, "NCI_WORKER_ARCH", runtime.GOOS+"/"+runtime.GOARCH)
+	assert.Equal(t, "5", normalized["NCI_WORKER_ID"])
+	assert.Equal(t, "fv-az679", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "2.155.1", normalized["NCI_WORKER_VERSION"])
+	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
 	// - pipeline
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_TRIGGER", "push")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_NAME", "build")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_STAGE_SLUG", "build")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_JOB_NAME", "build")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PIPELINE_JOB_SLUG", "build")
+	assert.Equal(t, "push", normalized["NCI_PIPELINE_TRIGGER"])
+	assert.Equal(t, "Build", normalized["NCI_PIPELINE_STAGE_NAME"])
+	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
+	assert.Equal(t, "Build", normalized["NCI_PIPELINE_JOB_NAME"])
+	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_SLUG"])
 	// - project
-	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_ID", "d1b384a8-f33f-427d-86fd-f021826a54ea")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_NAME", "azure-test")
-	common.AssertThatEnvEquals(t, normalized, "NCI_PROJECT_SLUG", "azure-test")
+	assert.Equal(t, "d1b384a8-f33f-427d-86fd-f021826a54ea", normalized["NCI_PROJECT_ID"])
+	assert.Equal(t, "azure-test", normalized["NCI_PROJECT_NAME"])
+	assert.Equal(t, "azure-test", normalized["NCI_PROJECT_SLUG"])
 }
