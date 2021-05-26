@@ -101,7 +101,7 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 
 		commits, commitsErr := FindCommitsBetweenRefs(dir, currentRef, previousRelease.Reference)
 		if commitsErr == nil {
-			data["NCI_LASTRELEASE_COMMIT_COUNT"] = strconv.Itoa(len(commits))
+			data["NCI_LASTRELEASE_COMMIT_AFTER_COUNT"] = strconv.Itoa(len(commits))
 		}
 	}
 

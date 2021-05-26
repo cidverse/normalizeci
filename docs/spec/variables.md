@@ -79,4 +79,4 @@ Variable | Description
 `NCI_LASTRELEASE_REF_NAME` | Human readable name of the last stable release.
 `NCI_LASTRELEASE_REF_SLUG` | Slug of the last stable release.
 `NCI_LASTRELEASE_REF_VCS` | Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
-`NCI_LASTRELEASE_COMMIT_COUNT` | Holds the count of commits since the last stable release.
+`NCI_LASTRELEASE_COMMIT_AFTER_COUNT` | Holds the count of commits since the last stable release.
