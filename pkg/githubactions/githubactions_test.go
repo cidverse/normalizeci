@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/qubid/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/common"
 )
 
 var testEnvironment = []string{

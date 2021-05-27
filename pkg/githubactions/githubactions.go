@@ -2,10 +2,10 @@ package githubactions
 
 import (
 	"github.com/gosimple/slug"
-	"github.com/qubid/normalizeci/pkg/vcsrepository"
+	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"runtime"
 
-	"github.com/qubid/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/common"
 )
 
 // Normalizer is the implementation of the normalizer

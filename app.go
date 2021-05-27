@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/qubid/normalizeci/pkg/normalizeci"
+	"github.com/cidverse/normalizeci/pkg/normalizeci"
 )
 
 // Version will be set at build time

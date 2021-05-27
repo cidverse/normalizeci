@@ -4,7 +4,7 @@
 
 ## installation
 
-You can download the binaries from the gh release page: https://github.com/qubid/normalizeci/releases
+You can download the binaries from the gh release page: https://github.com/cidverse/normalizeci/releases
 
 - linux_386
 - linux_amd64
@@ -15,7 +15,7 @@ You can download the binaries from the gh release page: https://github.com/qubid
 
 Linux:
 ```bash
-sudo curl -L -s -o /usr/local/bin/normalizeci https://github.com/qubid/normalizeci/releases/download/v1.0.0/linux_amd64
+sudo curl -L -s -o /usr/local/bin/normalizeci https://github.com/cidverse/normalizeci/releases/download/v1.0.0/linux_amd64
 sudo chmod +x /usr/local/bin/normalizeci
 ```
 
@@ -43,7 +43,7 @@ Invoke-Expression "$nenv"
 Install the latest version as library:
 
 ```bash
-go get -u github.com/qubid/normalizeci
+go get -u github.com/cidverse/normalizeci
 ```
 
 And access the normalized environment, by default it will search for the vcs repo based on the current working directory.

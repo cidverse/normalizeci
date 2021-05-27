@@ -2,17 +2,17 @@ package normalizeci
 
 import (
 	"fmt"
-	"github.com/qubid/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/rs/zerolog/log"
 	"io"
 	"os"
 	"runtime"
 	"strings"
 
-	"github.com/qubid/normalizeci/pkg/azuredevops"
-	"github.com/qubid/normalizeci/pkg/githubactions"
-	"github.com/qubid/normalizeci/pkg/gitlabci"
-	"github.com/qubid/normalizeci/pkg/localgit"
+	"github.com/cidverse/normalizeci/pkg/azuredevops"
+	"github.com/cidverse/normalizeci/pkg/githubactions"
+	"github.com/cidverse/normalizeci/pkg/gitlabci"
+	"github.com/cidverse/normalizeci/pkg/localgit"
 )
 
 func RunDefaultNormalization() map[string]string {

@@ -2,8 +2,8 @@ package localgit
 
 import (
 	"github.com/gosimple/slug"
-	"github.com/qubid/normalizeci/pkg/common"
-	"github.com/qubid/normalizeci/pkg/vcsrepository"
+	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"os"
 	"path/filepath"
 	"runtime"
