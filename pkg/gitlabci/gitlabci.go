@@ -88,6 +88,9 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		data[addKey] = addElement
 	}
 
+	// control
+	data["NCI_DEPLOY_FREEZE"] = env["CI_DEPLOY_FREEZE"]
+
 	return data
 }
 

@@ -85,7 +85,10 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 		panic("Unsupported!")
 	}
 
-	// current reference
+	// reference path
+	data["NCI_COMMIT_REF_PATH"] = data["NCI_COMMIT_REF_TYPE"]+"/"+data["NCI_COMMIT_REF_NAME"]
+
+	// vcs specific reference
 	currentRef, currentRefErr := GetReferenceByName(dir, data["NCI_COMMIT_REF_TYPE"], data["NCI_COMMIT_REF_NAME"])
 	if currentRefErr != nil {
 		return nil, errors.New("can't find repository reference for "+data["NCI_COMMIT_REF_TYPE"]+" - "+data["NCI_COMMIT_REF_NAME"])

@@ -68,6 +68,7 @@ Variable | Description
 `NCI_REPOSITORY_REMOTE` | The remote url pointing at the repository. (git remote url or `local` if no remote was found)
 `NCI_COMMIT_REF_TYPE` | The reference type. (branch / tag)
 `NCI_COMMIT_REF_NAME` | Human readable name of the current repository reference.
+`NCI_COMMIT_REF_PATH` | Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
 `NCI_COMMIT_REF_SLUG` | Slug of the current repository reference.
 `NCI_COMMIT_REF_VCS` | Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)
 `NCI_COMMIT_REF_RELEASE` | Release version of the artifact, without leading `v` - should be in format `x.y.z`.
@@ -80,3 +81,9 @@ Variable | Description
 `NCI_LASTRELEASE_REF_SLUG` | Slug of the last stable release.
 `NCI_LASTRELEASE_REF_VCS` | Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
 `NCI_LASTRELEASE_COMMIT_AFTER_COUNT` | Holds the count of commits since the last stable release.
+
+## control
+
+Variable | Description
+--- | --- |
+`NCI_DEPLOY_FREEZE` | Currently in a deploy freeze window? (`true`, `false`)
