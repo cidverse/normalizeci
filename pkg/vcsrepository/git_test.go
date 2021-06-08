@@ -35,6 +35,7 @@ func TestFindGitCommitsBetweenRefs(t *testing.T) {
 	assert.Equal(t, 1, len(commits[0].Tags))
 	assert.Equal(t, "v1.0.0", commits[0].Tags[0].Name)
 	assert.Equal(t, "refs/tags/v1.0.0", commits[0].Tags[0].VCSRef)
+	assert.Nil(t, commits[0].Context)
 
 	// commit 2
 	assert.Equal(t, "fix: escape special chars in commit title / message and set default values for empty repos", commits[1].Message)
@@ -44,6 +45,7 @@ func TestFindGitCommitsBetweenRefs(t *testing.T) {
 	assert.Equal(t, "Philipp Heuer", commits[1].Committer.Name)
 	assert.Equal(t, "git@philippheuer.me", commits[1].Committer.Email)
 	assert.Equal(t, "f3d7bd736652725711fc4dc1dab0b3206ec4d3ae", commits[1].Hash)
+	assert.Nil(t, commits[1].Context)
 }
 
 func TestFindLatestGitReleaseFromCommit(t *testing.T) {

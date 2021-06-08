@@ -7,6 +7,7 @@ type Commit struct {
 	Author CommitAuthor
 	Committer CommitAuthor
 	Tags []CommitTag
+	Context map[string]string
 }
 
 type CommitAuthor struct {
