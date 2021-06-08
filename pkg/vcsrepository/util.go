@@ -2,6 +2,7 @@ package vcsrepository
 
 import (
 	"bufio"
+	"github.com/Masterminds/semver/v3"
 	"io"
 	"os"
 )
@@ -36,4 +37,21 @@ func fileExists(filename string) bool {
 	}
 
 	return !info.IsDir()
+}
+
+// isVersionStable checks if the specified version is a stable release version (semver)
+func isVersionStable(versionStr string) bool {
+	version, err := semver.NewVersion(versionStr)
+
+	// no unparsable versions
+	if err != nil {
+		return false
+	}
+
+	// no prereleases
+	if len(version.Prerelease()) > 0 {
+		return false
+	}
+
+	return true
 }

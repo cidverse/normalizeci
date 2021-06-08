@@ -96,7 +96,11 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	data["NCI_COMMIT_REF_VCS"] = currentRef
 
 	// previous release
-	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef, true, true)
+	isStableRelease := false
+	if data["NCI_COMMIT_REF_TYPE"] == "tag" {
+		isStableRelease = isVersionStable(data["NCI_COMMIT_REF_NAME"])
+	}
+	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef, isStableRelease, true)
 	if previousReleaseErr == nil {
 		data["NCI_LASTRELEASE_REF_NAME"] =  previousRelease.Name
 		data["NCI_LASTRELEASE_REF_SLUG"] = slug.Make(previousRelease.Name)
@@ -298,9 +302,9 @@ func FindLatestGitRelease(projectDir string, from string, stable bool, skipFrom 
 				if ref.Name().IsTag() {
 					version, versionErr := semver.NewVersion(ref.Name().Short())
 					if versionErr == nil {
-						if stable && len(version.Prerelease()) == 0 {
+						if stable && isVersionStable(ref.Name().Short()) {
 							return Release{Name: version.String(), Reference: ref.Name().String()}, nil
-						} else if !stable {
+						} else if !isVersionStable(ref.Name().Short()) {
 							return Release{Name: version.String(), Reference: ref.Name().String()}, nil
 						}
 					}
