@@ -304,7 +304,7 @@ func FindLatestGitRelease(projectDir string, from string, stable bool, skipFrom 
 					if versionErr == nil {
 						if stable && isVersionStable(ref.Name().Short()) {
 							return Release{Name: version.String(), Reference: ref.Name().String()}, nil
-						} else if !isVersionStable(ref.Name().Short()) {
+						} else if !stable {
 							return Release{Name: version.String(), Reference: ref.Name().String()}, nil
 						}
 					}
