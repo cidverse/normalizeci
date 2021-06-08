@@ -79,9 +79,9 @@ func FindCommitsBetweenRefs(dir string, startRef string, endRef string) ([]Commi
 }
 
 // FindLatestRelease will retrieve the latest release version in the current branch
-func FindLatestRelease(dir string, startAtReference string) (Release, error) {
+func FindLatestRelease(dir string, startAtReference string, stable bool, skipFrom bool) (Release, error) {
 	if IsGitRepository(dir) {
-		return FindLatestGitRelease(dir, startAtReference, true)
+		return FindLatestGitRelease(dir, startAtReference, stable, skipFrom)
 	}
 
 	return Release{}, errors.New(dir + " is not a supported repository type!")

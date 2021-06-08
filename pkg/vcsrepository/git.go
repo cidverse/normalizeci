@@ -82,7 +82,7 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 			data["NCI_COMMIT_REF_SLUG"] = slug.Make(match[2])
 		}
 	} else {
-		panic("Unsupported!")
+		panic("Can't determinate git ref, unsupported type!")
 	}
 
 	// reference path
@@ -96,7 +96,7 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	data["NCI_COMMIT_REF_VCS"] = currentRef
 
 	// previous release
-	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef)
+	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef, true, true)
 	if previousReleaseErr == nil {
 		data["NCI_LASTRELEASE_REF_NAME"] =  previousRelease.Name
 		data["NCI_LASTRELEASE_REF_SLUG"] = slug.Make(previousRelease.Name)
@@ -202,6 +202,16 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 		fromHash = toCommit.Hash
 	}
 
+	// commit references
+	var commitRefs = make(map[plumbing.Hash][]*plumbing.Reference)
+	refIterator, refIteratorErr := repository.Tags()
+	if refIteratorErr == nil {
+		refIterator.ForEach(func(t *plumbing.Reference) error {
+			commitRefs[t.Hash()] = append(commitRefs[t.Hash()], t)
+			return nil
+		})
+	}
+
 	// commit iterator
 	cIter, _ := repository.Log(&git.LogOptions{From: fromHash})
 	var commits []Commit
@@ -219,18 +229,26 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 			break
 		}
 
+		// refs?
+		var commitTags []CommitTag
+		if refs, hasRefs := commitRefs[commit.Hash]; hasRefs {
+			for _, ref := range refs {
+				commitTags = append(commitTags, CommitTag{Name: strings.TrimLeft(ref.Name().String(), "refs/tags/"), VCSRef: ref.Name().String()})
+			}
+		}
+
 		commitInfo := strings.SplitN(commit.Message, "\n", 2)
 		var commitDescription string
 		if len(commitInfo) == 2 {
 			commitDescription = commitInfo[1]
 		}
-		commits = append(commits, Commit{Message: commitInfo[0], Description: commitDescription})
+		commits = append(commits, Commit{Hash: commit.Hash.String(), Message: commitInfo[0], Description: commitDescription, Author: CommitAuthor{Name: commit.Author.Name, Email: commit.Author.Email}, Committer: CommitAuthor{Name: commit.Committer.Name, Email: commit.Committer.Email}, Tags: commitTags})
 	}
 
 	return commits, nil
 }
 
-func FindLatestGitRelease(projectDir string, from string, stable bool) (Release, error) {
+func FindLatestGitRelease(projectDir string, from string, stable bool, skipFrom bool) (Release, error) {
 	// open repository from local path
 	log.Trace().Str("projectDirectory", projectDir).Msg("opening git repository")
 	repository, repositoryErr := git.PlainOpen(projectDir)
@@ -257,15 +275,22 @@ func FindLatestGitRelease(projectDir string, from string, stable bool) (Release,
 	// commit iterator
 	cIter, _ := repository.Log(&git.LogOptions{From: fromRef.Hash()})
 	var lastCommit *object.Commit
+	commitCount := 0
 	for {
 		commit, commitErr := cIter.Next()
 		if commitErr != nil {
 			break
 		}
 		lastCommit = commit
+		commitCount = commitCount + 1
 
 		// log
 		log.Debug().Str("commit-hash", commit.Hash.String()).Str("commit-subject", commit.Message).Str("commit-refs", fmt.Sprintf("%+v\n", commitRefs[commit.Hash])).Msg("checking commit")
+
+		// skip first?
+		if commitCount == 1 && skipFrom {
+			continue
+		}
 
 		// refs
 		if refs, hasRefs := commitRefs[commit.Hash]; hasRefs {
@@ -289,4 +314,3 @@ func FindLatestGitRelease(projectDir string, from string, stable bool) (Release,
 	}
 	return Release{Name: "0.0.0", Reference: lastCommit.Hash.String()}, nil
 }
-

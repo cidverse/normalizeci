@@ -1,7 +1,0 @@
-# pipeline config
-PROJECT_TYPE=golang
-PACKAGE_TYPE=bintray
-PUBLISH_TYPE=bintray
-
-# artifact generation
-ARTIFACT_BUILD_ARCHS=linux_386,linux_amd64,windows_386,windows_amd64,darwin_386,darwin_amd64
