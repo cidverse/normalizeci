@@ -1,6 +1,7 @@
 package githubactions
 
 import (
+	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
 	"runtime"
@@ -39,11 +40,6 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_SERVICE_NAME"] = n.name
 	data["NCI_SERVICE_SLUG"] = n.slug
 
-	// server
-	data["NCI_SERVER_NAME"] = "GitHub"
-	data["NCI_SERVER_HOST"] = "github.com"
-	data["NCI_SERVER_VERSION"] = ""
-
 	// worker
 	data["NCI_WORKER_ID"] = env["RUNNER_TRACKING_ID"]
 	data["NCI_WORKER_NAME"] = env["RUNNER_TRACKING_ID"]
@@ -69,20 +65,24 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_PIPELINE_JOB_NAME"] = env["GITHUB_ACTION"]
 	data["NCI_PIPELINE_JOB_SLUG"] = slug.Make(env["GITHUB_ACTION"])
 
-	// project
-	data["NCI_PROJECT_ID"] = slug.Make(env["GITHUB_REPOSITORY"])
-	data["NCI_PROJECT_NAME"] = env["GITHUB_REPOSITORY"]
-	data["NCI_PROJECT_SLUG"] = slug.Make(env["GITHUB_REPOSITORY"])
-	data["NCI_PROJECT_DIR"] = vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
-
 	// repository
-	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(data["NCI_PROJECT_DIR"])
+	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
+	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
 	if addDataErr != nil {
 		panic(addDataErr)
 	}
 	for addKey, addElement := range addData {
 		data[addKey] = addElement
 	}
+
+	// project details
+	projectData := projectdetails.GetProjectDetails(data["NCI_REPOSITORY_KIND"], data["NCI_REPOSITORY_REMOTE"])
+	if projectData != nil {
+		for addKey, addElement := range projectData {
+			data[addKey] = addElement
+		}
+	}
+	data["NCI_PROJECT_DIR"] = projectDir
 
 	return data
 }

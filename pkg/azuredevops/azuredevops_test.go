@@ -172,10 +172,6 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, normalizer.version, normalized["NCI_VERSION"])
 	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
 	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
-	// - server
-	assert.Equal(t, "GitHub", normalized["NCI_SERVER_NAME"])
-	assert.Equal(t, "github.com", normalized["NCI_SERVER_HOST"])
-	assert.Equal(t, "", normalized["NCI_SERVER_VERSION"])
 	// - worker
 	assert.Equal(t, "5", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "fv-az679", normalized["NCI_WORKER_NAME"])
@@ -187,8 +183,4 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "Build", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_SLUG"])
-	// - project
-	assert.Equal(t, "d1b384a8-f33f-427d-86fd-f021826a54ea", normalized["NCI_PROJECT_ID"])
-	assert.Equal(t, "azure-test", normalized["NCI_PROJECT_NAME"])
-	assert.Equal(t, "azure-test", normalized["NCI_PROJECT_SLUG"])
 }

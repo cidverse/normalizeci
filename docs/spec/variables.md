@@ -14,14 +14,6 @@ Variable | Description
 `NCI_SERVICE_NAME` | The commercial name of the used ci service. (e.g. GitLab CI, Travis CI, CircleCI, Jenkins)
 `NCI_SERVICE_SLUG` | The commercial name normalized as slug for use in scripts, will not be changed.
 
-## server
-
-Variable | Description
---- | --- |
-`NCI_SERVER_NAME` | The commercial name of the vcs server.
-`NCI_SERVER_HOST` | The hostname that the vcs server is running on.
-`NCI_SERVER_VERSION` | The running version of the vcs server.
-
 ## worker
 
 Variable | Description
@@ -49,6 +41,11 @@ Variable | Description
 `NCI_PROJECT_ID` | Unique project id, can be used in deployments.
 `NCI_PROJECT_NAME` | Unique project id, can be used in deployments.
 `NCI_PROJECT_SLUG` | Project slug, that can be used in deployments.
+`NCI_PROJECT_DESCRIPTION` | The project description.
+`NCI_PROJECT_TOPICS` | The topics / tags of the project.
+`NCI_PROJECT_ISSUE_URL` | A template for links to issues, contains a `{ID}` placeholder.
+`NCI_PROJECT_STARGAZERS` | The number of people who `follow` / `bookmarked` the project.
+`NCI_PROJECT_FORKS` | The number of forks of the project.
 `NCI_PROJECT_DIR` | Project directory on the local filesystem.
 
 ## container registry

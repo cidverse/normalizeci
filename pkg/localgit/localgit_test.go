@@ -39,10 +39,6 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, normalizer.version, normalized["NCI_VERSION"])
 	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
 	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
-	// - server
-	assert.Equal(t, "local", normalized["NCI_SERVER_NAME"])
-	assert.Equal(t, "localhost", normalized["NCI_SERVER_HOST"])
-	assert.Equal(t, "", normalized["NCI_SERVER_VERSION"])
 	// - worker
 	// - pipeline
 	// - container registry

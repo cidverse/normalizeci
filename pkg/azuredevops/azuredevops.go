@@ -1,6 +1,7 @@
 package azuredevops
 
 import (
+	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
 	"runtime"
@@ -39,11 +40,6 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_SERVICE_NAME"] = n.name
 	data["NCI_SERVICE_SLUG"] = n.slug
 
-	// server
-	data["NCI_SERVER_NAME"] = env["BUILD_REPOSITORY_PROVIDER"]
-	data["NCI_SERVER_HOST"] = common.GetHostFromURL(env["BUILD_REPOSITORY_URI"])
-	data["NCI_SERVER_VERSION"] = ""
-
 	// worker
 	data["NCI_WORKER_ID"] = env["AGENT_ID"]
 	data["NCI_WORKER_NAME"] = env["AGENT_MACHINENAME"]
@@ -69,20 +65,24 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_PIPELINE_JOB_NAME"] = env["SYSTEM_JOBNAME"] // SYSTEM_JOBDISPLAYNAME
 	data["NCI_PIPELINE_JOB_SLUG"] = slug.Make(env["SYSTEM_JOBNAME"])
 
-	// project
-	data["NCI_PROJECT_ID"] = env["SYSTEM_TEAMPROJECTID"]
-	data["NCI_PROJECT_NAME"] = env["SYSTEM_TEAMPROJECT"]
-	data["NCI_PROJECT_SLUG"] = slug.Make(env["SYSTEM_TEAMPROJECT"])
-	data["NCI_PROJECT_DIR"] = vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
-
 	// repository
-	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(data["NCI_PROJECT_DIR"])
+	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
+	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
 	if addDataErr != nil {
 		panic(addDataErr)
 	}
 	for addKey, addElement := range addData {
 		data[addKey] = addElement
 	}
+
+	// project details
+	projectData := projectdetails.GetProjectDetails(data["NCI_REPOSITORY_KIND"], data["NCI_REPOSITORY_REMOTE"])
+	if projectData != nil {
+		for addKey, addElement := range projectData {
+			data[addKey] = addElement
+		}
+	}
+	data["NCI_PROJECT_DIR"] = projectDir
 
 	return data
 }

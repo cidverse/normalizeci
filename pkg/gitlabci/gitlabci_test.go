@@ -114,10 +114,6 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, normalizer.version, normalized["NCI_VERSION"])
 	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
 	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
-	// - server
-	assert.Equal(t, "GitLab", normalized["NCI_SERVER_NAME"])
-	assert.Equal(t, "gitlab.com", normalized["NCI_SERVER_HOST"])
-	assert.Equal(t, "12.2.0-pre", normalized["NCI_SERVER_VERSION"])
 	// - worker
 	assert.Equal(t, "380987", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "shared-runners-manager-6.gitlab.com", normalized["NCI_WORKER_NAME"])
@@ -134,8 +130,4 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "registry.gitlab.com/philippheuer/citest", normalized["NCI_CONTAINERREGISTRY_REPOSITORY"])
 	assert.Equal(t, "gitlab-ci-token", normalized["NCI_CONTAINERREGISTRY_USERNAME"])
 	assert.Equal(t, "secret", normalized["NCI_CONTAINERREGISTRY_PASSWORD"])
-	// - project
-	assert.Equal(t, "13882743", normalized["NCI_PROJECT_ID"])
-	assert.Equal(t, "citest", normalized["NCI_PROJECT_NAME"])
-	assert.Equal(t, "philippheuer-citest", normalized["NCI_PROJECT_SLUG"])
 }

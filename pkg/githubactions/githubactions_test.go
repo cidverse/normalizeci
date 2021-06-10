@@ -92,10 +92,6 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, normalizer.version, normalized["NCI_VERSION"])
 	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
 	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
-	// - server
-	assert.Equal(t, "GitHub", normalized["NCI_SERVER_NAME"])
-	assert.Equal(t, "github.com", normalized["NCI_SERVER_HOST"])
-	assert.Equal(t, "", normalized["NCI_SERVER_VERSION"])
 	// - worker
 	assert.Equal(t, "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "github_1f3d9475-6c94-40ee-a160-8b3fd282c3a1", normalized["NCI_WORKER_NAME"])
@@ -107,8 +103,4 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_SLUG"])
-	// - project
-	assert.Equal(t, "philippheuer-normalize-ci", normalized["NCI_PROJECT_ID"])
-	assert.Equal(t, "PhilippHeuer/normalize-ci", normalized["NCI_PROJECT_NAME"])
-	assert.Equal(t, "philippheuer-normalize-ci", normalized["NCI_PROJECT_SLUG"])
 }
