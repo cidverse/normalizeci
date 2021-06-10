@@ -16,16 +16,16 @@ type Commit struct {
 }
 
 type CommitAuthor struct {
-	Name string
+	Name  string
 	Email string
 }
 
 type CommitTag struct {
-	Name string
+	Name   string
 	VCSRef string
 }
 
 type Release struct {
-	Name string
+	Name      string
 	Reference string
 }

@@ -52,7 +52,7 @@ func GetWorkingDirectory() string {
 // GetDirectoryNameFromPath gets the directory name from a path
 func GetDirectoryNameFromPath(path string) string {
 	dir := filepath.Dir(path)
-    parent := filepath.Base(dir)
+	parent := filepath.Base(dir)
 
 	return parent
 }

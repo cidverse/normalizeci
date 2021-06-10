@@ -146,8 +146,8 @@ var testEnvironment = []string{
 
 func TestMain(m *testing.M) {
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-    code := m.Run()
-    os.Exit(code)
+	code := m.Run()
+	os.Exit(code)
 }
 
 func TestEnvironmentCheck(t *testing.T) {
@@ -163,7 +163,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 
 	// log all normalized values
 	for key, element := range normalized {
-		t.Log(key+"="+element)
+		t.Log(key + "=" + element)
 	}
 
 	// validate fields

@@ -1,8 +1,8 @@
 package githubactions
 
 import (
-	"github.com/gosimple/slug"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/gosimple/slug"
 	"runtime"
 
 	"github.com/cidverse/normalizeci/pkg/common"
@@ -48,7 +48,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_WORKER_ID"] = env["RUNNER_TRACKING_ID"]
 	data["NCI_WORKER_NAME"] = env["RUNNER_TRACKING_ID"]
 	data["NCI_WORKER_VERSION"] = env["ImageVersion"]
-	data["NCI_WORKER_ARCH"] = runtime.GOOS+"/"+runtime.GOARCH
+	data["NCI_WORKER_ARCH"] = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
 	pipelineEvent := env["GITHUB_EVENT_NAME"]

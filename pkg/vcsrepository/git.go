@@ -86,12 +86,12 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	}
 
 	// reference path
-	data["NCI_COMMIT_REF_PATH"] = data["NCI_COMMIT_REF_TYPE"]+"/"+data["NCI_COMMIT_REF_NAME"]
+	data["NCI_COMMIT_REF_PATH"] = data["NCI_COMMIT_REF_TYPE"] + "/" + data["NCI_COMMIT_REF_NAME"]
 
 	// vcs specific reference
 	currentRef, currentRefErr := GetReferenceByName(dir, data["NCI_COMMIT_REF_TYPE"], data["NCI_COMMIT_REF_NAME"])
 	if currentRefErr != nil {
-		return nil, errors.New("can't find repository reference for "+data["NCI_COMMIT_REF_TYPE"]+" - "+data["NCI_COMMIT_REF_NAME"])
+		return nil, errors.New("can't find repository reference for " + data["NCI_COMMIT_REF_TYPE"] + " - " + data["NCI_COMMIT_REF_NAME"])
 	}
 	data["NCI_COMMIT_REF_VCS"] = currentRef
 
@@ -102,7 +102,7 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	}
 	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef, isStableRelease, true)
 	if previousReleaseErr == nil {
-		data["NCI_LASTRELEASE_REF_NAME"] =  previousRelease.Name
+		data["NCI_LASTRELEASE_REF_NAME"] = previousRelease.Name
 		data["NCI_LASTRELEASE_REF_SLUG"] = slug.Make(previousRelease.Name)
 		data["NCI_LASTRELEASE_REF_VCS"] = previousRelease.Reference
 
@@ -156,9 +156,9 @@ func FindGitReference(refType string, refName string) string {
 	// reference
 	var gitReference string
 	if refType == "branch" {
-		gitReference = `refs/heads/`+refName
+		gitReference = `refs/heads/` + refName
 	} else if refType == "tag" {
-		gitReference = `refs/tags/`+refName
+		gitReference = `refs/tags/` + refName
 	}
 
 	return gitReference

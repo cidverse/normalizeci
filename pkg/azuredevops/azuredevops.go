@@ -1,8 +1,8 @@
 package azuredevops
 
 import (
-	"github.com/gosimple/slug"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/gosimple/slug"
 	"runtime"
 
 	"github.com/cidverse/normalizeci/pkg/common"
@@ -48,18 +48,18 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_WORKER_ID"] = env["AGENT_ID"]
 	data["NCI_WORKER_NAME"] = env["AGENT_MACHINENAME"]
 	data["NCI_WORKER_VERSION"] = env["AGENT_VERSION"]
-	data["NCI_WORKER_ARCH"] = runtime.GOOS+"/"+runtime.GOARCH
+	data["NCI_WORKER_ARCH"] = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
 	if env["BUILD_REASON"] == "Manual" {
 		data["NCI_PIPELINE_TRIGGER"] = "manual"
-	} else if  env["BUILD_REASON"] == "IndividualCI" ||  env["BUILD_REASON"] == "BatchedCI" {
+	} else if env["BUILD_REASON"] == "IndividualCI" || env["BUILD_REASON"] == "BatchedCI" {
 		data["NCI_PIPELINE_TRIGGER"] = "push"
-	} else if  env["BUILD_REASON"] == "Schedule" {
+	} else if env["BUILD_REASON"] == "Schedule" {
 		data["NCI_PIPELINE_TRIGGER"] = "schedule"
-	} else if  env["BUILD_REASON"] == "PullRequest" {
+	} else if env["BUILD_REASON"] == "PullRequest" {
 		data["NCI_PIPELINE_TRIGGER"] = "pull_request"
-	} else if  env["BUILD_REASON"] == "BuildCompletion" {
+	} else if env["BUILD_REASON"] == "BuildCompletion" {
 		data["NCI_PIPELINE_TRIGGER"] = "build"
 	} else {
 		data["NCI_PIPELINE_TRIGGER"] = "unknown"

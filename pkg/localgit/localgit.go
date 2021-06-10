@@ -1,9 +1,9 @@
 package localgit
 
 import (
-	"github.com/gosimple/slug"
 	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/gosimple/slug"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -45,7 +45,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_WORKER_ID"] = "local"
 	data["NCI_WORKER_NAME"] = ""
 	data["NCI_WORKER_VERSION"] = ""
-	data["NCI_WORKER_ARCH"] = runtime.GOOS+"/"+runtime.GOARCH
+	data["NCI_WORKER_ARCH"] = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
 	data["NCI_PIPELINE_TRIGGER"] = "manual"

@@ -1,9 +1,9 @@
 package gitlabci
 
 import (
-	"github.com/gosimple/slug"
 	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/gosimple/slug"
 	"runtime"
 )
 
@@ -47,7 +47,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_WORKER_ID"] = env["CI_RUNNER_ID"]
 	data["NCI_WORKER_NAME"] = env["CI_RUNNER_DESCRIPTION"]
 	data["NCI_WORKER_VERSION"] = env["CI_RUNNER_VERSION"]
-	data["NCI_WORKER_ARCH"] = runtime.GOOS+"/"+runtime.GOARCH
+	data["NCI_WORKER_ARCH"] = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
 	data["NCI_PIPELINE_TRIGGER"] = env["CI_PIPELINE_SOURCE"]
