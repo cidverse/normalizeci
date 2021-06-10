@@ -1,13 +1,18 @@
 package vcsrepository
 
+import "time"
+
 type Commit struct {
-	Hash string
-	Message string
+	ShortHash   string
+	Hash        string
+	Message     string
 	Description string
-	Author CommitAuthor
-	Committer CommitAuthor
-	Tags []CommitTag
-	Context map[string]string
+	Author      CommitAuthor
+	Committer   CommitAuthor
+	Tags        []CommitTag
+	AuthoredAt  time.Time
+	CommittedAt time.Time
+	Context     map[string]string
 }
 
 type CommitAuthor struct {

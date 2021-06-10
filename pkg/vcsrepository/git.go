@@ -246,7 +246,7 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 		if len(commitInfo) == 2 {
 			commitDescription = commitInfo[1]
 		}
-		commits = append(commits, Commit{Hash: commit.Hash.String(), Message: commitInfo[0], Description: commitDescription, Author: CommitAuthor{Name: commit.Author.Name, Email: commit.Author.Email}, Committer: CommitAuthor{Name: commit.Committer.Name, Email: commit.Committer.Email}, Tags: commitTags})
+		commits = append(commits, Commit{ShortHash: commit.Hash.String()[:7], Hash: commit.Hash.String(), Message: commitInfo[0], Description: commitDescription, Author: CommitAuthor{Name: commit.Author.Name, Email: commit.Author.Email}, Committer: CommitAuthor{Name: commit.Committer.Name, Email: commit.Committer.Email}, AuthoredAt: commit.Author.When, CommittedAt: commit.Committer.When, Tags: commitTags})
 	}
 
 	return commits, nil
