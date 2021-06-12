@@ -112,8 +112,8 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 		}
 	}
 
-	// release name (=slug, but without leading v for tags)
-	data["NCI_COMMIT_REF_RELEASE"] = strings.TrimLeft(data["NCI_COMMIT_REF_SLUG"], "v")
+	// release name (=name, but without leading v, without slash)
+	data["NCI_COMMIT_REF_RELEASE"] = getReleaseName(data["NCI_COMMIT_REF_NAME"])
 
 	// commit info
 	data["NCI_COMMIT_SHA"] = ref.Hash().String()

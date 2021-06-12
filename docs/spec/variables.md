@@ -68,7 +68,7 @@ Variable | Description
 `NCI_COMMIT_REF_PATH` | Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
 `NCI_COMMIT_REF_SLUG` | Slug of the current repository reference.
 `NCI_COMMIT_REF_VCS` | Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)
-`NCI_COMMIT_REF_RELEASE` | Release version of the artifact, without leading `v` - should be in format `x.y.z`.
+`NCI_COMMIT_REF_RELEASE` | Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
 `NCI_COMMIT_SHA` | A unique hash, that each commit gets.
 `NCI_COMMIT_SHA_SHORT` | A short form of the unique commit hash. (8 chars)
 `NCI_COMMIT_TITLE` | The title of the latest commit on the current reference.
