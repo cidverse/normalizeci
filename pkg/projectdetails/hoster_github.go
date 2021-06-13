@@ -34,7 +34,11 @@ func GetProjectDetailsGitHub(repoRemote string) (map[string]string, error) {
 	projectDetails["NCI_PROJECT_ID"] = strconv.FormatInt(*repo.ID, 10)
 	projectDetails["NCI_PROJECT_NAME"] = *repo.Name
 	projectDetails["NCI_PROJECT_SLUG"] = slug.Make(*repo.FullName)
-	projectDetails["NCI_PROJECT_DESCRIPTION"] = *repo.Description
+	if repo.Description != nil {
+		projectDetails["NCI_PROJECT_DESCRIPTION"] = *repo.Description
+	} else {
+		projectDetails["NCI_PROJECT_DESCRIPTION"] = ""
+	}
 	projectDetails["NCI_PROJECT_TOPICS"] = strings.Join(repo.Topics, ",")
 	projectDetails["NCI_PROJECT_ISSUE_URL"] = strings.Replace(*repo.IssuesURL, "{/number}", "/{ID}", 1)
 	projectDetails["NCI_PROJECT_STARGAZERS"] = strconv.Itoa(*repo.StargazersCount)

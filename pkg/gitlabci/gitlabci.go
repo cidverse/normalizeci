@@ -57,18 +57,6 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_PIPELINE_JOB_NAME"] = env["CI_JOB_NAME"]
 	data["NCI_PIPELINE_JOB_SLUG"] = slug.Make(env["CI_JOB_NAME"])
 
-	// container registry
-	data["NCI_CONTAINERREGISTRY_HOST"] = env["CI_REGISTRY"]
-	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = env["CI_REGISTRY_IMAGE"]
-
-	if len(env["CI_DEPLOY_USER"]) > 0 {
-		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_DEPLOY_USER"]
-		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_DEPLOY_PASSWORD"]
-	} else {
-		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_REGISTRY_USER"]
-		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_REGISTRY_PASSWORD"]
-	}
-
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
 	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
@@ -87,6 +75,18 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		}
 	}
 	data["NCI_PROJECT_DIR"] = projectDir
+
+	// container registry
+	data["NCI_CONTAINERREGISTRY_HOST"] = env["CI_REGISTRY"]
+	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = env["CI_REGISTRY_IMAGE"]
+	if len(env["CI_DEPLOY_USER"]) > 0 {
+		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_DEPLOY_USER"]
+		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_DEPLOY_PASSWORD"]
+	} else {
+		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_REGISTRY_USER"]
+		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_REGISTRY_PASSWORD"]
+	}
+	data["NCI_CONTAINERREGISTRY_TAG"] = data["NCI_COMMIT_REF_RELEASE"]
 
 	// control
 	data["NCI_DEPLOY_FREEZE"] = env["CI_DEPLOY_FREEZE"]

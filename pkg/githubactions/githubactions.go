@@ -4,6 +4,8 @@ import (
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
+	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/cidverse/normalizeci/pkg/common"
@@ -83,6 +85,13 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		}
 	}
 	data["NCI_PROJECT_DIR"] = projectDir
+
+	// container registry
+	data["NCI_CONTAINERREGISTRY_HOST"] = ""
+	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+	data["NCI_CONTAINERREGISTRY_USERNAME"] = ""
+	data["NCI_CONTAINERREGISTRY_PASSWORD"] = ""
+	data["NCI_CONTAINERREGISTRY_TAG"] = data["NCI_COMMIT_REF_RELEASE"]
 
 	return data
 }

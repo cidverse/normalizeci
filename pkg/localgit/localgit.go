@@ -50,12 +50,6 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	data["NCI_PIPELINE_JOB_NAME"] = ""
 	data["NCI_PIPELINE_JOB_SLUG"] = ""
 
-	// container registry
-	data["NCI_CONTAINERREGISTRY_HOST"] = ""
-	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
-	data["NCI_CONTAINERREGISTRY_USERNAME"] = ""
-	data["NCI_CONTAINERREGISTRY_PASSWORD"] = ""
-
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
 	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
@@ -74,6 +68,13 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		}
 	}
 	data["NCI_PROJECT_DIR"] = projectDir
+
+	// container registry
+	data["NCI_CONTAINERREGISTRY_HOST"] = ""
+	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+	data["NCI_CONTAINERREGISTRY_USERNAME"] = ""
+	data["NCI_CONTAINERREGISTRY_PASSWORD"] = ""
+	data["NCI_CONTAINERREGISTRY_TAG"] = data["NCI_COMMIT_REF_RELEASE"]
 
 	return data
 }

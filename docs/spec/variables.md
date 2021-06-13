@@ -56,6 +56,7 @@ Variable | Description
 `NCI_CONTAINERREGISTRY_USERNAME` | The username used for container registry authentication.
 `NCI_CONTAINERREGISTRY_PASSWORD` | The password used for container registry authentication.
 `NCI_CONTAINERREGISTRY_REPOSITORY` | The repository, that should be used for the current project.
+`NCI_CONTAINERREGISTRY_TAG` | The tag that should be build.
 
 ## repository
 
