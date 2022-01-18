@@ -96,10 +96,14 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	return data
 }
 
+func (n Normalizer) Denormalize(env map[string]string) map[string]string {
+	return make(map[string]string)
+}
+
 // NewNormalizer gets a instance of the normalizer
 func NewNormalizer() Normalizer {
 	entity := Normalizer{
-		version: "0.2.0",
+		version: "0.3.0",
 		name:    "GitHub Actions",
 		slug:    "github-actions",
 	}

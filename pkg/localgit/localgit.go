@@ -79,10 +79,14 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	return data
 }
 
+func (n Normalizer) Denormalize(env map[string]string) map[string]string {
+	return env
+}
+
 // NewNormalizer gets a instance of the normalizer
 func NewNormalizer() Normalizer {
 	entity := Normalizer{
-		version: "0.2.0",
+		version: "0.3.0",
 		name:    "Local Git Repository",
 		slug:    "local-git",
 	}

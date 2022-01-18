@@ -13,6 +13,7 @@ type Normalizer interface {
 	GetName() string
 	Check(env map[string]string) bool
 	Normalize(env map[string]string) map[string]string
+	Denormalize(env map[string]string) map[string]string
 }
 
 // GetMachineEnvironment returns a map with all environment variables set on the machine
