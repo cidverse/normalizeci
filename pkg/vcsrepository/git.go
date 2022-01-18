@@ -136,6 +136,11 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 				data["NCI_COMMIT_DESCRIPTION"] = ""
 			}
 
+			data["NCI_COMMIT_AUTHOR_NAME"] = commit.Author.Name
+			data["NCI_COMMIT_AUTHOR_EMAIL"] = commit.Author.Email
+			data["NCI_COMMIT_COMMITTER_NAME"] = commit.Committer.Name
+			data["NCI_COMMIT_COMMITTER_EMAIL"] = commit.Committer.Email
+			
 			firstCommit = false
 		}
 
