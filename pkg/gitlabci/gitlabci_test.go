@@ -1,6 +1,7 @@
 package gitlabci
 
 import (
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -130,4 +131,14 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "registry.gitlab.com/philippheuer/citest", normalized["NCI_CONTAINERREGISTRY_REPOSITORY"])
 	assert.Equal(t, "gitlab-ci-token", normalized["NCI_CONTAINERREGISTRY_USERNAME"])
 	assert.Equal(t, "secret", normalized["NCI_CONTAINERREGISTRY_PASSWORD"])
+}
+
+func TestValidateSpec(t *testing.T) {
+	var normalizer = NewNormalizer()
+	var normalized = normalizer.Normalize(common.GetEnvironmentFrom(testEnvironment))
+
+	nci := ncispec.OfMap(normalized)
+
+	err := nci.Validate()
+	assert.Emptyf(t, err, "there shouldn't be any validation errors")
 }

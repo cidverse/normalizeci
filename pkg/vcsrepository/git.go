@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Masterminds/semver/v3"
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
@@ -113,11 +114,11 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	}
 
 	// release name (=name, but without leading v, without slash)
-	data["NCI_COMMIT_REF_RELEASE"] = getReleaseName(data["NCI_COMMIT_REF_NAME"])
+	data[ncispec.NCI_COMMIT_REF_RELEASE] = getReleaseName(data[ncispec.NCI_COMMIT_REF_NAME])
 
 	// commit info
-	data["NCI_COMMIT_SHA"] = ref.Hash().String()
-	data["NCI_COMMIT_SHA_SHORT"] = ref.Hash().String()[0:8]
+	data[ncispec.NCI_COMMIT_SHA] = ref.Hash().String()
+	data[ncispec.NCI_COMMIT_SHA_SHORT] = ref.Hash().String()[0:8]
 
 	cIter, _ := repository.Log(&git.LogOptions{From: ref.Hash()})
 	firstCommit := true
@@ -128,19 +129,19 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 
 		// only set for first commit
 		if firstCommit {
-			data["NCI_COMMIT_TITLE"] = commitInfo[0]
+			data[ncispec.NCI_COMMIT_TITLE] = commitInfo[0]
 
 			if len(commitInfo) >= 3 {
-				data["NCI_COMMIT_DESCRIPTION"] = strings.Join(commitInfo[2:], "\n")
+				data[ncispec.NCI_COMMIT_DESCRIPTION] = strings.Join(commitInfo[2:], "\n")
 			} else {
-				data["NCI_COMMIT_DESCRIPTION"] = ""
+				data[ncispec.NCI_COMMIT_DESCRIPTION] = ""
 			}
 
-			data["NCI_COMMIT_AUTHOR_NAME"] = commit.Author.Name
-			data["NCI_COMMIT_AUTHOR_EMAIL"] = commit.Author.Email
-			data["NCI_COMMIT_COMMITTER_NAME"] = commit.Committer.Name
-			data["NCI_COMMIT_COMMITTER_EMAIL"] = commit.Committer.Email
-			
+			data[ncispec.NCI_COMMIT_AUTHOR_NAME] = commit.Author.Name
+			data[ncispec.NCI_COMMIT_AUTHOR_EMAIL] = commit.Author.Email
+			data[ncispec.NCI_COMMIT_COMMITTER_NAME] = commit.Committer.Name
+			data[ncispec.NCI_COMMIT_COMMITTER_EMAIL] = commit.Committer.Email
+
 			firstCommit = false
 		}
 
@@ -150,7 +151,7 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	// commit count
 	if !isShallowClone {
 		// can only be set, if the clone isn't shallow
-		data["NCI_COMMIT_COUNT"] = strconv.Itoa(commitCount)
+		data[ncispec.NCI_COMMIT_COUNT] = strconv.Itoa(commitCount)
 	}
 
 	return data, nil

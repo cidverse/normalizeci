@@ -1,6 +1,7 @@
 package azuredevops
 
 import (
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -183,4 +184,14 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "Build", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_SLUG"])
+}
+
+func TestValidateSpec(t *testing.T) {
+	var normalizer = NewNormalizer()
+	var normalized = normalizer.Normalize(common.GetEnvironmentFrom(testEnvironment))
+
+	nci := ncispec.OfMap(normalized)
+
+	err := nci.Validate()
+	assert.Emptyf(t, err, "there shouldn't be any validation errors")
 }

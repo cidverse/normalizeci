@@ -2,6 +2,7 @@ package gitlabci
 
 import (
 	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
@@ -31,67 +32,90 @@ func (n Normalizer) Check(env map[string]string) bool {
 
 // Normalize normalizes the environment variables into the common format
 func (n Normalizer) Normalize(env map[string]string) map[string]string {
-	data := make(map[string]string)
+	nci := ncispec.OfMap(env)
 
 	// common
-	data["NCI"] = "true"
-	data["NCI_VERSION"] = n.version
-	data["NCI_SERVICE_NAME"] = n.name
-	data["NCI_SERVICE_SLUG"] = n.slug
+	nci.NCI = "true"
+	nci.NCI_VERSION = n.version
+	nci.NCI_SERVICE_NAME = n.name
+	nci.NCI_SERVICE_SLUG = n.slug
 
 	// worker
-	data["NCI_WORKER_ID"] = env["CI_RUNNER_ID"]
-	data["NCI_WORKER_NAME"] = env["CI_RUNNER_DESCRIPTION"]
-	data["NCI_WORKER_VERSION"] = env["CI_RUNNER_VERSION"]
-	data["NCI_WORKER_ARCH"] = runtime.GOOS + "/" + runtime.GOARCH
+	nci.NCI_WORKER_ID = env["CI_RUNNER_ID"]
+	nci.NCI_WORKER_NAME = env["CI_RUNNER_DESCRIPTION"]
+	nci.NCI_WORKER_VERSION = env["CI_RUNNER_VERSION"]
+	nci.NCI_WORKER_ARCH = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
-	data["NCI_PIPELINE_TRIGGER"] = env["CI_PIPELINE_SOURCE"]
-	if env["NCI_PIPELINE_TRIGGER"] == "pull_request" {
+	nci.NCI_PIPELINE_TRIGGER = env["CI_PIPELINE_SOURCE"]
+	if nci.NCI_PIPELINE_TRIGGER == ncispec.PipelineTriggerPullRequest {
 		// PR
-		data["NCI_PIPELINE_PULL_REQUEST_ID"] = env["CI_MERGE_REQUEST_IID"]
+		nci.NCI_PIPELINE_PULL_REQUEST_ID = env["CI_MERGE_REQUEST_IID"]
 	}
 
-	data["NCI_PIPELINE_STAGE_NAME"] = env["CI_JOB_STAGE"]
-	data["NCI_PIPELINE_STAGE_SLUG"] = slug.Make(env["CI_JOB_STAGE"])
-	data["NCI_PIPELINE_JOB_NAME"] = env["CI_JOB_NAME"]
-	data["NCI_PIPELINE_JOB_SLUG"] = slug.Make(env["CI_JOB_NAME"])
+	nci.NCI_PIPELINE_STAGE_NAME = env["CI_JOB_STAGE"]
+	nci.NCI_PIPELINE_STAGE_SLUG = slug.Make(env["CI_JOB_STAGE"])
+	nci.NCI_PIPELINE_JOB_NAME = env["CI_JOB_NAME"]
+	nci.NCI_PIPELINE_JOB_SLUG = slug.Make(env["CI_JOB_NAME"])
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
-	addData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
+	vcsData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
 	if addDataErr != nil {
 		panic(addDataErr)
 	}
-	for addKey, addElement := range addData {
-		data[addKey] = addElement
-	}
+	nci.NCI_REPOSITORY_KIND = vcsData[ncispec.NCI_REPOSITORY_KIND]
+	nci.NCI_REPOSITORY_REMOTE = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
+	nci.NCI_COMMIT_REF_TYPE = vcsData[ncispec.NCI_COMMIT_REF_TYPE]
+	nci.NCI_COMMIT_REF_NAME = vcsData[ncispec.NCI_COMMIT_REF_NAME]
+	nci.NCI_COMMIT_REF_PATH = vcsData[ncispec.NCI_COMMIT_REF_PATH]
+	nci.NCI_COMMIT_REF_SLUG = vcsData[ncispec.NCI_COMMIT_REF_SLUG]
+	nci.NCI_COMMIT_REF_VCS = vcsData[ncispec.NCI_COMMIT_REF_VCS]
+	nci.NCI_COMMIT_REF_RELEASE = vcsData[ncispec.NCI_COMMIT_REF_RELEASE]
+	nci.NCI_COMMIT_SHA = vcsData[ncispec.NCI_COMMIT_SHA]
+	nci.NCI_COMMIT_SHA_SHORT = vcsData[ncispec.NCI_COMMIT_SHA_SHORT]
+	nci.NCI_COMMIT_TITLE = vcsData[ncispec.NCI_COMMIT_TITLE]
+	nci.NCI_COMMIT_DESCRIPTION = vcsData[ncispec.NCI_COMMIT_DESCRIPTION]
+	nci.NCI_COMMIT_AUTHOR_NAME = vcsData[ncispec.NCI_COMMIT_AUTHOR_NAME]
+	nci.NCI_COMMIT_AUTHOR_EMAIL = vcsData[ncispec.NCI_COMMIT_AUTHOR_EMAIL]
+	nci.NCI_COMMIT_COMMITTER_NAME = vcsData[ncispec.NCI_COMMIT_COMMITTER_NAME]
+	nci.NCI_COMMIT_COMMITTER_EMAIL = vcsData[ncispec.NCI_COMMIT_COMMITTER_EMAIL]
+	nci.NCI_COMMIT_COUNT = vcsData[ncispec.NCI_COMMIT_COUNT]
 
 	// project details
-	projectData := projectdetails.GetProjectDetails(data["NCI_REPOSITORY_KIND"], data["NCI_REPOSITORY_REMOTE"])
+	projectData := projectdetails.GetProjectDetails(nci.NCI_REPOSITORY_KIND, nci.NCI_REPOSITORY_REMOTE)
 	if projectData != nil {
-		for addKey, addElement := range projectData {
-			data[addKey] = addElement
-		}
+		nci.NCI_PROJECT_ID = projectData[ncispec.NCI_PROJECT_ID]
+		nci.NCI_PROJECT_NAME = projectData[ncispec.NCI_PROJECT_NAME]
+		nci.NCI_PROJECT_SLUG = projectData[ncispec.NCI_PROJECT_SLUG]
+		nci.NCI_PROJECT_DESCRIPTION = projectData[ncispec.NCI_PROJECT_DESCRIPTION]
+		nci.NCI_PROJECT_TOPICS = projectData[ncispec.NCI_PROJECT_TOPICS]
+		nci.NCI_PROJECT_ISSUE_URL = projectData[ncispec.NCI_PROJECT_ISSUE_URL]
+		nci.NCI_PROJECT_STARGAZERS = projectData[ncispec.NCI_PROJECT_STARGAZERS]
+		nci.NCI_PROJECT_FORKS = projectData[ncispec.NCI_PROJECT_FORKS]
 	}
-	data["NCI_PROJECT_DIR"] = projectDir
+	nci.NCI_PROJECT_DIR = projectDir
 
 	// container registry
-	data["NCI_CONTAINERREGISTRY_HOST"] = env["CI_REGISTRY"]
-	data["NCI_CONTAINERREGISTRY_REPOSITORY"] = env["CI_REGISTRY_IMAGE"]
+	nci.NCI_CONTAINERREGISTRY_HOST = env["CI_REGISTRY"]
+	nci.NCI_CONTAINERREGISTRY_REPOSITORY = env["CI_REGISTRY_IMAGE"]
 	if len(env["CI_DEPLOY_USER"]) > 0 {
-		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_DEPLOY_USER"]
-		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_DEPLOY_PASSWORD"]
+		nci.NCI_CONTAINERREGISTRY_USERNAME = env["CI_DEPLOY_USER"]
+		nci.NCI_CONTAINERREGISTRY_PASSWORD = env["CI_DEPLOY_PASSWORD"]
 	} else {
-		data["NCI_CONTAINERREGISTRY_USERNAME"] = env["CI_REGISTRY_USER"]
-		data["NCI_CONTAINERREGISTRY_PASSWORD"] = env["CI_REGISTRY_PASSWORD"]
+		nci.NCI_CONTAINERREGISTRY_USERNAME = env["CI_REGISTRY_USER"]
+		nci.NCI_CONTAINERREGISTRY_PASSWORD = env["CI_REGISTRY_PASSWORD"]
 	}
-	data["NCI_CONTAINERREGISTRY_TAG"] = data["NCI_COMMIT_REF_RELEASE"]
+	nci.NCI_CONTAINERREGISTRY_TAG = nci.NCI_COMMIT_REF_RELEASE
 
 	// control
-	data["NCI_DEPLOY_FREEZE"] = env["CI_DEPLOY_FREEZE"]
+	if _, ok := env["CI_DEPLOY_FREEZE"]; ok {
+		nci.NCI_DEPLOY_FREEZE = env["CI_DEPLOY_FREEZE"]
+	} else {
+		nci.NCI_DEPLOY_FREEZE = "false"
+	}
 
-	return data
+	return ncispec.ToMap(nci)
 }
 
 func (n Normalizer) Denormalize(env map[string]string) map[string]string {
