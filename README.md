@@ -1,6 +1,6 @@
 # normalize.ci
 
-> A cli tool (or go library) to provide a platform-agnostic set of env variables to make your CICD process platform-agnostic.
+> A cli tool (or go library) to provide a foundation for a platform-agnostic CICD process.
 
 ## features
 
@@ -23,18 +23,49 @@ sudo chmod +x /usr/local/bin/normalizeci
 
 ### cli
 
-The NormalizeCI CLI will return the commands to set the normalized variables in your current terminal session, so you need to run the response of the command.
+Examples:
+
+| Id  | Command                                        | Description                                                                       |
+|-----|------------------------------------------------|-----------------------------------------------------------------------------------|
+| 1   | `normalizeci --format export --output nci.env` | generate nci variables in format export for unix systems, stored as file          |
+| 2   | `normalizeci --format powershell`              | generate nci variables in format export for windows powershell, written to stdout |
+| 3   | `normalizeci --output nci.env`                 | generate nci variables in the suggested format for the current system             |
+| 4   | `normalizeci --hostenv --output nci.env`       | additionally to 3 includes all env vars from the host                             |
+| 5   | `normalizeci --format cmd`                     | generate nci variables in format export for windows cmd, written to stdout        |
+| 6   | `normalizeci -v`                               | print version information                                                         |
+
+#### file based
 
 Linux/MacOS
 
 ```bash
-eval $(normalizeci)
+normalizeci run --format export --output nci.env
+source nci.env
+rm nci.env
 ```
 
 Windows
 
 ```powershell
-$nenv = normalizeci
+normalizeci run --format powershell --output nci.ps1
+& .\nci.ps1
+rm nci.ps1
+```
+
+#### terminal session
+
+The NormalizeCI CLI will return the commands to set the normalized variables in your current terminal session, so you need to run the response of the command.
+
+Linux/MacOS
+
+```bash
+eval $(normalizeci run)
+```
+
+Windows
+
+```powershell
+$nenv = normalizeci run
 Invoke-Expression "$nenv"
 ```
 

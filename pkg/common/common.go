@@ -58,13 +58,6 @@ func GetDirectoryNameFromPath(path string) string {
 	return parent
 }
 
-// CheckForError checks if a error happend and logs it, and ends the process
-func CheckForError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 // GetHostFromURL gets the host from a url
 func GetHostFromURL(addr string) string {
 	u, err := url.Parse(addr)

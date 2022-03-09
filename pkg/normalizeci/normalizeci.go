@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/rs/zerolog/log"
-	"io"
 	"os"
 	"runtime"
 	"strings"
@@ -44,33 +43,67 @@ func RunNormalization(env map[string]string) map[string]string {
 	return normalized
 }
 
-// SetNormalizedEnvironment makes the normalized environment available in the current session
-func SetNormalizedEnvironment(normalized map[string]string) {
+// FormatEnvironment makes the normalized environment available in the current session
+func FormatEnvironment(normalized map[string]string, format string) string {
+	if format == "export" {
+		return setNormalizedEnvironmentExport(normalized)
+	} else if format == "powershell" {
+		return setNormalizedEnvironmentPowershell(normalized)
+	} else if format == "cmd" {
+		return setNormalizedEnvironmentCmd(normalized)
+	}
+
+	return ""
+}
+
+func GetDefaultFormat() string {
 	if runtime.GOOS == "linux" {
-		setNormalizedEnvironmentLinux(normalized)
+		return "export"
 	} else if runtime.GOOS == "windows" {
-		setNormalizedEnvironmentWindows(normalized)
+		return "powershell"
+	}
+
+	return ""
+}
+
+func ConfigureProcessEnvironment(normalized map[string]string) {
+	for key, element := range normalized {
+		err := os.Setenv(key, element)
+		if err != nil {
+			log.Err(err).Str("key", key).Str("value", element).Msg("failed to set env property")
+		}
 	}
 }
 
-func setNormalizedEnvironmentLinux(normalized map[string]string) {
-	for key, element := range normalized {
-		err := os.Setenv(key, element)
-		common.CheckForError(err)
+func setNormalizedEnvironmentExport(normalized map[string]string) string {
+	var sb strings.Builder
 
+	for key, element := range normalized {
 		// print via stdout and escape values
-		s := fmt.Sprintf("export %s=\"%s\"\n", key, strings.ReplaceAll(element, "\"", "\\\""))
-		io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
+		sb.WriteString(fmt.Sprintf("export %s=\"%s\"\n", key, strings.ReplaceAll(element, "\"", "\\\"")))
 	}
+
+	return sb.String()
 }
 
-func setNormalizedEnvironmentWindows(normalized map[string]string) {
-	for key, element := range normalized {
-		err := os.Setenv(key, element)
-		common.CheckForError(err)
+func setNormalizedEnvironmentPowershell(normalized map[string]string) string {
+	var sb strings.Builder
 
+	for key, element := range normalized {
 		// print via stdout and escape values
-		s := fmt.Sprintf("Set-Variable -Name %s -Value \"%s\";\n", key, strings.ReplaceAll(element, "\"", "\\\""))
-		io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
+		sb.WriteString(fmt.Sprintf("$env:%s=\"%s\";\n", key, strings.ReplaceAll(element, "\"", "\\\"")))
 	}
+
+	return sb.String()
+}
+
+func setNormalizedEnvironmentCmd(normalized map[string]string) string {
+	var sb strings.Builder
+
+	for key, element := range normalized {
+		// print via stdout and escape values
+		sb.WriteString(fmt.Sprintf("set %s=%s\n", key, element))
+	}
+
+	return sb.String()
 }

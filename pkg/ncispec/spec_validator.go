@@ -16,9 +16,9 @@ func init() {
 }
 
 type validationError struct {
-	field       string
-	value       string
-	description string
+	Field       string
+	Value       string
+	Description string
 }
 
 func validateSlug(fl validator.FieldLevel) bool {

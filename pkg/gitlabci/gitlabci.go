@@ -49,7 +49,6 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	// pipeline
 	nci.NCI_PIPELINE_TRIGGER = env["CI_PIPELINE_SOURCE"]
 	if nci.NCI_PIPELINE_TRIGGER == ncispec.PipelineTriggerPullRequest {
-		// PR
 		nci.NCI_PIPELINE_PULL_REQUEST_ID = env["CI_MERGE_REQUEST_IID"]
 	}
 
