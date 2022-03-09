@@ -39,7 +39,7 @@ Examples:
 Linux/MacOS
 
 ```bash
-normalizeci run --format export --output nci.env
+normalizeci --format export --output nci.env
 source nci.env
 rm nci.env
 ```
@@ -47,7 +47,7 @@ rm nci.env
 Windows
 
 ```powershell
-normalizeci run --format powershell --output nci.ps1
+normalizeci --format powershell --output nci.ps1
 & .\nci.ps1
 rm nci.ps1
 ```
@@ -65,7 +65,7 @@ eval $(normalizeci run)
 Windows
 
 ```powershell
-$nenv = normalizeci run
+$nenv = normalizeci
 Invoke-Expression "$nenv"
 ```
 
