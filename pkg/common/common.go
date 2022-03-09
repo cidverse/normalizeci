@@ -22,7 +22,10 @@ func GetMachineEnvironment() map[string]string {
 
 	for _, entry := range os.Environ() {
 		z := strings.SplitN(entry, "=", 2)
-		data[z[0]] = z[1]
+
+		if len(z[0]) > 0 {
+			data[z[0]] = z[1]
+		}
 	}
 
 	return data
