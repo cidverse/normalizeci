@@ -192,7 +192,7 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 	} else {
 		fromCommit, fromCommitErr := repository.CommitObject(plumbing.NewHash(from))
 		if fromCommitErr != nil {
-			return nil, errors.New("can't resolve commit hash " + from)
+			return nil, errors.New("can't resolve commit hash [from] for " + from + ": " + fromCommitErr.Error())
 		}
 		fromHash = fromCommit.Hash
 	}
@@ -207,7 +207,7 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 	} else {
 		toCommit, toCommitErr := repository.CommitObject(plumbing.NewHash(to))
 		if toCommitErr != nil {
-			return nil, errors.New("can't resolve commit hash " + from)
+			return nil, errors.New("can't resolve commit hash [to] for " + to + ": " + toCommitErr.Error())
 		}
 		fromHash = toCommit.Hash
 	}
