@@ -96,23 +96,6 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	}
 	data["NCI_COMMIT_REF_VCS"] = currentRef
 
-	// previous release
-	isStableRelease := false
-	if data["NCI_COMMIT_REF_TYPE"] == "tag" {
-		isStableRelease = isVersionStable(data["NCI_COMMIT_REF_NAME"])
-	}
-	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef, isStableRelease, true)
-	if previousReleaseErr == nil {
-		data["NCI_LASTRELEASE_REF_NAME"] = previousRelease.Name
-		data["NCI_LASTRELEASE_REF_SLUG"] = slug.Make(previousRelease.Name)
-		data["NCI_LASTRELEASE_REF_VCS"] = previousRelease.Reference
-
-		commits, commitsErr := FindCommitsBetweenRefs(dir, currentRef, previousRelease.Reference)
-		if commitsErr == nil {
-			data["NCI_LASTRELEASE_COMMIT_AFTER_COUNT"] = strconv.Itoa(len(commits))
-		}
-	}
-
 	// release name (=name, but without leading v, without slash)
 	data[ncispec.NCI_COMMIT_REF_RELEASE] = getReleaseName(data[ncispec.NCI_COMMIT_REF_NAME])
 
@@ -152,6 +135,23 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	if !isShallowClone {
 		// can only be set, if the clone isn't shallow
 		data[ncispec.NCI_COMMIT_COUNT] = strconv.Itoa(commitCount)
+	}
+
+	// previous release
+	isStableRelease := false
+	if data[ncispec.NCI_COMMIT_REF_TYPE] == "tag" {
+		isStableRelease = isVersionStable(data["NCI_COMMIT_REF_NAME"])
+	}
+	previousRelease, previousReleaseErr := FindLatestRelease(dir, currentRef, isStableRelease, true)
+	if previousReleaseErr == nil {
+		data["NCI_LASTRELEASE_REF_NAME"] = previousRelease.Name
+		data["NCI_LASTRELEASE_REF_SLUG"] = slug.Make(previousRelease.Name)
+		data["NCI_LASTRELEASE_REF_VCS"] = previousRelease.Reference
+
+		commits, commitsErr := FindCommitsBetweenRefs(dir, currentRef, previousRelease.Reference)
+		if commitsErr == nil {
+			data["NCI_LASTRELEASE_COMMIT_AFTER_COUNT"] = strconv.Itoa(len(commits))
+		}
 	}
 
 	return data, nil

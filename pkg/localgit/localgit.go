@@ -74,6 +74,10 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_COMMIT_COMMITTER_NAME = vcsData[ncispec.NCI_COMMIT_COMMITTER_NAME]
 	nci.NCI_COMMIT_COMMITTER_EMAIL = vcsData[ncispec.NCI_COMMIT_COMMITTER_EMAIL]
 	nci.NCI_COMMIT_COUNT = vcsData[ncispec.NCI_COMMIT_COUNT]
+	nci.NCI_LASTRELEASE_REF_NAME = vcsData[ncispec.NCI_LASTRELEASE_REF_NAME]
+	nci.NCI_LASTRELEASE_REF_SLUG = vcsData[ncispec.NCI_LASTRELEASE_REF_SLUG]
+	nci.NCI_LASTRELEASE_REF_VCS = vcsData[ncispec.NCI_LASTRELEASE_REF_VCS]
+	nci.NCI_LASTRELEASE_COMMIT_AFTER_COUNT = vcsData[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT]
 
 	// project details
 	projectData := projectdetails.GetProjectDetails(nci.NCI_REPOSITORY_KIND, nci.NCI_REPOSITORY_REMOTE)
