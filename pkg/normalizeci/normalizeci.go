@@ -14,6 +14,16 @@ import (
 	"github.com/cidverse/normalizeci/pkg/localgit"
 )
 
+// holds all known normalizers
+var normalizers []common.Normalizer
+
+func init() {
+	normalizers = append(normalizers, azuredevops.NewNormalizer())
+	normalizers = append(normalizers, githubactions.NewNormalizer())
+	normalizers = append(normalizers, gitlabci.NewNormalizer())
+	normalizers = append(normalizers, localgit.NewNormalizer())
+}
+
 func RunDefaultNormalization() map[string]string {
 	env := common.GetMachineEnvironment()
 	return RunNormalization(env)
@@ -21,19 +31,29 @@ func RunDefaultNormalization() map[string]string {
 
 // RunNormalization executes the ci normalization for all supported services
 func RunNormalization(env map[string]string) map[string]string {
-	// initialize normalizers
-	var normalizers []common.Normalizer
-	normalizers = append(normalizers, azuredevops.NewNormalizer())
-	normalizers = append(normalizers, githubactions.NewNormalizer())
-	normalizers = append(normalizers, gitlabci.NewNormalizer())
-	normalizers = append(normalizers, localgit.NewNormalizer())
-
 	// normalize (iterate over all supported systems and normalize variables if possible)
 	var normalized map[string]string
 	for _, normalizer := range normalizers {
 		if normalizer.Check(env) == true {
 			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
 			normalized = normalizer.Normalize(env)
+			break
+		} else {
+			log.Debug().Msg("Didn't match in " + normalizer.GetName())
+		}
+	}
+
+	return normalized
+}
+
+// RunDenormalization will generate ci variables for the target service
+func RunDenormalization(target string, env map[string]string) map[string]string {
+	// denormalize
+	var normalized map[string]string
+	for _, normalizer := range normalizers {
+		if target == normalizer.GetSlug() {
+			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
+			normalized = normalizer.Denormalize(env)
 			break
 		} else {
 			log.Debug().Msg("Didn't match in " + normalizer.GetName())
@@ -66,7 +86,7 @@ func GetDefaultFormat() string {
 	return ""
 }
 
-func ConfigureProcessEnvironment(normalized map[string]string) {
+func SetProcessEnvironment(normalized map[string]string) {
 	for key, element := range normalized {
 		err := os.Setenv(key, element)
 		if err != nil {

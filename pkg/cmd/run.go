@@ -8,20 +8,32 @@ import (
 	"os"
 )
 
-func normalizationCommand(format string, hostEnv bool, output string, strict bool) {
+func normalizationCommand(format string, hostEnv bool, output string, strict bool, targets []string) {
 	// run normalization
 	var normalizedEnv = normalizeci.RunDefaultNormalization()
-
-	normalizeci.ConfigureProcessEnvironment(normalizedEnv)
 
 	// set normalized variables in current session
 	var nci = ncispec.OfMap(normalizedEnv)
 	if hostEnv == false {
 		nci.DATA = nil // exclude hostEnv from generation
 	}
-	content := normalizeci.FormatEnvironment(ncispec.ToMap(nci), format)
+	outputEnv := ncispec.ToMap(nci)
+
+	// set process env
+	normalizeci.SetProcessEnvironment(normalizedEnv)
+
+	// targets
+	if len(targets) > 0 {
+		for _, target := range targets {
+			denormalized := normalizeci.RunDenormalization(target, normalizedEnv)
+			for key, value := range denormalized {
+				outputEnv[key] = value
+			}
+		}
+	}
 
 	// content?
+	content := normalizeci.FormatEnvironment(outputEnv, format)
 	if len(content) == 0 {
 		log.Error().Msg("unsupported format!")
 		os.Exit(1)

@@ -24,6 +24,11 @@ func (n Normalizer) GetName() string {
 	return n.name
 }
 
+// GetSlug returns the slug of the normalizer
+func (n Normalizer) GetSlug() string {
+	return n.slug
+}
+
 // Check if this package can handle the current environment
 func (n Normalizer) Check(env map[string]string) bool {
 	if env["GITHUB_ACTIONS"] == "true" {

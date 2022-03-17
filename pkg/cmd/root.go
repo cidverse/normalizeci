@@ -34,8 +34,9 @@ var rootCmd = &cobra.Command{
 		output, _ := cmd.Flags().GetString("output")
 		hostEnv, _ := cmd.Flags().GetBool("hostEnv")
 		strict, _ := cmd.Flags().GetBool("strict")
+		targets, _ := cmd.Flags().GetStringArray("target")
 
-		normalizationCommand(format, hostEnv, output, strict)
+		normalizationCommand(format, hostEnv, output, strict, targets)
 	},
 }
 
@@ -45,6 +46,7 @@ func init() {
 	rootCmd.PersistentFlags().Bool("hostenv", false, "Should include os env along with normalized variables into the target?")
 	rootCmd.PersistentFlags().Bool("strict", false, "Validate the generated variables against the spec and fail on errors?")
 	rootCmd.PersistentFlags().BoolP("version", "v", false, "all software has versions, this prints version information for normalizeci")
+	rootCmd.PersistentFlags().StringArrayP("target", "t", []string{}, "Additionally generates the environment for the target ci services")
 }
 
 // Execute executes the root command.

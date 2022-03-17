@@ -112,10 +112,10 @@ type NormalizeCISpec struct {
 	NCI_COMMIT_DESCRIPTION     string // The description of the latest commit on the current reference.
 	NCI_COMMIT_COUNT           string `validate:"required"` // The total amount of commits inside of the current reference, can be used as build number.
 
-	NCI_LASTRELEASE_REF_NAME           string // Human readable name of the last stable release.
-	NCI_LASTRELEASE_REF_SLUG           string // Slug of the last stable release.
-	NCI_LASTRELEASE_REF_VCS            string // Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
-	NCI_LASTRELEASE_COMMIT_AFTER_COUNT string // Holds the count of commits since the last stable release.
+	NCI_LASTRELEASE_REF_NAME           string `validate:"required"` // Human readable name of the last stable release.
+	NCI_LASTRELEASE_REF_SLUG           string `validate:"required"` // Slug of the last stable release.
+	NCI_LASTRELEASE_REF_VCS            string `validate:"required"` // Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
+	NCI_LASTRELEASE_COMMIT_AFTER_COUNT string `validate:"required"` // Holds the count of commits since the last stable release.
 
 	NCI_DEPLOY_FREEZE string `validate:"required,boolean"` // Currently in a deploy freeze window? (`true`, `false`)
 }

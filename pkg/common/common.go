@@ -11,6 +11,7 @@ import (
 // Normalizer is a common interface to work with all normalizers
 type Normalizer interface {
 	GetName() string
+	GetSlug() string
 	Check(env map[string]string) bool
 	Normalize(env map[string]string) map[string]string
 	Denormalize(env map[string]string) map[string]string
