@@ -106,6 +106,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	if projectData != nil {
 		nci.NCI_PROJECT_ID = projectData[ncispec.NCI_PROJECT_ID]
 		nci.NCI_PROJECT_NAME = projectData[ncispec.NCI_PROJECT_NAME]
+		nci.NCI_PROJECT_PATH = projectData[ncispec.NCI_PROJECT_PATH]
 		nci.NCI_PROJECT_SLUG = projectData[ncispec.NCI_PROJECT_SLUG]
 		nci.NCI_PROJECT_DESCRIPTION = projectData[ncispec.NCI_PROJECT_DESCRIPTION]
 		nci.NCI_PROJECT_TOPICS = projectData[ncispec.NCI_PROJECT_TOPICS]

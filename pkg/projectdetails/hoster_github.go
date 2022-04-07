@@ -2,6 +2,7 @@ package projectdetails
 
 import (
 	"context"
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/google/go-github/v35/github"
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"
@@ -31,18 +32,19 @@ func GetProjectDetailsGitHub(repoRemote string) (map[string]string, error) {
 		return nil, repoErr
 	}
 
-	projectDetails["NCI_PROJECT_ID"] = strconv.FormatInt(*repo.ID, 10)
-	projectDetails["NCI_PROJECT_NAME"] = *repo.Name
-	projectDetails["NCI_PROJECT_SLUG"] = slug.Make(*repo.FullName)
+	projectDetails[ncispec.NCI_PROJECT_ID] = strconv.FormatInt(*repo.ID, 10)
+	projectDetails[ncispec.NCI_PROJECT_NAME] = *repo.Name
+	projectDetails[ncispec.NCI_PROJECT_PATH] = *repo.FullName
+	projectDetails[ncispec.NCI_PROJECT_SLUG] = slug.Make(*repo.FullName)
 	if repo.Description != nil {
-		projectDetails["NCI_PROJECT_DESCRIPTION"] = *repo.Description
+		projectDetails[ncispec.NCI_PROJECT_DESCRIPTION] = *repo.Description
 	} else {
-		projectDetails["NCI_PROJECT_DESCRIPTION"] = ""
+		projectDetails[ncispec.NCI_PROJECT_DESCRIPTION] = ""
 	}
-	projectDetails["NCI_PROJECT_TOPICS"] = strings.Join(repo.Topics, ",")
-	projectDetails["NCI_PROJECT_ISSUE_URL"] = strings.Replace(*repo.IssuesURL, "{/number}", "/{ID}", 1)
-	projectDetails["NCI_PROJECT_STARGAZERS"] = strconv.Itoa(*repo.StargazersCount)
-	projectDetails["NCI_PROJECT_FORKS"] = strconv.Itoa(*repo.ForksCount)
+	projectDetails[ncispec.NCI_PROJECT_TOPICS] = strings.Join(repo.Topics, ",")
+	projectDetails[ncispec.NCI_PROJECT_ISSUE_URL] = strings.Replace(*repo.IssuesURL, "{/number}", "/{ID}", 1)
+	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(*repo.StargazersCount)
+	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(*repo.ForksCount)
 
 	return projectDetails, nil
 }

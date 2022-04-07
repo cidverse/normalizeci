@@ -89,6 +89,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	if projectData != nil {
 		nci.NCI_PROJECT_ID = projectData[ncispec.NCI_PROJECT_ID]
 		nci.NCI_PROJECT_NAME = projectData[ncispec.NCI_PROJECT_NAME]
+		nci.NCI_PROJECT_PATH = projectData[ncispec.NCI_PROJECT_PATH]
 		nci.NCI_PROJECT_SLUG = projectData[ncispec.NCI_PROJECT_SLUG]
 		nci.NCI_PROJECT_DESCRIPTION = projectData[ncispec.NCI_PROJECT_DESCRIPTION]
 		nci.NCI_PROJECT_TOPICS = projectData[ncispec.NCI_PROJECT_TOPICS]
@@ -102,7 +103,11 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_CONTAINERREGISTRY_HOST = ""
 	nci.NCI_CONTAINERREGISTRY_USERNAME = ""
 	nci.NCI_CONTAINERREGISTRY_PASSWORD = ""
-	nci.NCI_CONTAINERREGISTRY_REPOSITORY = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+	if len(nci.NCI_PROJECT_PATH) > 0 {
+		nci.NCI_CONTAINERREGISTRY_REPOSITORY = nci.NCI_PROJECT_PATH
+	} else {
+		nci.NCI_CONTAINERREGISTRY_REPOSITORY = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+	}
 	nci.NCI_CONTAINERREGISTRY_TAG = nci.NCI_COMMIT_REF_RELEASE
 
 	nci.NCI_DEPLOY_FREEZE = "false"

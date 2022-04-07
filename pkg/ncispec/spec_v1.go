@@ -19,6 +19,7 @@ const NCI_PIPELINE_PULL_REQUEST_ID = "NCI_PIPELINE_PULL_REQUEST_ID" // The numbe
 
 const NCI_PROJECT_ID = "NCI_PROJECT_ID"                   // Unique project id, can be used in deployments.
 const NCI_PROJECT_NAME = "NCI_PROJECT_NAME"               // Unique project id, can be used in deployments.
+const NCI_PROJECT_PATH = "NCI_PROJECT_PATH"               // Path of the namespace and the project
 const NCI_PROJECT_SLUG = "NCI_PROJECT_SLUG"               // Project slug, that can be used in deployments.
 const NCI_PROJECT_DESCRIPTION = "NCI_PROJECT_DESCRIPTION" // The project description.
 const NCI_PROJECT_TOPICS = "NCI_PROJECT_TOPICS"           // The topics / tags of the project.
@@ -80,6 +81,7 @@ type NormalizeCISpec struct {
 
 	NCI_PROJECT_ID          string // Unique project id, can be used in deployments.
 	NCI_PROJECT_NAME        string // Unique project id, can be used in deployments.
+	NCI_PROJECT_PATH        string // Path of the Namespace and the project
 	NCI_PROJECT_SLUG        string `validate:"required,is-slug"` // Project slug, that can be used in deployments.
 	NCI_PROJECT_DESCRIPTION string // The project description.
 	NCI_PROJECT_TOPICS      string // The topics / tags of the project.
@@ -139,6 +141,7 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		NCI_PIPELINE_PULL_REQUEST_ID:       data[NCI_PIPELINE_PULL_REQUEST_ID],
 		NCI_PROJECT_ID:                     data[NCI_PROJECT_ID],
 		NCI_PROJECT_NAME:                   data[NCI_PROJECT_NAME],
+		NCI_PROJECT_PATH:                   data[NCI_PROJECT_PATH],
 		NCI_PROJECT_SLUG:                   data[NCI_PROJECT_SLUG],
 		NCI_PROJECT_DESCRIPTION:            data[NCI_PROJECT_DESCRIPTION],
 		NCI_PROJECT_TOPICS:                 data[NCI_PROJECT_TOPICS],
@@ -201,6 +204,7 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 
 	data[NCI_PROJECT_ID] = spec.NCI_PROJECT_ID
 	data[NCI_PROJECT_NAME] = spec.NCI_PROJECT_NAME
+	data[NCI_PROJECT_PATH] = spec.NCI_PROJECT_PATH
 	data[NCI_PROJECT_SLUG] = spec.NCI_PROJECT_SLUG
 	data[NCI_PROJECT_DESCRIPTION] = spec.NCI_PROJECT_DESCRIPTION
 	data[NCI_PROJECT_TOPICS] = spec.NCI_PROJECT_TOPICS

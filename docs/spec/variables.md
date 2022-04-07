@@ -40,6 +40,7 @@ Spec-Version: `0.3.0`
 |---------------------------|----------------------------------------------------------------|
 | `NCI_PROJECT_ID`          | Unique project id, can be used in deployments.                 |
 | `NCI_PROJECT_NAME`        | Unique project id, can be used in deployments.                 |
+| `NCI_PROJECT_PATH`        | Path of the Namespace and the project.                         |
 | `NCI_PROJECT_SLUG`        | Project slug, that can be used in deployments.                 |
 | `NCI_PROJECT_DESCRIPTION` | The project description.                                       |
 | `NCI_PROJECT_TOPICS`      | The topics / tags of the project.                              |

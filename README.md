@@ -59,7 +59,7 @@ The NormalizeCI CLI will return the commands to set the normalized variables in 
 Linux/MacOS
 
 ```bash
-eval $(normalizeci run)
+eval $(normalizeci)
 ```
 
 Windows

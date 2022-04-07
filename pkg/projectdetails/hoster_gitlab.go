@@ -1,6 +1,7 @@
 package projectdetails
 
 import (
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/gosimple/slug"
 	"github.com/xanzy/go-gitlab"
 	"os"
@@ -30,14 +31,15 @@ func GetProjectDetailsGitLab(repoRemote string) (map[string]string, error) {
 		return nil, projectErr
 	}
 
-	projectDetails["NCI_PROJECT_ID"] = strconv.Itoa(project.ID)
-	projectDetails["NCI_PROJECT_NAME"] = project.Name
-	projectDetails["NCI_PROJECT_SLUG"] = slug.Make(project.NameWithNamespace)
-	projectDetails["NCI_PROJECT_DESCRIPTION"] = project.Description
-	projectDetails["NCI_PROJECT_TOPICS"] = strings.Join(project.TagList, ",")
-	projectDetails["NCI_PROJECT_ISSUE_URL"] = project.WebURL + "/-/issues/{ID}"
-	projectDetails["NCI_PROJECT_STARGAZERS"] = strconv.Itoa(project.StarCount)
-	projectDetails["NCI_PROJECT_FORKS"] = strconv.Itoa(project.ForksCount)
+	projectDetails[ncispec.NCI_PROJECT_ID] = strconv.Itoa(project.ID)
+	projectDetails[ncispec.NCI_PROJECT_NAME] = project.Name
+	projectDetails[ncispec.NCI_PROJECT_PATH] = project.NameWithNamespace
+	projectDetails[ncispec.NCI_PROJECT_SLUG] = slug.Make(project.NameWithNamespace)
+	projectDetails[ncispec.NCI_PROJECT_DESCRIPTION] = project.Description
+	projectDetails[ncispec.NCI_PROJECT_TOPICS] = strings.Join(project.TagList, ",")
+	projectDetails[ncispec.NCI_PROJECT_ISSUE_URL] = project.WebURL + "/-/issues/{ID}"
+	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(project.StarCount)
+	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(project.ForksCount)
 
 	return projectDetails, nil
 }
