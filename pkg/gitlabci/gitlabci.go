@@ -70,18 +70,18 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	}
 	nci.NCI_REPOSITORY_KIND = vcsData[ncispec.NCI_REPOSITORY_KIND]
 	nci.NCI_REPOSITORY_REMOTE = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
-	if len(env["CI_COMMIT_BRANCH"]) > 0 {
-		nci.NCI_COMMIT_REF_TYPE = "branch"
-		nci.NCI_COMMIT_REF_NAME = env["CI_COMMIT_BRANCH"]
-		nci.NCI_COMMIT_REF_PATH = "branch/" + env["CI_COMMIT_BRANCH"]
-		nci.NCI_COMMIT_REF_SLUG = slug.Make(env["CI_COMMIT_BRANCH"])
-		nci.NCI_COMMIT_REF_VCS = "refs/heads/" + env["CI_COMMIT_BRANCH"]
-	} else if len(env["CI_COMMIT_TAG"]) > 0 {
+	if len(env["CI_COMMIT_TAG"]) > 0 {
 		nci.NCI_COMMIT_REF_TYPE = "tag"
 		nci.NCI_COMMIT_REF_NAME = env["CI_COMMIT_TAG"]
 		nci.NCI_COMMIT_REF_PATH = "tag/" + env["CI_COMMIT_TAG"]
 		nci.NCI_COMMIT_REF_SLUG = slug.Make(env["CI_COMMIT_TAG"])
 		nci.NCI_COMMIT_REF_VCS = "refs/tags/" + env["CI_COMMIT_TAG"]
+	} else {
+		nci.NCI_COMMIT_REF_TYPE = "branch"
+		nci.NCI_COMMIT_REF_NAME = env["CI_COMMIT_REF_NAME"]
+		nci.NCI_COMMIT_REF_PATH = "branch/" + env["CI_COMMIT_REF_NAME"]
+		nci.NCI_COMMIT_REF_SLUG = slug.Make(env["CI_COMMIT_REF_NAME"])
+		nci.NCI_COMMIT_REF_VCS = "refs/heads/" + env["CI_COMMIT_REF_NAME"]
 	}
 	nci.NCI_COMMIT_REF_RELEASE = vcsData[ncispec.NCI_COMMIT_REF_RELEASE]
 	nci.NCI_COMMIT_SHA = vcsData[ncispec.NCI_COMMIT_SHA]
