@@ -5,14 +5,14 @@ go 1.18
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/go-git/go-git/v5 v5.4.2
-	github.com/go-playground/validator/v10 v10.10.0
+	github.com/go-playground/validator/v10 v10.11.0
 	github.com/google/go-github/v35 v35.3.0
 	github.com/gosimple/slug v1.12.0
 	github.com/rs/zerolog v1.26.1
-	github.com/spf13/cobra v1.3.0
-	github.com/stretchr/testify v1.7.0
-	github.com/xanzy/go-gitlab v0.54.3
-	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
+	github.com/spf13/cobra v1.4.0
+	github.com/stretchr/testify v1.7.1
+	github.com/xanzy/go-gitlab v0.65.0
+	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5
 )
 
 require (
@@ -41,7 +41,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/xanzy/ssh-agent v0.3.1 // indirect
 	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
-	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d // indirect
+	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20211116232009-f0f3c7e86c11 // indirect
