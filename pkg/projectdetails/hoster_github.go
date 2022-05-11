@@ -17,11 +17,16 @@ func GetProjectDetailsGitHub(repoRemote string) (map[string]string, error) {
 	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, "https://github.com/"), "git@github.com:"), ".git")
 	repoPathSplit := strings.SplitN(repoPath, "/", 2)
 
+	ghToken := ""
+	if len(os.Getenv("GITHUB_TOKEN")) > 0 {
+		ghToken = os.Getenv("GITHUB_TOKEN")
+	}
+
 	ctx := context.Background()
 	client := github.NewClient(nil)
-	if len(os.Getenv("GITHUB_TOKEN")) > 0 {
+	if len(ghToken) > 0 {
 		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+			&oauth2.Token{AccessToken: ghToken},
 		)
 		tc := oauth2.NewClient(ctx, ts)
 		client = github.NewClient(tc)

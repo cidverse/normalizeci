@@ -17,6 +17,9 @@ func GetProjectDetailsGitLab(repoRemote string) (map[string]string, error) {
 	if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
 		glToken = os.Getenv("CI_BUILD_TOKEN")
 	}
+	if os.Getenv("CI") == "true" && len(os.Getenv("CI_JOB_TOKEN")) > 0 {
+		glToken = os.Getenv("CI_JOB_TOKEN")
+	}
 	if len(os.Getenv("GITLAB_TOKEN")) > 0 {
 		glToken = os.Getenv("GITLAB_TOKEN")
 	}
