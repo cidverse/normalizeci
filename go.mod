@@ -10,7 +10,7 @@ require (
 	github.com/gosimple/slug v1.12.0
 	github.com/rs/zerolog v1.27.0
 	github.com/spf13/cobra v1.5.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.0
 	github.com/xanzy/go-gitlab v0.69.0
 	golang.org/x/oauth2 v0.0.0-20220630143837-2104d58473e0
 )
@@ -50,5 +50,5 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
