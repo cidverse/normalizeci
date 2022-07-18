@@ -11,8 +11,8 @@ var validate *validator.Validate
 
 func init() {
 	validate = validator.New()
-	validate.RegisterValidation("is-slug", validateSlug)
-	validate.RegisterValidation("is-arch", validateArch)
+	_ = validate.RegisterValidation("is-slug", validateSlug)
+	_ = validate.RegisterValidation("is-arch", validateArch)
 }
 
 type validationError struct {
@@ -29,7 +29,7 @@ func validateArch(fl validator.FieldLevel) bool {
 	return archRegex.MatchString(fl.Field().String())
 }
 
-func validateSpec(spec NormalizeCISpec) []validationError {
+func validateSpec(spec *NormalizeCISpec) []validationError {
 	var errors []validationError
 
 	err := validate.Struct(spec)
@@ -41,7 +41,6 @@ func validateSpec(spec NormalizeCISpec) []validationError {
 
 		validationErrors := err.(validator.ValidationErrors)
 		for _, err := range validationErrors {
-			// fmt.Printf("%s / %s / %s / %s / %s\n", err.Field(), err.Tag(), err.Kind(), err.Value(), err.Param())
 			errors = append(errors, validationError{err.Field(), fmt.Sprintf("%v", err.Value()), err.Tag()})
 		}
 	}

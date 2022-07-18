@@ -96,21 +96,21 @@ type NormalizeCISpec struct {
 	NCI_CONTAINERREGISTRY_REPOSITORY string `validate:"required"` // The repository, that should be used for the current project.
 	NCI_CONTAINERREGISTRY_TAG        string `validate:"required"` // The tag that should be build.
 
-	NCI_REPOSITORY_KIND        string `validate:"required"`       //  The used version control system. (git)
-	NCI_REPOSITORY_REMOTE      string `validate:"required"`       // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
-	NCI_COMMIT_REF_TYPE        string `validate:"required"`       // The reference type. (branch / tag)
-	NCI_COMMIT_REF_NAME        string `validate:"required"`       // Human readable name of the current repository reference.
-	NCI_COMMIT_REF_PATH        string `validate:"required"`       // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
-	NCI_COMMIT_REF_SLUG        string `validate:"required"`       // Slug of the current repository reference.
-	NCI_COMMIT_REF_VCS         string `validate:"required"`       // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)// Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
-	NCI_COMMIT_REF_RELEASE     string `validate:"required"`       // Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
-	NCI_COMMIT_SHA             string `validate:"required"`       // A unique hash, that each commit gets.
-	NCI_COMMIT_SHA_SHORT       string `validate:"required"`       // A short form of the unique commit hash. (8 chars)
-	NCI_COMMIT_AUTHOR_NAME     string `validate:"required"`       // author name
-	NCI_COMMIT_AUTHOR_EMAIL    string `validate:"required,email"` // author email
-	NCI_COMMIT_COMMITTER_NAME  string `validate:"required"`       // committer name
-	NCI_COMMIT_COMMITTER_EMAIL string `validate:"required,email"` // committer email
-	NCI_COMMIT_TITLE           string `validate:"required"`       // The title of the latest commit on the current reference.
+	NCI_REPOSITORY_KIND        string `validate:"required"` //  The used version control system. (git)
+	NCI_REPOSITORY_REMOTE      string `validate:"required"` // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+	NCI_COMMIT_REF_TYPE        string `validate:"required"` // The reference type. (branch / tag)
+	NCI_COMMIT_REF_NAME        string `validate:"required"` // Human readable name of the current repository reference.
+	NCI_COMMIT_REF_PATH        string `validate:"required"` // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
+	NCI_COMMIT_REF_SLUG        string `validate:"required"` // Slug of the current repository reference.
+	NCI_COMMIT_REF_VCS         string `validate:"required"` // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)// Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
+	NCI_COMMIT_REF_RELEASE     string `validate:"required"` // Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
+	NCI_COMMIT_SHA             string `validate:"required"` // A unique hash, that each commit gets.
+	NCI_COMMIT_SHA_SHORT       string `validate:"required"` // A short form of the unique commit hash. (8 chars)
+	NCI_COMMIT_AUTHOR_NAME     string `validate:"required"` // author name
+	NCI_COMMIT_AUTHOR_EMAIL    string `validate:"required"` // author email
+	NCI_COMMIT_COMMITTER_NAME  string `validate:"required"` // committer name
+	NCI_COMMIT_COMMITTER_EMAIL string `validate:"required"` // committer email
+	NCI_COMMIT_TITLE           string `validate:"required"` // The title of the latest commit on the current reference.
 	NCI_COMMIT_DESCRIPTION     string // The description of the latest commit on the current reference.
 	NCI_COMMIT_COUNT           string `validate:"required"` // The total amount of commits inside of the current reference, can be used as build number.
 
@@ -248,6 +248,6 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 }
 
 // Validate will validate the spec for completion
-func (spec NormalizeCISpec) Validate() []validationError {
+func (spec *NormalizeCISpec) Validate() []validationError {
 	return validateSpec(spec)
 }

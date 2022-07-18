@@ -27,7 +27,7 @@ func init() {
 
 	// detect debug mode
 	debugValue, debugIsSet := os.LookupEnv("NCI_DEBUG")
-	if debugIsSet && strings.ToLower(debugValue) == "true" {
+	if debugIsSet && strings.EqualFold(debugValue, "true") {
 		zerolog.SetGlobalLevel(zerolog.TraceLevel)
 	}
 

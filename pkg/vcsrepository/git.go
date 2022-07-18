@@ -30,7 +30,7 @@ func IsGitRepository(directory string) bool {
 // CollectGitRepositoryInformation retrieves normalized variables of the git repository
 func CollectGitRepositoryInformation(dir string, data map[string]string) (map[string]string, error) {
 	// open repository from local path
-	log.Debug().Msg("Using git repository at " + dir)
+	log.Trace().Msg("Using git repository at " + dir)
 	repository, repositoryErr := git.PlainOpen(dir)
 	if repositoryErr != nil {
 		return nil, errors.New("failed to open git repository at " + dir)
@@ -42,13 +42,13 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	if refErr != nil {
 		return nil, errors.New("failed to read git repository head, repository might not be initialized")
 	}
-	log.Debug().Msg("Git Ref " + ref.String())
+	log.Trace().Str("ref", ref.String()).Msg("repository head lookup")
 
 	// repository kind and remote
 	data["NCI_REPOSITORY_KIND"] = "git"
 	remote, remoteErr := repository.Remote("origin")
 	if remoteErr == nil && remote != nil && remote.Config() != nil && len(remote.Config().URLs) > 0 {
-		log.Debug().Msg("Git Remote " + remote.String())
+		log.Trace().Str("remote", remote.String()).Msg("git remote lookup")
 		data["NCI_REPOSITORY_REMOTE"] = remote.Config().URLs[0]
 	} else {
 		data["NCI_REPOSITORY_REMOTE"] = "local"
@@ -180,7 +180,7 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 		return nil, errors.New("failed to open git repository")
 	}
 
-	// references
+	// git references
 	// - from
 	var fromHash plumbing.Hash
 	if strings.HasPrefix(from, "refs/") {
@@ -209,7 +209,7 @@ func FindGitCommitsBetweenRefs(projectDir string, from string, to string) ([]Com
 		if toCommitErr != nil {
 			return nil, errors.New("can't resolve commit hash [to] for " + to + ": " + toCommitErr.Error())
 		}
-		fromHash = toCommit.Hash
+		toHash = toCommit.Hash
 	}
 
 	// commit references
@@ -292,7 +292,7 @@ func FindLatestGitRelease(projectDir string, from string, stable bool, skipFrom 
 			break
 		}
 		lastCommit = commit
-		commitCount = commitCount + 1
+		commitCount++
 
 		// log
 		log.Debug().Str("commit-hash", commit.Hash.String()).Str("commit-subject", commit.Message).Str("commit-refs", fmt.Sprintf("%+v\n", commitRefs[commit.Hash])).Msg("checking commit")

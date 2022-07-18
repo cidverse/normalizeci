@@ -7,8 +7,6 @@ import (
 	"testing"
 )
 
-var testEnvironment []string
-
 func TestMain(m *testing.M) {
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	code := m.Run()

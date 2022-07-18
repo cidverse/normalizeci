@@ -1,5 +1,8 @@
 # normalize.ci
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/cidverse/normalizeci.svg)](https://pkg.go.dev/github.com/cidverse/normalizeci)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cidverse/normalizeci)](https://goreportcard.com/report/github.com/cidverse/normalizeci)
+
 > A cli tool (or go library) to provide a foundation for a platform-agnostic CICD process.
 
 ## features
