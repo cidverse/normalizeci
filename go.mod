@@ -1,6 +1,6 @@
 module github.com/cidverse/normalizeci
 
-go 1.18
+go 1.18.4
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
