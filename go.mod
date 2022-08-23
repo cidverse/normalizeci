@@ -11,7 +11,7 @@ require (
 	github.com/rs/zerolog v1.27.0
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.0
-	github.com/xanzy/go-gitlab v0.73.0
+	github.com/xanzy/go-gitlab v0.73.1
 	golang.org/x/oauth2 v0.0.0-20220722155238-128564f6959c
 )
 
