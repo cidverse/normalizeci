@@ -45,13 +45,25 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	log.Trace().Str("ref", ref.String()).Msg("repository head lookup")
 
 	// repository kind and remote
-	data["NCI_REPOSITORY_KIND"] = "git"
+	data[ncispec.NCI_REPOSITORY_KIND] = "git"
 	remote, remoteErr := repository.Remote("origin")
 	if remoteErr == nil && remote != nil && remote.Config() != nil && len(remote.Config().URLs) > 0 {
 		log.Trace().Str("remote", remote.String()).Msg("git remote lookup")
-		data["NCI_REPOSITORY_REMOTE"] = remote.Config().URLs[0]
+		data[ncispec.NCI_REPOSITORY_REMOTE] = remote.Config().URLs[0]
 	} else {
-		data["NCI_REPOSITORY_REMOTE"] = "local"
+		data[ncispec.NCI_REPOSITORY_REMOTE] = "local"
+	}
+
+	// repository status
+	data[ncispec.NCI_REPOSITORY_STATUS] = "dirty"
+	workTree, workTreeErr := repository.Worktree()
+	if workTreeErr != nil {
+		workTreeStatus, workTreeStatusErr := workTree.Status()
+		if workTreeStatusErr != nil {
+			if workTreeStatus.IsClean() {
+				data[ncispec.NCI_REPOSITORY_STATUS] = "clean"
+			}
+		}
 	}
 
 	// pass

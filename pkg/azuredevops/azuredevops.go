@@ -81,6 +81,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	}
 	nci.NCI_REPOSITORY_KIND = vcsData[ncispec.NCI_REPOSITORY_KIND]
 	nci.NCI_REPOSITORY_REMOTE = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
+	nci.NCI_REPOSITORY_STATUS = vcsData[ncispec.NCI_REPOSITORY_STATUS]
 	nci.NCI_COMMIT_REF_TYPE = vcsData[ncispec.NCI_COMMIT_REF_TYPE]
 	nci.NCI_COMMIT_REF_NAME = vcsData[ncispec.NCI_COMMIT_REF_NAME]
 	nci.NCI_COMMIT_REF_PATH = vcsData[ncispec.NCI_COMMIT_REF_PATH]

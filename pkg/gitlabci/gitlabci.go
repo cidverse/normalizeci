@@ -70,6 +70,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	}
 	nci.NCI_REPOSITORY_KIND = vcsData[ncispec.NCI_REPOSITORY_KIND]
 	nci.NCI_REPOSITORY_REMOTE = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
+	nci.NCI_REPOSITORY_STATUS = vcsData[ncispec.NCI_REPOSITORY_STATUS]
 	if len(env["CI_COMMIT_TAG"]) > 0 {
 		nci.NCI_COMMIT_REF_TYPE = "tag"
 		nci.NCI_COMMIT_REF_NAME = env["CI_COMMIT_TAG"]

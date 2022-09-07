@@ -36,6 +36,7 @@ const NCI_CONTAINERREGISTRY_TAG = "NCI_CONTAINERREGISTRY_TAG"               // T
 
 const NCI_REPOSITORY_KIND = "NCI_REPOSITORY_KIND"               //  The used version control system. (git)
 const NCI_REPOSITORY_REMOTE = "NCI_REPOSITORY_REMOTE"           // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+const NCI_REPOSITORY_STATUS = "NCI_REPOSITORY_STATUS"           // The repository status (dirty, clean)
 const NCI_COMMIT_REF_TYPE = "NCI_COMMIT_REF_TYPE"               // The reference type. (branch / tag)
 const NCI_COMMIT_REF_NAME = "NCI_COMMIT_REF_NAME"               // Human readable name of the current repository reference.
 const NCI_COMMIT_REF_PATH = "NCI_COMMIT_REF_PATH"               // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
@@ -98,6 +99,7 @@ type NormalizeCISpec struct {
 
 	NCI_REPOSITORY_KIND        string `validate:"required"` //  The used version control system. (git)
 	NCI_REPOSITORY_REMOTE      string `validate:"required"` // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+	NCI_REPOSITORY_STATUS      string `validate:"required"` // The repository status (dirty, clean)
 	NCI_COMMIT_REF_TYPE        string `validate:"required"` // The reference type. (branch / tag)
 	NCI_COMMIT_REF_NAME        string `validate:"required"` // Human readable name of the current repository reference.
 	NCI_COMMIT_REF_PATH        string `validate:"required"` // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
@@ -156,6 +158,7 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		NCI_CONTAINERREGISTRY_TAG:          data[NCI_CONTAINERREGISTRY_TAG],
 		NCI_REPOSITORY_KIND:                data[NCI_REPOSITORY_KIND],
 		NCI_REPOSITORY_REMOTE:              data[NCI_REPOSITORY_REMOTE],
+		NCI_REPOSITORY_STATUS:              data[NCI_REPOSITORY_STATUS],
 		NCI_COMMIT_REF_TYPE:                data[NCI_COMMIT_REF_TYPE],
 		NCI_COMMIT_REF_NAME:                data[NCI_COMMIT_REF_NAME],
 		NCI_COMMIT_REF_PATH:                data[NCI_COMMIT_REF_PATH],
@@ -221,6 +224,7 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 
 	data[NCI_REPOSITORY_KIND] = spec.NCI_REPOSITORY_KIND
 	data[NCI_REPOSITORY_REMOTE] = spec.NCI_REPOSITORY_REMOTE
+	data[NCI_REPOSITORY_STATUS] = spec.NCI_REPOSITORY_STATUS
 	data[NCI_COMMIT_REF_TYPE] = spec.NCI_COMMIT_REF_TYPE
 	data[NCI_COMMIT_REF_NAME] = spec.NCI_COMMIT_REF_NAME
 	data[NCI_COMMIT_REF_PATH] = spec.NCI_COMMIT_REF_PATH
