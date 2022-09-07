@@ -55,5 +55,11 @@ func Execute() error {
 }
 
 func printVersion() {
-	fmt.Println("normalizeci " + Version + "-" + CommitHash + " " + runtime.GOOS + "/" + runtime.GOARCH + " BuildDate=" + BuildAt)
+	fmt.Fprintf(os.Stdout, "GitVersion:    %s\n", Version)
+	fmt.Fprintf(os.Stdout, "GitCommit:     %s\n", CommitHash)
+	fmt.Fprintf(os.Stdout, "GitTreeState:  %s\n", "clean")
+	fmt.Fprintf(os.Stdout, "BuildDate:     %s\n", BuildAt)
+	fmt.Fprintf(os.Stdout, "GoVersion:     %s\n", runtime.Version())
+	fmt.Fprintf(os.Stdout, "Compiler:      %s\n", runtime.Compiler)
+	fmt.Fprintf(os.Stdout, "Platform:      %s\n", runtime.GOOS+"/"+runtime.GOARCH)
 }
