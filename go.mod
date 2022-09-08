@@ -9,6 +9,7 @@ require (
 	github.com/google/go-github/v35 v35.3.0
 	github.com/gosimple/slug v1.12.0
 	github.com/rs/zerolog v1.28.0
+	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.0
 	github.com/xanzy/go-gitlab v0.73.1

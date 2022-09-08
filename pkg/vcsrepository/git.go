@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Masterminds/semver/v3"
+	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -37,6 +38,9 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	}
 	isShallowClone := fileExists(filepath.Join(dir, ".git", "shallow"))
 
+	// gitignore
+	ignoreMatcher := common.ProcessIgnoreFiles([]string{filepath.Join(dir, ".gitignore")})
+
 	// head reference
 	ref, refErr := repository.Head()
 	if refErr != nil {
@@ -55,13 +59,22 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	}
 
 	// repository status
-	data[ncispec.NCI_REPOSITORY_STATUS] = "dirty"
+	data[ncispec.NCI_REPOSITORY_STATUS] = "clean"
 	workTree, workTreeErr := repository.Worktree()
-	if workTreeErr != nil {
+	if workTreeErr == nil {
 		workTreeStatus, workTreeStatusErr := workTree.Status()
-		if workTreeStatusErr != nil {
-			if workTreeStatus.IsClean() {
-				data[ncispec.NCI_REPOSITORY_STATUS] = "clean"
+		if workTreeStatusErr == nil {
+			for file, fileStatus := range workTreeStatus {
+				if ignoreMatcher.MatchesPath(file) {
+					continue
+				}
+
+				// check for "dirty" files in the local repository
+				// will detect newlines as change, see https://github.com/go-git/go-git/issues/436
+				if fileStatus.Worktree != git.Unmodified || fileStatus.Staging != git.Unmodified {
+					// data[ncispec.NCI_REPOSITORY_STATUS] = "dirty"
+					// break
+				}
 			}
 		}
 	}
