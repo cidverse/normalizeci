@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Masterminds/semver/v3"
-	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -39,7 +38,7 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 	isShallowClone := fileExists(filepath.Join(dir, ".git", "shallow"))
 
 	// gitignore
-	ignoreMatcher := common.ProcessIgnoreFiles([]string{filepath.Join(dir, ".gitignore")})
+	// ignoreMatcher := common.ProcessIgnoreFiles([]string{filepath.Join(dir, ".gitignore")})
 
 	// head reference
 	ref, refErr := repository.Head()
@@ -60,24 +59,26 @@ func CollectGitRepositoryInformation(dir string, data map[string]string) (map[st
 
 	// repository status
 	data[ncispec.NCI_REPOSITORY_STATUS] = "clean"
-	workTree, workTreeErr := repository.Worktree()
-	if workTreeErr == nil {
-		workTreeStatus, workTreeStatusErr := workTree.Status()
-		if workTreeStatusErr == nil {
-			for file, fileStatus := range workTreeStatus {
-				if ignoreMatcher.MatchesPath(file) {
-					continue
-				}
+	// TODO: current isClean by go-git detects newlines as change, see https://github.com/go-git/go-git/issues/436
+	/*
+		workTree, workTreeErr := repository.Worktree()
+		if workTreeErr == nil {
+			workTreeStatus, workTreeStatusErr := workTree.Status()
+			if workTreeStatusErr == nil {
+				for file, fileStatus := range workTreeStatus {
+					if ignoreMatcher.MatchesPath(file) {
+						continue
+					}
 
-				// check for "dirty" files in the local repository
-				// will detect newlines as change, see https://github.com/go-git/go-git/issues/436
-				if fileStatus.Worktree != git.Unmodified || fileStatus.Staging != git.Unmodified {
-					// data[ncispec.NCI_REPOSITORY_STATUS] = "dirty"
-					// break
+					// check for "dirty" files in the local repository
+					if fileStatus.Worktree != git.Unmodified || fileStatus.Staging != git.Unmodified {
+						// data[ncispec.NCI_REPOSITORY_STATUS] = "dirty"
+						// break
+					}
 				}
 			}
 		}
-	}
+	*/
 
 	// pass
 	if strings.HasPrefix(ref.Name().String(), "refs/heads/") {
