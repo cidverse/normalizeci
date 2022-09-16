@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/go-git/go-git/v5 v5.4.2
-	github.com/go-playground/validator/v10 v10.11.0
+	github.com/go-playground/validator/v10 v10.11.1
 	github.com/google/go-github/v35 v35.3.0
 	github.com/gosimple/slug v1.12.0
 	github.com/rs/zerolog v1.28.0
