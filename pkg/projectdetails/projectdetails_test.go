@@ -27,14 +27,14 @@ func TestGetProjectDetailsGitHub(t *testing.T) {
 }
 
 func TestGetProjectDetailsGitLab(t *testing.T) {
-	details := GetProjectDetails("git", "https://gitlab.com/gitlab-org/gitlab.git")
+	details := GetProjectDetails("git", "https://gitlab.com/PhilippHeuer/events4j.git")
 
-	assert.Equal(t, "278964", details["NCI_PROJECT_ID"])
-	assert.Equal(t, "GitLab", details["NCI_PROJECT_NAME"])
-	assert.Equal(t, "gitlab-org-gitlab", details["NCI_PROJECT_SLUG"])
-	assert.Equal(t, "GitLab is an open source end-to-end software development platform with built-in version control, issue tracking, code review, CI/CD, and more. Self-host GitLab on your own servers, in a container, or on a cloud provider.", details["NCI_PROJECT_DESCRIPTION"])
+	assert.Equal(t, "6364957", details["NCI_PROJECT_ID"])
+	assert.Equal(t, "Events4J", details["NCI_PROJECT_NAME"])
+	assert.Equal(t, "philipp-heuer-events4j", details["NCI_PROJECT_SLUG"])
+	assert.Equal(t, "Java Event Dispatcher / Consumer", details["NCI_PROJECT_DESCRIPTION"])
 	assert.Equal(t, "", details["NCI_PROJECT_TOPICS"])
-	assert.Equal(t, "https://gitlab.com/gitlab-org/gitlab/-/issues/{ID}", details["NCI_PROJECT_ISSUE_URL"])
+	assert.Equal(t, "https://gitlab.com/PhilippHeuer/events4j/-/issues/{ID}", details["NCI_PROJECT_ISSUE_URL"])
 	assert.NotEmpty(t, details["NCI_PROJECT_STARGAZERS"])
 	assert.NotEmpty(t, details["NCI_PROJECT_FORKS"])
 }
