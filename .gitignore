@@ -2,4 +2,5 @@
 .idea/*
 
 # generated artifacts
-dist/*
+.dist
+.tmp
