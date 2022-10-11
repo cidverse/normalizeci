@@ -1,7 +1,7 @@
 package projectdetails
 
 import (
-	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/lib/ncispec"
 	"github.com/gosimple/slug"
 	"github.com/xanzy/go-gitlab"
 	"os"

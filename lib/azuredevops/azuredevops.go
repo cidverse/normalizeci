@@ -1,15 +1,15 @@
 package azuredevops
 
 import (
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/cidverse/normalizeci/pkg/projectdetails"
-	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/cidverse/normalizeci/lib/ncispec"
+	"github.com/cidverse/normalizeci/lib/projectdetails"
+	"github.com/cidverse/normalizeci/lib/vcsrepository"
 	"github.com/gosimple/slug"
 	"os"
 	"path/filepath"
 	"runtime"
 
-	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/lib/common"
 )
 
 // Normalizer is the implementation of the normalizer

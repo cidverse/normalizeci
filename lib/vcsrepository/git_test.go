@@ -1,7 +1,7 @@
 package vcsrepository
 
 import (
-	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/lib/common"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"os"

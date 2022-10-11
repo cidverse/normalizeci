@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/cidverse/normalizeci/pkg/normalizeci"
+	"github.com/cidverse/normalizeci/lib/ncispec"
+	"github.com/cidverse/normalizeci/lib/normalizeci"
 	"github.com/rs/zerolog/log"
 	"os"
 )

@@ -2,7 +2,7 @@ package projectdetails
 
 import (
 	"context"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/lib/ncispec"
 	"github.com/google/go-github/v35/github"
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cidverse/normalizeci/pkg/cmd"
+	"github.com/cidverse/normalizeci/cli/cmd"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"os"

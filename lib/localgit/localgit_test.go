@@ -1,13 +1,13 @@
 package localgit
 
 import (
-	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/lib/ncispec"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/lib/common"
 )
 
 var testEnvironment []string

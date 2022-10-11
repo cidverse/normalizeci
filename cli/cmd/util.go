@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/cidverse/normalizeci/pkg/normalizeci"
+	"github.com/cidverse/normalizeci/lib/normalizeci"
 	"github.com/rs/zerolog/log"
 	"io"
 	"os"

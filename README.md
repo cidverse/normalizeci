@@ -77,7 +77,7 @@ Invoke-Expression "$nenv"
 Install the latest version as library:
 
 ```bash
-go get -u github.com/cidverse/normalizeci
+go get -u github.com/cidverse/normalizeci/lib
 ```
 
 And access the normalized environment, by default it will search for the vcs repo based on the current working directory.
@@ -94,10 +94,10 @@ var normalized = normalizeci.RunDefaultNormalization()
 
 | NAME                                               | SLUG             |
 |----------------------------------------------------|------------------|
-| [Azure DevOps Pipeline](pkg/azuredevops/README.md) | `azure-devops`   |
-| [GitLab CI/CD](pkg/gitlabci/README.md)             | `gitlab-ci`      |
-| [GitHub Actions](pkg/githubactions/README.md)      | `github-actions` |
-| [Local Git Repository](pkg/localgit/README.md)     | `local`          |
+| [Azure DevOps Pipeline](lib/azuredevops/README.md) | `azure-devops`   |
+| [GitLab CI/CD](lib/gitlabci/README.md)             | `gitlab-ci`      |
+| [GitHub Actions](lib/githubactions/README.md)      | `github-actions` |
+| [Local Git Repository](lib/localgit/README.md)     | `local`          |
 
 *Note:* If none of the above systems is detected, repository information is determined based on the local Git repository.
 

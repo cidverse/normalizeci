@@ -1,8 +1,8 @@
-package githubactions
+package azuredevops
 
 import (
 	_ "embed"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/lib/ncispec"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -10,10 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/lib/common"
 )
 
-//go:embed githubactions.env
+//go:embed azuredevops.env
 var testEnvironmentFile string
 var testEnvironment = strings.Split(testEnvironmentFile, "\n")
 
@@ -46,16 +46,16 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, normalizer.name, normalized["NCI_SERVICE_NAME"])
 	assert.Equal(t, normalizer.slug, normalized["NCI_SERVICE_SLUG"])
 	// - worker
-	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized["NCI_WORKER_ID"])
-	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized["NCI_WORKER_NAME"])
-	assert.Equal(t, "20220503.1", normalized["NCI_WORKER_VERSION"])
+	assert.Equal(t, "9", normalized["NCI_WORKER_ID"])
+	assert.Equal(t, "fv-az158-714", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "2.202.1", normalized["NCI_WORKER_VERSION"])
 	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
 	// - pipeline
 	assert.Equal(t, "push", normalized["NCI_PIPELINE_TRIGGER"])
-	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_NAME"])
-	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_SLUG"])
-	assert.Equal(t, "__run", normalized["NCI_PIPELINE_JOB_NAME"])
-	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_SLUG"])
+	assert.Equal(t, "Build", normalized["NCI_PIPELINE_STAGE_NAME"])
+	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
+	assert.Equal(t, "__default", normalized["NCI_PIPELINE_JOB_NAME"])
+	assert.Equal(t, "default", normalized["NCI_PIPELINE_JOB_SLUG"])
 }
 
 func TestValidateSpec(t *testing.T) {

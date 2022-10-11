@@ -2,16 +2,16 @@ package normalizeci
 
 import (
 	"fmt"
-	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/lib/common"
 	"github.com/rs/zerolog/log"
 	"os"
 	"runtime"
 	"strings"
 
-	"github.com/cidverse/normalizeci/pkg/azuredevops"
-	"github.com/cidverse/normalizeci/pkg/githubactions"
-	"github.com/cidverse/normalizeci/pkg/gitlabci"
-	"github.com/cidverse/normalizeci/pkg/localgit"
+	"github.com/cidverse/normalizeci/lib/azuredevops"
+	"github.com/cidverse/normalizeci/lib/githubactions"
+	"github.com/cidverse/normalizeci/lib/gitlabci"
+	"github.com/cidverse/normalizeci/lib/localgit"
 )
 
 // holds all known normalizers
