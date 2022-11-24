@@ -1,6 +1,7 @@
 package common
 
 import (
+	"errors"
 	"github.com/rs/zerolog/log"
 	"net/url"
 	"os"
@@ -52,6 +53,29 @@ func GetWorkingDirectory() string {
 	}
 
 	return dir
+}
+
+// GetProjectDirectory will try to find the project directory based on repository folders (.git)
+func GetProjectDirectory() (string, error) {
+	currentDirectory := GetWorkingDirectory()
+	var projectDirectory = ""
+	directoryParts := strings.Split(currentDirectory, string(os.PathSeparator))
+
+	for projectDirectory == "" {
+		// git repository
+		if _, err := os.Stat(filepath.Join(currentDirectory, "/.git")); err == nil {
+			return currentDirectory, nil
+		}
+
+		// cancel at root path
+		if directoryParts[0]+"\\" == currentDirectory || currentDirectory == "/" {
+			return "", errors.New("didn't find any repositories for the current working directory")
+		}
+
+		currentDirectory = filepath.Dir(currentDirectory)
+	}
+
+	return "", errors.New("didn't find any repositories for the current working directory")
 }
 
 // GetDirectoryNameFromPath gets the directory name from a path
