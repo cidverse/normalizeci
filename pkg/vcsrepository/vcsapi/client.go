@@ -1,5 +1,10 @@
 package vcsapi
 
+import (
+	"fmt"
+	"strings"
+)
+
 // Client is the common interface for all vcs repo implementations
 type Client interface {
 	// Check will verify that the repository type is supported by this implementation
@@ -31,4 +36,26 @@ type Client interface {
 
 	// FindLatestRelease finds the latest release starting from the current repo HEAD
 	FindLatestRelease(stable bool) (VCSRelease, error)
+}
+
+// NewVCSRefFromString parses the input string and returns a VCSRef
+func NewVCSRefFromString(input string) (*VCSRef, error) {
+	if input == "" {
+		return nil, nil
+	}
+
+	inputParts := strings.SplitN(input, "/", 2)
+	if len(inputParts) != 2 {
+		return nil, fmt.Errorf("%s is not a valid vcs ref", input)
+	}
+
+	if inputParts[0] == "tag" {
+		return &VCSRef{Type: "tag", Value: inputParts[1]}, nil
+	} else if inputParts[0] == "branch" {
+		return &VCSRef{Type: "branch", Value: inputParts[1]}, nil
+	} else if inputParts[0] == "hash" {
+		return &VCSRef{Type: "hash", Hash: inputParts[1]}, nil
+	}
+
+	return nil, fmt.Errorf("%s is not a valid vcs ref", input)
 }
