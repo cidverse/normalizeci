@@ -2,17 +2,18 @@ package gitclient
 
 import (
 	"errors"
+	"os"
+	"path"
+	"path/filepath"
+	"regexp"
+	"strings"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/utils/merkletrie"
-	"os"
-	"path"
-	"path/filepath"
-	"regexp"
-	"strings"
 )
 
 type GitClient struct {
@@ -183,7 +184,7 @@ func (c GitClient) FindCommitsBetween(from *vcsapi.VCSRef, to *vcsapi.VCSRef, in
 
 	// to reference
 	var toHash plumbing.Hash
-	if from != nil {
+	if to != nil {
 		toHash, _ = refToHash(c.repo, c.VCSRefToInternalRef(*to))
 	}
 
