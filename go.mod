@@ -2,6 +2,9 @@ module github.com/cidverse/normalizeci
 
 go 1.19
 
+// https://github.com/go-git/go-git/issues/624
+replace github.com/pjbgf/sha1cd => github.com/pjbgf/sha1cd v0.2.3
+
 require (
 	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/go-git/go-git/v5 v5.5.0
@@ -39,8 +42,7 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	github.com/pjbgf/sha1cd v0.2.0 // indirect
+	github.com/pjbgf/sha1cd v0.2.3 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/skeema/knownhosts v1.1.0 // indirect
