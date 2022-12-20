@@ -10,6 +10,7 @@ require (
 	github.com/go-git/go-git/v5 v5.5.1
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/google/go-github/v35 v35.3.0
+	github.com/google/go-github/v42 v42.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/rs/zerolog v1.28.0
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
