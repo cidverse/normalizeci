@@ -2,13 +2,14 @@ package projectdetails
 
 import (
 	"context"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/google/go-github/v35/github"
-	"github.com/gosimple/slug"
-	"golang.org/x/oauth2"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/google/go-github/v48/github"
+	"github.com/gosimple/slug"
+	"golang.org/x/oauth2"
 )
 
 func GetProjectDetailsGitHub(repoRemote string) (map[string]string, error) {
