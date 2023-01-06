@@ -7,7 +7,7 @@ replace github.com/pjbgf/sha1cd => github.com/pjbgf/sha1cd v0.2.3
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.0
-	github.com/go-git/go-git/v5 v5.5.1
+	github.com/go-git/go-git/v5 v5.5.2
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/google/go-github/v48 v48.2.0
 	github.com/gosimple/slug v1.13.1
@@ -27,7 +27,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
-	github.com/go-git/go-billy/v5 v5.3.1 // indirect
+	github.com/go-git/go-billy/v5 v5.4.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
