@@ -9,7 +9,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/go-git/go-git/v5 v5.5.2
 	github.com/go-playground/validator/v10 v10.11.1
-	github.com/google/go-github/v48 v48.2.0
+	github.com/google/go-github/v49 v49.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/rs/zerolog v1.28.0
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
