@@ -10,24 +10,24 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func GetGitLabToken(repoRemote string) string {
-	if len(os.Getenv("GITLAB_TOKEN")) > 0 {
+func GetGitLabToken(host string) string {
+	if len(os.Getenv(ToEnvName(host)+"_TOKEN")) > 0 {
+		return os.Getenv(ToEnvName(host) + "_TOKEN")
+	} else if len(os.Getenv("GITLAB_TOKEN")) > 0 {
 		return os.Getenv("GITLAB_TOKEN")
-	}
-	if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
+	} else if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
 		return os.Getenv("CI_BUILD_TOKEN")
-	}
-	if os.Getenv("CI") == "true" && len(os.Getenv("CI_JOB_TOKEN")) > 0 {
+	} else if os.Getenv("CI") == "true" && len(os.Getenv("CI_JOB_TOKEN")) > 0 {
 		return os.Getenv("CI_JOB_TOKEN")
 	}
 
 	return ""
 }
 
-func GetProjectDetailsGitLab(repoRemote string) (map[string]string, error) {
+func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string, error) {
 	projectDetails := make(map[string]string)
 	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, "https://gitlab.com/"), "git@gitlab.com:"), ".git")
-	glToken := GetGitLabToken(repoRemote)
+	glToken := GetGitLabToken(host)
 
 	gitlabClient, gitlabClientErr := gitlab.NewClient(glToken, gitlab.WithBaseURL("https://gitlab.com"))
 	if gitlabClientErr != nil {

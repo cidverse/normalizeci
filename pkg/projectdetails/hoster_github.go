@@ -12,14 +12,16 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func GetProjectDetailsGitHub(repoRemote string) (map[string]string, error) {
+func GetProjectDetailsGitHub(host string, repoRemote string) (map[string]string, error) {
 	projectDetails := make(map[string]string)
 
 	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, "https://github.com/"), "git@github.com:"), ".git")
 	repoPathSplit := strings.SplitN(repoPath, "/", 2)
 
 	ghToken := ""
-	if len(os.Getenv("GITHUB_TOKEN")) > 0 {
+	if len(os.Getenv(ToEnvName(host)+"_TOKEN")) > 0 {
+		ghToken = os.Getenv(ToEnvName(host) + "_TOKEN")
+	} else if len(os.Getenv("GITHUB_TOKEN")) > 0 {
 		ghToken = os.Getenv("GITHUB_TOKEN")
 	}
 
