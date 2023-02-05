@@ -1,13 +1,15 @@
 package githubactions
 
 import (
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
-	"os"
-	"path/filepath"
-	"runtime"
 
 	"github.com/cidverse/normalizeci/pkg/common"
 )
@@ -66,7 +68,8 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	}
 	if nci.NCI_PIPELINE_TRIGGER == ncispec.PipelineTriggerPullRequest {
 		// PR
-		nci.NCI_PIPELINE_PULL_REQUEST_ID = "unknown" // not supported by GH yet.
+		splitRef := strings.Split(env["GITHUB_REF"], "/")
+		nci.NCI_PIPELINE_PULL_REQUEST_ID = splitRef[2]
 	}
 	nci.NCI_PIPELINE_STAGE_NAME = env["GITHUB_WORKFLOW"]
 	nci.NCI_PIPELINE_STAGE_SLUG = slug.Make(env["GITHUB_WORKFLOW"])
