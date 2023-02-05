@@ -2,11 +2,12 @@ package common
 
 import (
 	"errors"
-	"github.com/rs/zerolog/log"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
 
 // Normalizer is a common interface to work with all normalizers
@@ -38,6 +39,23 @@ func GetEnvironmentFrom(env []string) map[string]string {
 	data := make(map[string]string)
 
 	for _, entry := range env {
+		z := strings.SplitN(entry, "=", 2)
+		data[z[0]] = z[1]
+	}
+
+	return data
+}
+
+// GetEnvironmentMerge returns a map with all environment variables contained in env
+func GetEnvironmentMerge(env []string, overwrite []string) map[string]string {
+	data := make(map[string]string)
+
+	for _, entry := range env {
+		z := strings.SplitN(entry, "=", 2)
+		data[z[0]] = z[1]
+	}
+
+	for _, entry := range overwrite {
 		z := strings.SplitN(entry, "=", 2)
 		data[z[0]] = z[1]
 	}

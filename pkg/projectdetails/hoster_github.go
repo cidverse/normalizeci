@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"
 )

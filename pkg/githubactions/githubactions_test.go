@@ -2,13 +2,14 @@ package githubactions
 
 import (
 	_ "embed"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/rs/zerolog"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/cidverse/normalizeci/pkg/common"
 )
@@ -56,6 +57,13 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "__run", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_SLUG"])
+}
+
+func TestEnvironmentNormalizerPullRequestId(t *testing.T) {
+	var normalizer = NewNormalizer()
+	var normalized = normalizer.Normalize(common.GetEnvironmentMerge(testEnvironment, []string{"GITHUB_EVENT_NAME=pull_request", "GITHUB_REF=refs/pull/519/merge"}))
+
+	assert.Equal(t, "519", normalized[ncispec.NCI_PIPELINE_PULL_REQUEST_ID])
 }
 
 func TestValidateSpec(t *testing.T) {
