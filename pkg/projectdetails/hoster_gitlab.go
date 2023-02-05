@@ -1,28 +1,33 @@
 package projectdetails
 
 import (
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/gosimple/slug"
-	"github.com/xanzy/go-gitlab"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/gosimple/slug"
+	"github.com/xanzy/go-gitlab"
 )
+
+func GetGitLabToken(repoRemote string) string {
+	if len(os.Getenv("GITLAB_TOKEN")) > 0 {
+		return os.Getenv("GITLAB_TOKEN")
+	}
+	if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
+		return os.Getenv("CI_BUILD_TOKEN")
+	}
+	if os.Getenv("CI") == "true" && len(os.Getenv("CI_JOB_TOKEN")) > 0 {
+		return os.Getenv("CI_JOB_TOKEN")
+	}
+
+	return ""
+}
 
 func GetProjectDetailsGitLab(repoRemote string) (map[string]string, error) {
 	projectDetails := make(map[string]string)
 	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, "https://gitlab.com/"), "git@gitlab.com:"), ".git")
-
-	glToken := ""
-	if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
-		glToken = os.Getenv("CI_BUILD_TOKEN")
-	}
-	if os.Getenv("CI") == "true" && len(os.Getenv("CI_JOB_TOKEN")) > 0 {
-		glToken = os.Getenv("CI_JOB_TOKEN")
-	}
-	if len(os.Getenv("GITLAB_TOKEN")) > 0 {
-		glToken = os.Getenv("GITLAB_TOKEN")
-	}
+	glToken := GetGitLabToken(repoRemote)
 
 	gitlabClient, gitlabClientErr := gitlab.NewClient(glToken, gitlab.WithBaseURL("https://gitlab.com"))
 	if gitlabClientErr != nil {

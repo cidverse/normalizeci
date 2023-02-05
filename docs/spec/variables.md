@@ -34,6 +34,13 @@ Spec-Version: `0.3.0`
 | `NCI_PIPELINE_JOB_SLUG`        | Slug of the current job.                                                                  |
 | `NCI_PIPELINE_PULL_REQUEST_ID` | The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request. |
 
+## repository
+
+| Variable                             | Description                                                                                                 |
+|--------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `NCI_REPOSITORY_KIND`                | The used version control system. (git)                                                                      |
+| `NCI_REPOSITORY_REMOTE`              | The remote url pointing at the repository. (git remote url or `local` if no remote was found)               |
+
 ## project
 
 | Variable                  | Description                                                    |
@@ -59,12 +66,10 @@ Spec-Version: `0.3.0`
 | `NCI_CONTAINERREGISTRY_REPOSITORY` | The repository, that should be used for the current project. |
 | `NCI_CONTAINERREGISTRY_TAG`        | The tag that should be build.                                |
 
-## repository
+## commit
 
 | Variable                             | Description                                                                                                 |
 |--------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| `NCI_REPOSITORY_KIND`                | The used version control system. (git)                                                                      |
-| `NCI_REPOSITORY_REMOTE`              | The remote url pointing at the repository. (git remote url or `local` if no remote was found)               |
 | `NCI_COMMIT_REF_TYPE`                | The reference type. (branch / tag)                                                                          |
 | `NCI_COMMIT_REF_NAME`                | Human readable name of the current repository reference.                                                    |
 | `NCI_COMMIT_REF_PATH`                | Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)                                       |
