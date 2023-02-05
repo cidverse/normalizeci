@@ -33,6 +33,8 @@ jobs:
         run: |
           echo "> project modules"
           cid module ls
+          echo "> catalog"
+          cid catalog list
           echo "> workflows"
           cid workflow ls
   # build
