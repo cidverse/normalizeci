@@ -82,7 +82,7 @@ func GetVCSRepositoryInformation(dir string) (data map[string]string, err error)
 	}
 	refName := head.Value
 	if head.Type == "tag" {
-		refName = strings.TrimPrefix(refName, "tags/")
+		refName = strings.TrimPrefix(strings.TrimPrefix(refName, "tags/"), "refs/tags/")
 	}
 	data[ncispec.NCI_COMMIT_REF_TYPE] = head.Type
 	data[ncispec.NCI_COMMIT_REF_NAME] = refName

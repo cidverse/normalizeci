@@ -65,7 +65,7 @@ func (c GitClient) VCSRefToInternalRef(ref vcsapi.VCSRef) string {
 	if ref.Type == "branch" {
 		return `refs/heads/` + ref.Value
 	} else if ref.Type == "tag" {
-		return `refs/tags/` + ref.Value
+		return `refs/tags/` + strings.TrimPrefix(ref.Value, "tags/")
 	}
 
 	return ref.Value
