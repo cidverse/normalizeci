@@ -2,15 +2,16 @@ package vcsrepository
 
 import (
 	"errors"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	gitclient "github.com/cidverse/normalizeci/pkg/vcsrepository/git"
-	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
-	"github.com/gosimple/slug"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/cidverse/normalizeci/pkg/ncispec"
+	gitclient "github.com/cidverse/normalizeci/pkg/vcsrepository/git"
+	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
+	"github.com/gosimple/slug"
 )
 
 func GetVCSClient(dir string) (vcsapi.Client, error) {
@@ -79,10 +80,14 @@ func GetVCSRepositoryInformation(dir string) (data map[string]string, err error)
 	if err != nil {
 		return data, err
 	}
+	refName := head.Value
+	if head.Type == "tag" {
+		refName = strings.TrimPrefix(refName, "tags/")
+	}
 	data[ncispec.NCI_COMMIT_REF_TYPE] = head.Type
-	data[ncispec.NCI_COMMIT_REF_NAME] = head.Value
-	data[ncispec.NCI_COMMIT_REF_SLUG] = slug.Make(head.Value)
-	data[ncispec.NCI_COMMIT_REF_PATH] = head.Type + "/" + head.Value
+	data[ncispec.NCI_COMMIT_REF_NAME] = refName
+	data[ncispec.NCI_COMMIT_REF_SLUG] = slug.Make(refName)
+	data[ncispec.NCI_COMMIT_REF_PATH] = head.Type + "/" + refName
 	data[ncispec.NCI_COMMIT_REF_VCS] = client.VCSRefToInternalRef(head)
 
 	// release name (=name, but without leading v, without slash)
