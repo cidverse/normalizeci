@@ -68,7 +68,7 @@ func (c GitClient) VCSRefToInternalRef(ref vcsapi.VCSRef) string {
 		return `refs/tags/` + strings.TrimPrefix(ref.Value, "tags/")
 	}
 
-	return ref.Value
+	return ref.Hash
 }
 
 func (c GitClient) VCSHead() (vcsHead vcsapi.VCSRef, err error) {
