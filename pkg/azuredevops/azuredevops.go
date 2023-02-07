@@ -1,13 +1,14 @@
 package azuredevops
 
 import (
+	"os"
+	"path/filepath"
+	"runtime"
+
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
-	"os"
-	"path/filepath"
-	"runtime"
 
 	"github.com/cidverse/normalizeci/pkg/common"
 )

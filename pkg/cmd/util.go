@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"github.com/cidverse/normalizeci/pkg/normalizeci"
-	"github.com/rs/zerolog/log"
 	"io"
 	"os"
+
+	"github.com/cidverse/normalizeci/pkg/normalizeci"
+	"github.com/rs/zerolog/log"
 )
 
 func defaultFormat(value string) string {

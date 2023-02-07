@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/normalizeci"
 	"github.com/rs/zerolog/log"
-	"os"
 )
 
 func normalizationCommand(format string, hostEnv bool, output string, strict bool, targets []string) {

@@ -2,10 +2,11 @@ package gitclient
 
 import (
 	"bufio"
-	"github.com/Masterminds/semver/v3"
 	"io"
 	"os"
 	"path"
+
+	"github.com/Masterminds/semver/v3"
 )
 
 func hasGitDirectory(dir string) bool {

@@ -2,13 +2,14 @@ package azuredevops
 
 import (
 	_ "embed"
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/rs/zerolog"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/cidverse/normalizeci/pkg/common"
 )

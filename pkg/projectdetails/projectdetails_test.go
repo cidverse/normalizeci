@@ -1,10 +1,11 @@
 package projectdetails
 
 import (
-	"github.com/rs/zerolog"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMain(m *testing.M) {

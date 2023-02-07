@@ -1,10 +1,11 @@
 package gitclient
 
 import (
+	"strings"
+
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/rs/zerolog/log"
-	"strings"
 )
 
 func gitCommitToVCSCommit(commit *object.Commit, tags []vcsapi.VCSRef, withContent bool) vcsapi.Commit {

@@ -1,11 +1,12 @@
 package localgit
 
 import (
+	"os"
+	"testing"
+
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
-	"os"
-	"testing"
 
 	"github.com/cidverse/normalizeci/pkg/common"
 )

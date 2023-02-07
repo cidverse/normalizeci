@@ -1,9 +1,10 @@
 package common
 
 import (
-	"github.com/rs/zerolog"
 	"os"
 	"testing"
+
+	"github.com/rs/zerolog"
 )
 
 func TestMain(m *testing.M) {

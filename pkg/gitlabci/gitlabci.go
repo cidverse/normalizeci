@@ -1,12 +1,13 @@
 package gitlabci
 
 import (
+	"runtime"
+
 	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
-	"runtime"
 )
 
 // Normalizer is the implementation of the normalizer

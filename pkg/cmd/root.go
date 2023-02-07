@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"runtime"
+
+	"github.com/spf13/cobra"
 )
 
 // Version will be set at build time

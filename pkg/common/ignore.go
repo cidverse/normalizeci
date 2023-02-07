@@ -1,9 +1,10 @@
 package common
 
 import (
-	ignore "github.com/sabhiram/go-gitignore"
 	"os"
 	"strings"
+
+	ignore "github.com/sabhiram/go-gitignore"
 )
 
 func ProcessIgnoreFiles(files []string) *ignore.GitIgnore {

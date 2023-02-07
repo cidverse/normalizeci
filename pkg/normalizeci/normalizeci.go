@@ -2,11 +2,12 @@ package normalizeci
 
 import (
 	"fmt"
-	"github.com/cidverse/normalizeci/pkg/common"
-	"github.com/rs/zerolog/log"
 	"os"
 	"runtime"
 	"strings"
+
+	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/rs/zerolog/log"
 
 	"github.com/cidverse/normalizeci/pkg/azuredevops"
 	"github.com/cidverse/normalizeci/pkg/githubactions"

@@ -1,9 +1,10 @@
 package vcsrepository
 
 import (
-	"github.com/gosimple/slug"
 	"os"
 	"strings"
+
+	"github.com/gosimple/slug"
 )
 
 // fileExists checks if the file exists and returns a boolean
