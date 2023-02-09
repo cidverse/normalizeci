@@ -1,11 +1,12 @@
 package main
 
 import (
+	"os"
+	"strings"
+
 	"github.com/cidverse/normalizeci/pkg/cmd"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"os"
-	"strings"
 )
 
 // Version will be set at build time

@@ -54,7 +54,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 
 	// pipeline
 	nci.NCI_PIPELINE_TRIGGER = env["CI_PIPELINE_SOURCE"]
-	if nci.NCI_PIPELINE_TRIGGER == ncispec.PipelineTriggerPullRequest {
+	if nci.NCI_PIPELINE_TRIGGER == string(ncispec.PipelineTriggerPullRequest) {
 		nci.NCI_PIPELINE_PULL_REQUEST_ID = env["CI_MERGE_REQUEST_IID"]
 	}
 
@@ -62,6 +62,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_PIPELINE_STAGE_SLUG = slug.Make(env["CI_JOB_STAGE"])
 	nci.NCI_PIPELINE_JOB_NAME = env["CI_JOB_NAME"]
 	nci.NCI_PIPELINE_JOB_SLUG = slug.Make(env["CI_JOB_NAME"])
+	nci.NCI_PIPELINE_URL = env["CI_JOB_URL"]
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())

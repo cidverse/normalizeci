@@ -1,6 +1,7 @@
 package githubactions
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -60,13 +61,13 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	pipelineEvent := env["GITHUB_EVENT_NAME"]
 	switch pipelineEvent {
 	case "push":
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerPush
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerPush)
 	case "pull_request":
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerPullRequest
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerPullRequest)
 	default:
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerUnknown
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerUnknown)
 	}
-	if nci.NCI_PIPELINE_TRIGGER == ncispec.PipelineTriggerPullRequest {
+	if nci.NCI_PIPELINE_TRIGGER == string(ncispec.PipelineTriggerPullRequest) {
 		// PR
 		splitRef := strings.Split(env["GITHUB_REF"], "/")
 		nci.NCI_PIPELINE_PULL_REQUEST_ID = splitRef[2]
@@ -75,6 +76,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_PIPELINE_STAGE_SLUG = slug.Make(env["GITHUB_WORKFLOW"])
 	nci.NCI_PIPELINE_JOB_NAME = env["GITHUB_ACTION"]
 	nci.NCI_PIPELINE_JOB_SLUG = slug.Make(env["GITHUB_ACTION"])
+	nci.NCI_PIPELINE_URL = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())

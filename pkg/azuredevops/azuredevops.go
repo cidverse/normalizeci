@@ -1,6 +1,7 @@
 package azuredevops
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -57,22 +58,23 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 
 	// pipeline
 	if env["BUILD_REASON"] == "Manual" {
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerManual
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerManual)
 	} else if env["BUILD_REASON"] == "IndividualCI" || env["BUILD_REASON"] == "BatchedCI" {
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerPush
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerPush)
 	} else if env["BUILD_REASON"] == "Schedule" {
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerSchedule
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerSchedule)
 	} else if env["BUILD_REASON"] == "PullRequest" {
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerPullRequest
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerPullRequest)
 	} else if env["BUILD_REASON"] == "BuildCompletion" {
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerBuild
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerBuild)
 	} else {
-		nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerUnknown
+		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerUnknown)
 	}
 	nci.NCI_PIPELINE_STAGE_NAME = env["SYSTEM_STAGENAME"] // SYSTEM_STAGEDISPLAYNAME
 	nci.NCI_PIPELINE_STAGE_SLUG = slug.Make(env["SYSTEM_STAGENAME"])
 	nci.NCI_PIPELINE_JOB_NAME = env["SYSTEM_JOBNAME"] // SYSTEM_JOBDISPLAYNAME
 	nci.NCI_PIPELINE_JOB_SLUG = slug.Make(env["SYSTEM_JOBNAME"])
+	nci.NCI_PIPELINE_URL = fmt.Sprintf("%s%s/_build/results?buildId=%s", env["SYSTEM_TEAMFOUNDATIONSERVERURI"], env["SYSTEM_TEAMPROJECT"], env["BUILD_BUILDID"])
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())

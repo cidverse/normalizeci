@@ -57,6 +57,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "__default", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "default", normalized["NCI_PIPELINE_JOB_SLUG"])
+	assert.Equal(t, "https://heuer.visualstudio.com/cienvsamples/_build/results?buildId=11", normalized["NCI_PIPELINE_URL"])
 }
 
 func TestValidateSpec(t *testing.T) {

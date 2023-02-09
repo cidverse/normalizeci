@@ -57,6 +57,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "__run", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_SLUG"])
+	assert.Equal(t, "https://github.com/cidverse/cienvsamples/actions/runs/2303126757", normalized["NCI_PIPELINE_URL"])
 }
 
 func TestEnvironmentNormalizerPullRequestId(t *testing.T) {

@@ -51,7 +51,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_WORKER_ARCH = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
-	nci.NCI_PIPELINE_TRIGGER = ncispec.PipelineTriggerCLI
+	nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerCLI)
 	nci.NCI_PIPELINE_STAGE_NAME = ncispec.PipelineStageDefault
 	nci.NCI_PIPELINE_STAGE_SLUG = ncispec.PipelineStageDefault
 	nci.NCI_PIPELINE_JOB_NAME = ncispec.PipelineJobDefault
