@@ -44,18 +44,19 @@ Spec-Version: `0.3.0`
 
 ## project
 
-| Variable                  | Description                                                    |
-|---------------------------|----------------------------------------------------------------|
-| `NCI_PROJECT_ID`          | Unique project id, can be used in deployments.                 |
-| `NCI_PROJECT_NAME`        | Unique project id, can be used in deployments.                 |
-| `NCI_PROJECT_PATH`        | Path of the Namespace and the project.                         |
-| `NCI_PROJECT_SLUG`        | Project slug, that can be used in deployments.                 |
-| `NCI_PROJECT_DESCRIPTION` | The project description.                                       |
-| `NCI_PROJECT_TOPICS`      | The topics / tags of the project.                              |
-| `NCI_PROJECT_ISSUE_URL`   | A template for links to issues, contains a `{ID}` placeholder. |
-| `NCI_PROJECT_STARGAZERS`  | The number of people who `follow` / `bookmarked` the project.  |
-| `NCI_PROJECT_FORKS`       | The number of forks of the project.                            |
-| `NCI_PROJECT_DIR`         | Project directory on the local filesystem.                     |
+| Variable                     | Description                                                    |
+|------------------------------|----------------------------------------------------------------|
+| `NCI_PROJECT_ID`             | Unique project id, can be used in deployments.                 |
+| `NCI_PROJECT_NAME`           | Unique project id, can be used in deployments.                 |
+| `NCI_PROJECT_PATH`           | Path of the Namespace and the project.                         |
+| `NCI_PROJECT_SLUG`           | Project slug, that can be used in deployments.                 |
+| `NCI_PROJECT_DESCRIPTION`    | The project description.                                       |
+| `NCI_PROJECT_TOPICS`         | The topics / tags of the project.                              |
+| `NCI_PROJECT_ISSUE_URL`      | A template for links to issues, contains a `{ID}` placeholder. |
+| `NCI_PROJECT_STARGAZERS`     | The number of people who `follow` / `bookmarked` the project.  |
+| `NCI_PROJECT_FORKS`          | The number of forks of the project.                            |
+| `NCI_PROJECT_DEFAULT_BRANCH` | The default branch                                             |
+| `NCI_PROJECT_DIR`            | Project directory on the local filesystem.                     |
 
 ## container registry
 

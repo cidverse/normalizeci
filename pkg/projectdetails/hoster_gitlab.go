@@ -48,6 +48,7 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string,
 	projectDetails[ncispec.NCI_PROJECT_ISSUE_URL] = project.WebURL + "/-/issues/{ID}"
 	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(project.StarCount)
 	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(project.ForksCount)
+	projectDetails[ncispec.NCI_PROJECT_DEFAULT_BRANCH] = project.DefaultBranch
 
 	return projectDetails, nil
 }

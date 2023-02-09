@@ -117,6 +117,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		nci.NCI_PROJECT_ISSUE_URL = projectData[ncispec.NCI_PROJECT_ISSUE_URL]
 		nci.NCI_PROJECT_STARGAZERS = projectData[ncispec.NCI_PROJECT_STARGAZERS]
 		nci.NCI_PROJECT_FORKS = projectData[ncispec.NCI_PROJECT_FORKS]
+		nci.NCI_PROJECT_DEFAULT_BRANCH = projectData[ncispec.NCI_PROJECT_DEFAULT_BRANCH]
 	}
 	nci.NCI_PROJECT_DIR = projectDir
 

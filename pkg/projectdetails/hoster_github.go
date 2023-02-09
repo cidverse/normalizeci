@@ -53,6 +53,7 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (map[string]string,
 	projectDetails[ncispec.NCI_PROJECT_ISSUE_URL] = strings.Replace(*repo.IssuesURL, "{/number}", "/{ID}", 1)
 	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(*repo.StargazersCount)
 	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(*repo.ForksCount)
+	projectDetails[ncispec.NCI_PROJECT_DEFAULT_BRANCH] = *repo.DefaultBranch
 
 	return projectDetails, nil
 }

@@ -19,16 +19,17 @@ const (
 	NCI_PIPELINE_URL             = "NCI_PIPELINE_URL"             // The url to the pipeline
 	NCI_PIPELINE_PULL_REQUEST_ID = "NCI_PIPELINE_PULL_REQUEST_ID" // The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request.
 
-	NCI_PROJECT_ID          = "NCI_PROJECT_ID"          // Unique project id, can be used in deployments.
-	NCI_PROJECT_NAME        = "NCI_PROJECT_NAME"        // Unique project id, can be used in deployments.
-	NCI_PROJECT_PATH        = "NCI_PROJECT_PATH"        // Path of the namespace and the project
-	NCI_PROJECT_SLUG        = "NCI_PROJECT_SLUG"        // Project slug, that can be used in deployments.
-	NCI_PROJECT_DESCRIPTION = "NCI_PROJECT_DESCRIPTION" // The project description.
-	NCI_PROJECT_TOPICS      = "NCI_PROJECT_TOPICS"      // The topics / tags of the project.
-	NCI_PROJECT_ISSUE_URL   = "NCI_PROJECT_ISSUE_URL"   // A template for links to issues, contains a `{ID}` placeholder.
-	NCI_PROJECT_STARGAZERS  = "NCI_PROJECT_STARGAZERS"  // The number of people who `follow` / `bookmarked` the project.
-	NCI_PROJECT_FORKS       = "NCI_PROJECT_FORKS"       // The number of forks of the project.
-	NCI_PROJECT_DIR         = "NCI_PROJECT_DIR"         // Project directory on the local filesystem.
+	NCI_PROJECT_ID             = "NCI_PROJECT_ID"             // Unique project id, can be used in deployments.
+	NCI_PROJECT_NAME           = "NCI_PROJECT_NAME"           // Unique project id, can be used in deployments.
+	NCI_PROJECT_PATH           = "NCI_PROJECT_PATH"           // Path of the namespace and the project
+	NCI_PROJECT_SLUG           = "NCI_PROJECT_SLUG"           // Project slug, that can be used in deployments.
+	NCI_PROJECT_DESCRIPTION    = "NCI_PROJECT_DESCRIPTION"    // The project description.
+	NCI_PROJECT_TOPICS         = "NCI_PROJECT_TOPICS"         // The topics / tags of the project.
+	NCI_PROJECT_ISSUE_URL      = "NCI_PROJECT_ISSUE_URL"      // A template for links to issues, contains a `{ID}` placeholder.
+	NCI_PROJECT_STARGAZERS     = "NCI_PROJECT_STARGAZERS"     // The number of people who `follow` / `bookmarked` the project.
+	NCI_PROJECT_FORKS          = "NCI_PROJECT_FORKS"          // The number of forks of the project.
+	NCI_PROJECT_DIR            = "NCI_PROJECT_DIR"            // Project directory on the local filesystem.
+	NCI_PROJECT_DEFAULT_BRANCH = "NCI_PROJECT_DEFAULT_BRANCH" //  The default branch
 
 	NCI_REPOSITORY_KIND        = "NCI_REPOSITORY_KIND"        //  The used version control system. (git)
 	NCI_REPOSITORY_REMOTE      = "NCI_REPOSITORY_REMOTE"      // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
@@ -84,16 +85,17 @@ type NormalizeCISpec struct {
 	NCI_PIPELINE_URL             string // Pipeline URL
 	NCI_PIPELINE_PULL_REQUEST_ID string `validate:"required_if=NCI_PIPELINE_TRIGGER pull_request"` // The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request.
 
-	NCI_PROJECT_ID          string // Unique project id, can be used in deployments.
-	NCI_PROJECT_NAME        string // Unique project id, can be used in deployments.
-	NCI_PROJECT_PATH        string // Path of the Namespace and the project
-	NCI_PROJECT_SLUG        string `validate:"required,is-slug"` // Project slug, that can be used in deployments.
-	NCI_PROJECT_DESCRIPTION string // The project description.
-	NCI_PROJECT_TOPICS      string // The topics / tags of the project.
-	NCI_PROJECT_ISSUE_URL   string // A template for links to issues, contains a `{ID}` placeholder.
-	NCI_PROJECT_STARGAZERS  string `validate:"number"` // The number of people who `follow` / `bookmarked` the project.
-	NCI_PROJECT_FORKS       string `validate:"number"` // The number of forks of the project.
-	NCI_PROJECT_DIR         string // Project directory on the local filesystem.
+	NCI_PROJECT_ID             string // Unique project id, can be used in deployments.
+	NCI_PROJECT_NAME           string // Unique project id, can be used in deployments.
+	NCI_PROJECT_PATH           string // Path of the Namespace and the project
+	NCI_PROJECT_SLUG           string `validate:"required,is-slug"` // Project slug, that can be used in deployments.
+	NCI_PROJECT_DESCRIPTION    string // The project description.
+	NCI_PROJECT_TOPICS         string // The topics / tags of the project.
+	NCI_PROJECT_ISSUE_URL      string // A template for links to issues, contains a `{ID}` placeholder.
+	NCI_PROJECT_STARGAZERS     string `validate:"number"` // The number of people who `follow` / `bookmarked` the project.
+	NCI_PROJECT_FORKS          string `validate:"number"` // The number of forks of the project.
+	NCI_PROJECT_DIR            string // Project directory on the local filesystem.
+	NCI_PROJECT_DEFAULT_BRANCH string `` // The default branch
 
 	NCI_CONTAINERREGISTRY_HOST       string // The hostname of the container registry.
 	NCI_CONTAINERREGISTRY_USERNAME   string // The username used for container registry authentication.
@@ -156,6 +158,7 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		NCI_PROJECT_STARGAZERS:             data[NCI_PROJECT_STARGAZERS],
 		NCI_PROJECT_FORKS:                  data[NCI_PROJECT_FORKS],
 		NCI_PROJECT_DIR:                    data[NCI_PROJECT_DIR],
+		NCI_PROJECT_DEFAULT_BRANCH:         data[NCI_PROJECT_DEFAULT_BRANCH],
 		NCI_CONTAINERREGISTRY_HOST:         data[NCI_CONTAINERREGISTRY_HOST],
 		NCI_CONTAINERREGISTRY_USERNAME:     data[NCI_CONTAINERREGISTRY_USERNAME],
 		NCI_CONTAINERREGISTRY_PASSWORD:     data[NCI_CONTAINERREGISTRY_PASSWORD],
@@ -221,6 +224,7 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PROJECT_STARGAZERS] = spec.NCI_PROJECT_STARGAZERS
 	data[NCI_PROJECT_FORKS] = spec.NCI_PROJECT_FORKS
 	data[NCI_PROJECT_DIR] = spec.NCI_PROJECT_DIR
+	data[NCI_PROJECT_DEFAULT_BRANCH] = spec.NCI_PROJECT_DEFAULT_BRANCH
 
 	data[NCI_CONTAINERREGISTRY_HOST] = spec.NCI_CONTAINERREGISTRY_HOST
 	data[NCI_CONTAINERREGISTRY_USERNAME] = spec.NCI_CONTAINERREGISTRY_USERNAME
