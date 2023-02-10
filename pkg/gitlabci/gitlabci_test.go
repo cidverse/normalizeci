@@ -58,6 +58,13 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_SLUG"])
 	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887", normalized["NCI_PIPELINE_URL"])
+	// - project
+	assert.Equal(t, "35974876", normalized["NCI_PROJECT_ID"])
+	assert.Equal(t, "cienvsamples", normalized["NCI_PROJECT_NAME"])
+	assert.Equal(t, "cienvsamples", normalized["NCI_PROJECT_PATH"])
+	assert.Equal(t, "cidverse-cienvsamples", normalized["NCI_PROJECT_SLUG"])
+	assert.Equal(t, "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.", normalized["NCI_PROJECT_DESCRIPTION"])
+	assert.Equal(t, "main", normalized["NCI_PROJECT_DEFAULT_BRANCH"])
 	// - container registry
 	assert.Equal(t, "registry.gitlab.com", normalized["NCI_CONTAINERREGISTRY_HOST"])
 	assert.Equal(t, "registry.gitlab.com/cidverse/cienvsamples", normalized["NCI_CONTAINERREGISTRY_REPOSITORY"])

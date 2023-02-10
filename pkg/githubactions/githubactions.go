@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/pkg/nciutil"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
@@ -109,18 +110,16 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 
 	// project details
 	projectData := projectdetails.GetProjectDetails(nci.NCI_REPOSITORY_KIND, nci.NCI_REPOSITORY_REMOTE)
-	if projectData != nil {
-		nci.NCI_PROJECT_ID = projectData[ncispec.NCI_PROJECT_ID]
-		nci.NCI_PROJECT_NAME = projectData[ncispec.NCI_PROJECT_NAME]
-		nci.NCI_PROJECT_PATH = projectData[ncispec.NCI_PROJECT_PATH]
-		nci.NCI_PROJECT_SLUG = projectData[ncispec.NCI_PROJECT_SLUG]
-		nci.NCI_PROJECT_DESCRIPTION = projectData[ncispec.NCI_PROJECT_DESCRIPTION]
-		nci.NCI_PROJECT_TOPICS = projectData[ncispec.NCI_PROJECT_TOPICS]
-		nci.NCI_PROJECT_ISSUE_URL = projectData[ncispec.NCI_PROJECT_ISSUE_URL]
-		nci.NCI_PROJECT_STARGAZERS = projectData[ncispec.NCI_PROJECT_STARGAZERS]
-		nci.NCI_PROJECT_FORKS = projectData[ncispec.NCI_PROJECT_FORKS]
-		nci.NCI_PROJECT_DEFAULT_BRANCH = projectData[ncispec.NCI_PROJECT_DEFAULT_BRANCH]
-	}
+	nci.NCI_PROJECT_ID = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ID)
+	nci.NCI_PROJECT_NAME = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_NAME)
+	nci.NCI_PROJECT_PATH = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_PATH)
+	nci.NCI_PROJECT_SLUG = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_SLUG)
+	nci.NCI_PROJECT_DESCRIPTION = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DESCRIPTION)
+	nci.NCI_PROJECT_TOPICS = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_TOPICS)
+	nci.NCI_PROJECT_ISSUE_URL = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ISSUE_URL)
+	nci.NCI_PROJECT_STARGAZERS = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_STARGAZERS)
+	nci.NCI_PROJECT_FORKS = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_FORKS)
+	nci.NCI_PROJECT_DEFAULT_BRANCH = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DEFAULT_BRANCH)
 	nci.NCI_PROJECT_DIR = projectDir
 
 	// container registry

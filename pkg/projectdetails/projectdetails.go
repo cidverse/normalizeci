@@ -35,5 +35,5 @@ func GetProjectDetails(repoType string, repoRemote string) map[string]string {
 		}
 	}
 
-	return nil
+	return make(map[string]string)
 }
