@@ -92,7 +92,10 @@ func (c GitClient) VCSHead() (vcsHead vcsapi.VCSRef, err error) {
 		pattern := regexp.MustCompile(`.*checkout: moving from (?P<FROM>.*) to (?P<TO>.*)$`)
 		match := pattern.FindStringSubmatch(lastLine)
 
-		if len(match[2]) == 40 {
+		if strings.HasPrefix(match[2], "refs/remotes/pull") {
+			// handle github merge request as virtual branch
+			return vcsapi.VCSRef{Type: "branch", Value: match[2][13:], Hash: ref.Hash().String()}, nil
+		} else if len(match[2]) == 40 {
 			return vcsapi.VCSRef{Type: "branch", Value: match[1], Hash: ref.Hash().String()}, nil
 		} else {
 			return vcsapi.VCSRef{Type: "tag", Value: match[2], Hash: ref.Hash().String()}, nil
