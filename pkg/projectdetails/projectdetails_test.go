@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestGetProjectDetailsGitHub(t *testing.T) {
-	details := GetProjectDetails("git", "https://github.com/cidverse/normalizeci.git")
+	details := GetProjectDetails("git", "https://github.com/cidverse/normalizeci.git", "github", "github.com")
 
 	assert.Equal(t, "205438004", details["NCI_PROJECT_ID"])
 	assert.Equal(t, "normalizeci", details["NCI_PROJECT_NAME"])
@@ -25,11 +25,12 @@ func TestGetProjectDetailsGitHub(t *testing.T) {
 	assert.Equal(t, "https://api.github.com/repos/cidverse/normalizeci/issues/{ID}", details["NCI_PROJECT_ISSUE_URL"])
 	assert.NotEmpty(t, details["NCI_PROJECT_STARGAZERS"])
 	assert.NotEmpty(t, details["NCI_PROJECT_FORKS"])
+	assert.Equal(t, "https://github.com/cidverse/normalizeci", details["NCI_PROJECT_URL"])
 	assert.Equal(t, "main", details["NCI_PROJECT_DEFAULT_BRANCH"])
 }
 
 func TestGetProjectDetailsGitLab(t *testing.T) {
-	details := GetProjectDetails("git", "https://gitlab.com/PhilippHeuer/events4j.git")
+	details := GetProjectDetails("git", "https://gitlab.com/PhilippHeuer/events4j.git", "gitlab", "gitlab.com")
 
 	assert.Equal(t, "6364957", details["NCI_PROJECT_ID"])
 	assert.Equal(t, "Events4J", details["NCI_PROJECT_NAME"])
@@ -39,5 +40,6 @@ func TestGetProjectDetailsGitLab(t *testing.T) {
 	assert.Equal(t, "https://gitlab.com/PhilippHeuer/events4j/-/issues/{ID}", details["NCI_PROJECT_ISSUE_URL"])
 	assert.NotEmpty(t, details["NCI_PROJECT_STARGAZERS"])
 	assert.NotEmpty(t, details["NCI_PROJECT_FORKS"])
+	assert.Equal(t, "https://gitlab.com/PhilippHeuer/events4j", details["NCI_PROJECT_URL"])
 	assert.Equal(t, "master", details["NCI_PROJECT_DEFAULT_BRANCH"])
 }

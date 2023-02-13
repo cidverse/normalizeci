@@ -16,6 +16,12 @@ type Client interface {
 	// VCSRemote returns the primary remote (server)
 	VCSRemote() string
 
+	// VCSHostServer returns the host of the primary remote
+	VCSHostServer(remote string) string
+
+	// VCSHostType returns the type of the host
+	VCSHostType(server string) string
+
 	// VCSRefToInternalRef converts the reference to the internal notation used by the VCS
 	VCSRefToInternalRef(ref VCSRef) string
 

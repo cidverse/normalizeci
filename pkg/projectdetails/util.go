@@ -24,7 +24,3 @@ func GetHostFromGitRemote(input string) (string, error) {
 
 	return u.Host, nil
 }
-
-func ToEnvName(input string) string {
-	return strings.Replace(strings.ToUpper(input), ".", "_", -1)
-}

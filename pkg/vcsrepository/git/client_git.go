@@ -2,6 +2,7 @@ package gitclient
 
 import (
 	"errors"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -9,11 +10,13 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/utils/merkletrie"
+	"github.com/rs/zerolog/log"
 )
 
 type GitClient struct {
@@ -59,6 +62,39 @@ func (c GitClient) VCSRemote() string {
 	}
 
 	return "local"
+}
+
+func (c GitClient) VCSHostServer(remote string) string {
+	if remote != "local" {
+		// git over ssh
+		if strings.HasPrefix(remote, "git@") {
+			re := regexp.MustCompile(`(?i)^git@([^:]+):`)
+			host := re.FindStringSubmatch(remote)[1]
+			return host
+		}
+
+		u, err := url.Parse(remote)
+		if err != nil {
+			log.Warn().Err(err).Msg("error parsing URL")
+			return ""
+		}
+
+		return u.Host
+	}
+
+	return ""
+}
+
+func (c GitClient) VCSHostType(server string) string {
+	if server == "github.com" {
+		return "github"
+	} else if server == "gitlab.com" || strings.Contains(server, "gitlab.") {
+		return "gitlab"
+	} else if len(os.Getenv(common.ToEnvName(server)+"_TYPE")) > 0 {
+		os.Getenv(common.ToEnvName(server) + "_TYPE")
+	}
+
+	return ""
 }
 
 func (c GitClient) VCSRefToInternalRef(ref vcsapi.VCSRef) string {

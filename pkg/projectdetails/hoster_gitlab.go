@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/gosimple/slug"
 	"github.com/hashicorp/go-retryablehttp"
@@ -15,8 +16,8 @@ import (
 )
 
 func GetGitLabToken(host string) string {
-	if len(os.Getenv(ToEnvName(host)+"_TOKEN")) > 0 {
-		return os.Getenv(ToEnvName(host) + "_TOKEN")
+	if len(os.Getenv(common.ToEnvName(host)+"_TOKEN")) > 0 {
+		return os.Getenv(common.ToEnvName(host) + "_TOKEN")
 	} else if len(os.Getenv("GITLAB_TOKEN")) > 0 {
 		return os.Getenv("GITLAB_TOKEN")
 	} else if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
@@ -72,6 +73,7 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string,
 	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(project.StarCount)
 	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(project.ForksCount)
 	projectDetails[ncispec.NCI_PROJECT_DEFAULT_BRANCH] = project.DefaultBranch
+	projectDetails[ncispec.NCI_PROJECT_URL] = project.WebURL
 
 	return projectDetails, nil
 }

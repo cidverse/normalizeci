@@ -30,12 +30,15 @@ const (
 	NCI_PROJECT_FORKS          = "NCI_PROJECT_FORKS"          // The number of forks of the project.
 	NCI_PROJECT_DIR            = "NCI_PROJECT_DIR"            // Project directory on the local filesystem.
 	NCI_PROJECT_DEFAULT_BRANCH = "NCI_PROJECT_DEFAULT_BRANCH" //  The default branch
+	NCI_PROJECT_URL            = "NCI_PROJECT_URL"            // Project url
 
 	NCI_REPOSITORY_KIND        = "NCI_REPOSITORY_KIND"        //  The used version control system. (git)
 	NCI_REPOSITORY_REMOTE      = "NCI_REPOSITORY_REMOTE"      // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+	NCI_REPOSITORY_HOST_SERVER = "NCI_REPOSITORY_HOST_SERVER" // Host of the git repository server, for example github.com
+	NCI_REPOSITORY_HOST_TYPE   = "NCI_REPOSITORY_HOST_TYPE"   // Type of the git repository server (github, gitlab, ...)
 	NCI_REPOSITORY_STATUS      = "NCI_REPOSITORY_STATUS"      // The repository status (dirty, clean)
 	NCI_COMMIT_REF_TYPE        = "NCI_COMMIT_REF_TYPE"        // The reference type. (branch / tag)
-	NCI_COMMIT_REF_NAME        = "NCI_COMMIT_REF_NAME"        // Human readable name of the current repository reference.
+	NCI_COMMIT_REF_NAME        = "NCI_COMMIT_REF_NAME"        // Human-readable name of the current repository reference.
 	NCI_COMMIT_REF_PATH        = "NCI_COMMIT_REF_PATH"        // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
 	NCI_COMMIT_REF_SLUG        = "NCI_COMMIT_REF_SLUG"        // Slug of the current repository reference.
 	NCI_COMMIT_REF_VCS         = "NCI_COMMIT_REF_VCS"         // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)
@@ -95,6 +98,7 @@ type NormalizeCISpec struct {
 	NCI_PROJECT_STARGAZERS     string `validate:"number"` // The number of people who `follow` / `bookmarked` the project.
 	NCI_PROJECT_FORKS          string `validate:"number"` // The number of forks of the project.
 	NCI_PROJECT_DIR            string // Project directory on the local filesystem.
+	NCI_PROJECT_URL            string
 	NCI_PROJECT_DEFAULT_BRANCH string `` // The default branch
 
 	NCI_CONTAINERREGISTRY_HOST       string // The hostname of the container registry.
@@ -105,6 +109,8 @@ type NormalizeCISpec struct {
 
 	NCI_REPOSITORY_KIND        string `validate:"required"` //  The used version control system. (git)
 	NCI_REPOSITORY_REMOTE      string `validate:"required"` // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+	NCI_REPOSITORY_HOST_SERVER string `validate:"required"` // Host of the git repository server, for example github.com
+	NCI_REPOSITORY_HOST_TYPE   string `validate:"required"` // Type of the git repository server (github, gitlab, ...)
 	NCI_REPOSITORY_STATUS      string `validate:"required"` // The repository status (dirty, clean)
 	NCI_COMMIT_REF_TYPE        string `validate:"required"` // The reference type. (branch / tag)
 	NCI_COMMIT_REF_NAME        string `validate:"required"` // Human readable name of the current repository reference.
@@ -157,8 +163,9 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		NCI_PROJECT_ISSUE_URL:              data[NCI_PROJECT_ISSUE_URL],
 		NCI_PROJECT_STARGAZERS:             data[NCI_PROJECT_STARGAZERS],
 		NCI_PROJECT_FORKS:                  data[NCI_PROJECT_FORKS],
-		NCI_PROJECT_DIR:                    data[NCI_PROJECT_DIR],
 		NCI_PROJECT_DEFAULT_BRANCH:         data[NCI_PROJECT_DEFAULT_BRANCH],
+		NCI_PROJECT_URL:                    data[NCI_PROJECT_URL],
+		NCI_PROJECT_DIR:                    data[NCI_PROJECT_DIR],
 		NCI_CONTAINERREGISTRY_HOST:         data[NCI_CONTAINERREGISTRY_HOST],
 		NCI_CONTAINERREGISTRY_USERNAME:     data[NCI_CONTAINERREGISTRY_USERNAME],
 		NCI_CONTAINERREGISTRY_PASSWORD:     data[NCI_CONTAINERREGISTRY_PASSWORD],
@@ -166,6 +173,8 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		NCI_CONTAINERREGISTRY_TAG:          data[NCI_CONTAINERREGISTRY_TAG],
 		NCI_REPOSITORY_KIND:                data[NCI_REPOSITORY_KIND],
 		NCI_REPOSITORY_REMOTE:              data[NCI_REPOSITORY_REMOTE],
+		NCI_REPOSITORY_HOST_SERVER:         data[NCI_REPOSITORY_HOST_SERVER],
+		NCI_REPOSITORY_HOST_TYPE:           data[NCI_REPOSITORY_HOST_TYPE],
 		NCI_REPOSITORY_STATUS:              data[NCI_REPOSITORY_STATUS],
 		NCI_COMMIT_REF_TYPE:                data[NCI_COMMIT_REF_TYPE],
 		NCI_COMMIT_REF_NAME:                data[NCI_COMMIT_REF_NAME],
@@ -223,8 +232,9 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PROJECT_ISSUE_URL] = spec.NCI_PROJECT_ISSUE_URL
 	data[NCI_PROJECT_STARGAZERS] = spec.NCI_PROJECT_STARGAZERS
 	data[NCI_PROJECT_FORKS] = spec.NCI_PROJECT_FORKS
-	data[NCI_PROJECT_DIR] = spec.NCI_PROJECT_DIR
 	data[NCI_PROJECT_DEFAULT_BRANCH] = spec.NCI_PROJECT_DEFAULT_BRANCH
+	data[NCI_PROJECT_URL] = spec.NCI_PROJECT_URL
+	data[NCI_PROJECT_DIR] = spec.NCI_PROJECT_DIR
 
 	data[NCI_CONTAINERREGISTRY_HOST] = spec.NCI_CONTAINERREGISTRY_HOST
 	data[NCI_CONTAINERREGISTRY_USERNAME] = spec.NCI_CONTAINERREGISTRY_USERNAME
@@ -234,6 +244,8 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 
 	data[NCI_REPOSITORY_KIND] = spec.NCI_REPOSITORY_KIND
 	data[NCI_REPOSITORY_REMOTE] = spec.NCI_REPOSITORY_REMOTE
+	data[NCI_REPOSITORY_HOST_SERVER] = spec.NCI_REPOSITORY_HOST_SERVER
+	data[NCI_REPOSITORY_HOST_TYPE] = spec.NCI_REPOSITORY_HOST_TYPE
 	data[NCI_REPOSITORY_STATUS] = spec.NCI_REPOSITORY_STATUS
 	data[NCI_COMMIT_REF_TYPE] = spec.NCI_COMMIT_REF_TYPE
 	data[NCI_COMMIT_REF_NAME] = spec.NCI_COMMIT_REF_NAME

@@ -113,3 +113,7 @@ func GetHostFromURL(addr string) string {
 
 	return u.Host
 }
+
+func ToEnvName(input string) string {
+	return strings.Replace(strings.ToUpper(input), ".", "_", -1)
+}

@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/google/go-github/v50/github"
 	"github.com/gosimple/slug"
@@ -19,8 +20,8 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (map[string]string,
 	repoPathSplit := strings.SplitN(repoPath, "/", 2)
 
 	ghToken := ""
-	if len(os.Getenv(ToEnvName(host)+"_TOKEN")) > 0 {
-		ghToken = os.Getenv(ToEnvName(host) + "_TOKEN")
+	if len(os.Getenv(common.ToEnvName(host)+"_TOKEN")) > 0 {
+		ghToken = os.Getenv(common.ToEnvName(host) + "_TOKEN")
 	} else if len(os.Getenv("GITHUB_TOKEN")) > 0 {
 		ghToken = os.Getenv("GITHUB_TOKEN")
 	}
@@ -54,6 +55,7 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (map[string]string,
 	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(*repo.StargazersCount)
 	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(*repo.ForksCount)
 	projectDetails[ncispec.NCI_PROJECT_DEFAULT_BRANCH] = *repo.DefaultBranch
+	projectDetails[ncispec.NCI_PROJECT_URL] = strings.TrimSuffix(*repo.CloneURL, ".git")
 
 	return projectDetails, nil
 }

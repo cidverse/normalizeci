@@ -53,6 +53,8 @@ func GetVCSRepositoryInformation(dir string) (data map[string]string, err error)
 	data = make(map[string]string)
 	data[ncispec.NCI_REPOSITORY_KIND] = "none"
 	data[ncispec.NCI_REPOSITORY_REMOTE] = "local"
+	data[ncispec.NCI_REPOSITORY_HOST_SERVER] = ""
+	data[ncispec.NCI_REPOSITORY_HOST_TYPE] = ""
 	data[ncispec.NCI_COMMIT_REF_TYPE] = "unknown"
 	data[ncispec.NCI_COMMIT_REF_NAME] = "unknown"
 	data[ncispec.NCI_COMMIT_REF_SLUG] = ""
@@ -74,6 +76,8 @@ func GetVCSRepositoryInformation(dir string) (data map[string]string, err error)
 	// repository type and remote
 	data[ncispec.NCI_REPOSITORY_KIND] = client.VCSType()
 	data[ncispec.NCI_REPOSITORY_REMOTE] = client.VCSRemote()
+	data[ncispec.NCI_REPOSITORY_HOST_SERVER] = client.VCSHostServer(data[ncispec.NCI_REPOSITORY_REMOTE])
+	data[ncispec.NCI_REPOSITORY_HOST_TYPE] = client.VCSHostType(data[ncispec.NCI_REPOSITORY_HOST_SERVER])
 
 	// repository head
 	head, err := client.VCSHead()

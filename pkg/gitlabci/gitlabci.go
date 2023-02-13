@@ -73,6 +73,8 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	}
 	nci.NCI_REPOSITORY_KIND = vcsData[ncispec.NCI_REPOSITORY_KIND]
 	nci.NCI_REPOSITORY_REMOTE = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
+	nci.NCI_REPOSITORY_HOST_SERVER = vcsData[ncispec.NCI_REPOSITORY_HOST_SERVER]
+	nci.NCI_REPOSITORY_HOST_TYPE = vcsData[ncispec.NCI_REPOSITORY_HOST_TYPE]
 	nci.NCI_REPOSITORY_STATUS = vcsData[ncispec.NCI_REPOSITORY_STATUS]
 	if len(env["CI_COMMIT_TAG"]) > 0 {
 		nci.NCI_COMMIT_REF_TYPE = "tag"
@@ -103,7 +105,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_LASTRELEASE_COMMIT_AFTER_COUNT = vcsData[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT]
 
 	// project details
-	projectData := projectdetails.GetProjectDetails(nci.NCI_REPOSITORY_KIND, nci.NCI_REPOSITORY_REMOTE)
+	projectData := projectdetails.GetProjectDetails(nci.NCI_REPOSITORY_KIND, nci.NCI_REPOSITORY_REMOTE, nci.NCI_REPOSITORY_HOST_TYPE, nci.NCI_REPOSITORY_HOST_SERVER)
 	nci.NCI_PROJECT_ID = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ID)})
 	nci.NCI_PROJECT_NAME = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_NAME)})
 	nci.NCI_PROJECT_PATH = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_NAME"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_PATH)})
@@ -114,6 +116,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.NCI_PROJECT_STARGAZERS = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_STARGAZERS)})
 	nci.NCI_PROJECT_FORKS = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_FORKS)})
 	nci.NCI_PROJECT_DEFAULT_BRANCH = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_DEFAULT_BRANCH"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DEFAULT_BRANCH)})
+	nci.NCI_PROJECT_URL = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_URL"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_URL)})
 	nci.NCI_PROJECT_DIR = projectDir
 
 	// container registry
