@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cidverse/normalizeci/pkg/cmd"
+	"github.com/cidverse/normalizeci/cmd"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )

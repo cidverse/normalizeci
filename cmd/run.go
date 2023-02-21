@@ -9,15 +9,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func normalizationCommand(format string, hostEnv bool, output string, strict bool, targets []string) {
+func normalizationCommand(format string, output string, strict bool, targets []string) {
 	// run normalization
 	var normalizedEnv = normalizeci.RunDefaultNormalization()
 
 	// set normalized variables in current session
 	var nci = ncispec.OfMap(normalizedEnv)
-	if hostEnv == false {
-		nci.DATA = nil // exclude hostEnv from generation
-	}
 	outputEnv := ncispec.ToMap(nci)
 
 	// set process env

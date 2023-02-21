@@ -43,39 +43,43 @@ func (n Normalizer) Check(env map[string]string) bool {
 
 // Normalize normalizes the environment variables into the common format
 func (n Normalizer) Normalize(env map[string]string) map[string]string {
-	nci := ncispec.OfMap(env)
+	var nci ncispec.NormalizeCISpec
 
 	// common
-	nci.NCI = "true"
-	nci.NCI_VERSION = n.version
-	nci.NCI_SERVICE_NAME = n.name
-	nci.NCI_SERVICE_SLUG = n.slug
+	nci.Found = "true"
+	nci.Version = n.version
+	nci.ServiceName = n.name
+	nci.ServiceSlug = n.slug
 
 	// worker
-	nci.NCI_WORKER_ID = env["AGENT_ID"]
-	nci.NCI_WORKER_NAME = env["AGENT_MACHINENAME"]
-	nci.NCI_WORKER_VERSION = env["AGENT_VERSION"]
-	nci.NCI_WORKER_ARCH = runtime.GOOS + "/" + runtime.GOARCH
+	nci.WorkerId = env["AGENT_ID"]
+	nci.WorkerName = env["AGENT_MACHINENAME"]
+	nci.WorkerOS = env["ImageOS"] + ":" + env["ImageVersion"]
+	nci.WorkerVersion = env["AGENT_VERSION"]
+	nci.WorkerArch = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
+	nci.PipelineId = env["SYSTEM_PHASEID"]
 	if env["BUILD_REASON"] == "Manual" {
-		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerManual)
+		nci.PipelineTrigger = ncispec.PipelineTriggerManual
 	} else if env["BUILD_REASON"] == "IndividualCI" || env["BUILD_REASON"] == "BatchedCI" {
-		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerPush)
+		nci.PipelineTrigger = ncispec.PipelineTriggerPush
 	} else if env["BUILD_REASON"] == "Schedule" {
-		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerSchedule)
+		nci.PipelineTrigger = ncispec.PipelineTriggerSchedule
 	} else if env["BUILD_REASON"] == "PullRequest" {
-		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerPullRequest)
+		nci.PipelineTrigger = ncispec.PipelineTriggerPullRequest
 	} else if env["BUILD_REASON"] == "BuildCompletion" {
-		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerBuild)
+		nci.PipelineTrigger = ncispec.PipelineTriggerBuild
 	} else {
-		nci.NCI_PIPELINE_TRIGGER = string(ncispec.PipelineTriggerUnknown)
+		nci.PipelineTrigger = ncispec.PipelineTriggerUnknown
 	}
-	nci.NCI_PIPELINE_STAGE_NAME = env["SYSTEM_STAGENAME"] // SYSTEM_STAGEDISPLAYNAME
-	nci.NCI_PIPELINE_STAGE_SLUG = slug.Make(env["SYSTEM_STAGENAME"])
-	nci.NCI_PIPELINE_JOB_NAME = env["SYSTEM_JOBNAME"] // SYSTEM_JOBDISPLAYNAME
-	nci.NCI_PIPELINE_JOB_SLUG = slug.Make(env["SYSTEM_JOBNAME"])
-	nci.NCI_PIPELINE_URL = fmt.Sprintf("%s%s/_build/results?buildId=%s", env["SYSTEM_TEAMFOUNDATIONSERVERURI"], env["SYSTEM_TEAMPROJECT"], env["BUILD_BUILDID"])
+	nci.PipelineStageId = env["SYSTEM_STAGEID"]
+	nci.PipelineStageName = env["SYSTEM_STAGENAME"] // SYSTEM_STAGEDISPLAYNAME
+	nci.PipelineStageSlug = slug.Make(env["SYSTEM_STAGENAME"])
+	nci.PipelineJobId = env["SYSTEM_JOBID"]
+	nci.PipelineJobName = env["SYSTEM_JOBNAME"] // SYSTEM_JOBDISPLAYNAME
+	nci.PipelineJobSlug = slug.Make(env["SYSTEM_JOBNAME"])
+	nci.PipelineUrl = fmt.Sprintf("%s%s/_build/results?buildId=%s", env["SYSTEM_TEAMFOUNDATIONSERVERURI"], env["SYSTEM_TEAMPROJECT"], env["BUILD_BUILDID"])
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
@@ -83,55 +87,55 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	if addDataErr != nil {
 		panic(addDataErr)
 	}
-	nci.NCI_REPOSITORY_KIND = vcsData[ncispec.NCI_REPOSITORY_KIND]
-	nci.NCI_REPOSITORY_REMOTE = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
-	nci.NCI_REPOSITORY_HOST_SERVER = vcsData[ncispec.NCI_REPOSITORY_HOST_SERVER]
-	nci.NCI_REPOSITORY_HOST_TYPE = vcsData[ncispec.NCI_REPOSITORY_HOST_TYPE]
-	nci.NCI_REPOSITORY_STATUS = vcsData[ncispec.NCI_REPOSITORY_STATUS]
-	nci.NCI_COMMIT_REF_TYPE = vcsData[ncispec.NCI_COMMIT_REF_TYPE]
-	nci.NCI_COMMIT_REF_NAME = vcsData[ncispec.NCI_COMMIT_REF_NAME]
-	nci.NCI_COMMIT_REF_PATH = vcsData[ncispec.NCI_COMMIT_REF_PATH]
-	nci.NCI_COMMIT_REF_SLUG = vcsData[ncispec.NCI_COMMIT_REF_SLUG]
-	nci.NCI_COMMIT_REF_VCS = vcsData[ncispec.NCI_COMMIT_REF_VCS]
-	nci.NCI_COMMIT_REF_RELEASE = vcsData[ncispec.NCI_COMMIT_REF_RELEASE]
-	nci.NCI_COMMIT_SHA = vcsData[ncispec.NCI_COMMIT_SHA]
-	nci.NCI_COMMIT_SHA_SHORT = vcsData[ncispec.NCI_COMMIT_SHA_SHORT]
-	nci.NCI_COMMIT_TITLE = vcsData[ncispec.NCI_COMMIT_TITLE]
-	nci.NCI_COMMIT_DESCRIPTION = vcsData[ncispec.NCI_COMMIT_DESCRIPTION]
-	nci.NCI_COMMIT_AUTHOR_NAME = vcsData[ncispec.NCI_COMMIT_AUTHOR_NAME]
-	nci.NCI_COMMIT_AUTHOR_EMAIL = vcsData[ncispec.NCI_COMMIT_AUTHOR_EMAIL]
-	nci.NCI_COMMIT_COMMITTER_NAME = vcsData[ncispec.NCI_COMMIT_COMMITTER_NAME]
-	nci.NCI_COMMIT_COMMITTER_EMAIL = vcsData[ncispec.NCI_COMMIT_COMMITTER_EMAIL]
-	nci.NCI_COMMIT_COUNT = vcsData[ncispec.NCI_COMMIT_COUNT]
-	nci.NCI_LASTRELEASE_REF_NAME = vcsData[ncispec.NCI_LASTRELEASE_REF_NAME]
-	nci.NCI_LASTRELEASE_REF_SLUG = vcsData[ncispec.NCI_LASTRELEASE_REF_SLUG]
-	nci.NCI_LASTRELEASE_REF_VCS = vcsData[ncispec.NCI_LASTRELEASE_REF_VCS]
-	nci.NCI_LASTRELEASE_COMMIT_AFTER_COUNT = vcsData[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT]
+	nci.RepositoryKind = vcsData[ncispec.NCI_REPOSITORY_KIND]
+	nci.RepositoryRemote = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
+	nci.RepositoryHostServer = vcsData[ncispec.NCI_REPOSITORY_HOST_SERVER]
+	nci.RepositoryHostType = vcsData[ncispec.NCI_REPOSITORY_HOST_TYPE]
+	nci.RepositoryStatus = vcsData[ncispec.NCI_REPOSITORY_STATUS]
+	nci.CommitRefType = vcsData[ncispec.NCI_COMMIT_REF_TYPE]
+	nci.CommitRefName = vcsData[ncispec.NCI_COMMIT_REF_NAME]
+	nci.CommitRefPath = vcsData[ncispec.NCI_COMMIT_REF_PATH]
+	nci.CommitRefSlug = vcsData[ncispec.NCI_COMMIT_REF_SLUG]
+	nci.CommitRefVcs = vcsData[ncispec.NCI_COMMIT_REF_VCS]
+	nci.CommitRefRelease = vcsData[ncispec.NCI_COMMIT_REF_RELEASE]
+	nci.CommitSha = vcsData[ncispec.NCI_COMMIT_SHA]
+	nci.CommitShaShort = vcsData[ncispec.NCI_COMMIT_SHA_SHORT]
+	nci.CommitTitle = vcsData[ncispec.NCI_COMMIT_TITLE]
+	nci.CommitDescription = vcsData[ncispec.NCI_COMMIT_DESCRIPTION]
+	nci.CommitAuthorName = vcsData[ncispec.NCI_COMMIT_AUTHOR_NAME]
+	nci.CommitAuthorEmail = vcsData[ncispec.NCI_COMMIT_AUTHOR_EMAIL]
+	nci.CommitCommitterName = vcsData[ncispec.NCI_COMMIT_COMMITTER_NAME]
+	nci.CommitCommitterEmail = vcsData[ncispec.NCI_COMMIT_COMMITTER_EMAIL]
+	nci.CommitCount = vcsData[ncispec.NCI_COMMIT_COUNT]
+	nci.LastreleaseRefName = vcsData[ncispec.NCI_LASTRELEASE_REF_NAME]
+	nci.LastreleaseRefSlug = vcsData[ncispec.NCI_LASTRELEASE_REF_SLUG]
+	nci.LastreleaseRefVcs = vcsData[ncispec.NCI_LASTRELEASE_REF_VCS]
+	nci.LastreleaseCommitAfterCount = vcsData[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT]
 
 	// project details
-	projectData := projectdetails.GetProjectDetails(nci.NCI_REPOSITORY_KIND, nci.NCI_REPOSITORY_REMOTE, nci.NCI_REPOSITORY_HOST_TYPE, nci.NCI_REPOSITORY_HOST_SERVER)
-	nci.NCI_PROJECT_ID = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ID)
-	nci.NCI_PROJECT_NAME = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_NAME)
-	nci.NCI_PROJECT_PATH = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_PATH)
-	nci.NCI_PROJECT_SLUG = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_SLUG)
-	nci.NCI_PROJECT_DESCRIPTION = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DESCRIPTION)
-	nci.NCI_PROJECT_TOPICS = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_TOPICS)
-	nci.NCI_PROJECT_ISSUE_URL = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ISSUE_URL)
-	nci.NCI_PROJECT_STARGAZERS = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_STARGAZERS)
-	nci.NCI_PROJECT_FORKS = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_FORKS)
-	nci.NCI_PROJECT_DEFAULT_BRANCH = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DEFAULT_BRANCH)
-	nci.NCI_PROJECT_URL = env["BUILD_REPOSITORY_URI"]
-	nci.NCI_PROJECT_DIR = projectDir
+	projectData := projectdetails.GetProjectDetails(nci.RepositoryKind, nci.RepositoryRemote, nci.RepositoryHostType, nci.RepositoryHostServer)
+	nci.ProjectId = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ID)
+	nci.ProjectName = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_NAME)
+	nci.ProjectPath = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_PATH)
+	nci.ProjectSlug = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_SLUG)
+	nci.ProjectDescription = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DESCRIPTION)
+	nci.ProjectTopics = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_TOPICS)
+	nci.ProjectIssueUrl = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ISSUE_URL)
+	nci.ProjectStargazers = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_STARGAZERS)
+	nci.ProjectForks = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_FORKS)
+	nci.ProjectDefaultBranch = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DEFAULT_BRANCH)
+	nci.ProjectUrl = env["BUILD_REPOSITORY_URI"]
+	nci.ProjectDir = projectDir
 
 	// container registry
-	nci.NCI_CONTAINERREGISTRY_HOST = ""
-	nci.NCI_CONTAINERREGISTRY_REPOSITORY = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
-	nci.NCI_CONTAINERREGISTRY_USERNAME = ""
-	nci.NCI_CONTAINERREGISTRY_PASSWORD = ""
-	nci.NCI_CONTAINERREGISTRY_TAG = nci.NCI_COMMIT_REF_RELEASE
+	nci.ContainerregistryHost = ""
+	nci.ContainerregistryRepository = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+	nci.ContainerregistryUsername = ""
+	nci.ContainerregistryPassword = ""
+	nci.ContainerregistryTag = nci.CommitRefRelease
 
 	// control
-	nci.NCI_DEPLOY_FREEZE = "false"
+	nci.DeployFreeze = "false"
 
 	return ncispec.ToMap(nci)
 }

@@ -20,6 +20,7 @@ Spec-Version: `0.3.0`
 |----------------------|----------------------------------------------|
 | `NCI_WORKER_ID`      | A unique id of the ci worker.                |
 | `NCI_WORKER_NAME`    | The human readable name of the ci worker.    |
+| `NCI_WORKER_OS`      | OS / OS Image of the ci worker.              |
 | `NCI_WORKER_VERSION` | The version of the ci worker.                |
 | `NCI_WORKER_ARCH`    | The arch of the ci worker. (ie. linux/amd64) |
 
@@ -27,9 +28,12 @@ Spec-Version: `0.3.0`
 
 | Variable                       | Description                                                                               |
 |--------------------------------|-------------------------------------------------------------------------------------------|
+| `NCI_PIPELINE_ID`              | Pipeline ID                                                                               |
 | `NCI_PIPELINE_TRIGGER`         | What triggered the pipeline. (ie. manual/push/trigger/api/schedule/pull_request/build)    |
+| `NCI_PIPELINE_STAGE_ID`        | Pipeline Stage ID                                                                         |
 | `NCI_PIPELINE_STAGE_NAME`      | Human readable name of the current stage.                                                 |
 | `NCI_PIPELINE_STAGE_SLUG`      | Slug of the current stage.                                                                |
+| `NCI_PIPELINE_JOB_ID`          | Pipeline Job ID                                                                           |
 | `NCI_PIPELINE_JOB_NAME`        | Human readable name of the current job.                                                   |
 | `NCI_PIPELINE_JOB_SLUG`        | Slug of the current job.                                                                  |
 | `NCI_PIPELINE_URL`             | Pipeline URL                                                                              |

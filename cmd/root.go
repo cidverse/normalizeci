@@ -33,11 +33,10 @@ var rootCmd = &cobra.Command{
 		format, _ := cmd.Flags().GetString("format")
 		format = defaultFormat(format)
 		output, _ := cmd.Flags().GetString("output")
-		hostEnv, _ := cmd.Flags().GetBool("hostEnv")
 		strict, _ := cmd.Flags().GetBool("strict")
 		targets, _ := cmd.Flags().GetStringArray("target")
 
-		normalizationCommand(format, hostEnv, output, strict, targets)
+		normalizationCommand(format, output, strict, targets)
 	},
 }
 

@@ -49,12 +49,17 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	// - worker
 	assert.Equal(t, "9", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "fv-az158-714", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "ubuntu20:20220503.1", normalized["NCI_WORKER_OS"])
 	assert.Equal(t, "2.202.1", normalized["NCI_WORKER_VERSION"])
 	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
+
 	// - pipeline
+	assert.Equal(t, "a11efe29-9b58-5a6c-3fa4-3e36996dcbd8", normalized["NCI_PIPELINE_ID"])
 	assert.Equal(t, "push", normalized["NCI_PIPELINE_TRIGGER"])
+	assert.Equal(t, "6884a131-87da-5381-61f3-d7acc3b91d76", normalized["NCI_PIPELINE_STAGE_ID"])
 	assert.Equal(t, "Build", normalized["NCI_PIPELINE_STAGE_NAME"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
+	assert.Equal(t, "3dc8fd7e-4368-5a92-293e-d53cefc8c4b3", normalized["NCI_PIPELINE_JOB_ID"])
 	assert.Equal(t, "__default", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "default", normalized["NCI_PIPELINE_JOB_SLUG"])
 	assert.Equal(t, "https://heuer.visualstudio.com/cienvsamples/_build/results?buildId=11", normalized["NCI_PIPELINE_URL"])

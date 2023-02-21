@@ -19,12 +19,12 @@ func TestOfMap(t *testing.T) {
 	data[NCI_VERSION] = "1.0.0"
 	nci := OfMap(data)
 
-	assert.Equal(t, "1.0.0", nci.NCI_VERSION)
+	assert.Equal(t, "1.0.0", nci.Version)
 }
 
 func TestToMap(t *testing.T) {
 	spec := NormalizeCISpec{
-		NCI_VERSION: "1.0.0",
+		Version: "1.0.0",
 	}
 	data := ToMap(spec)
 

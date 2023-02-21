@@ -1,274 +1,276 @@
 package ncispec
 
 const (
-	NCI              = "NCI"              // Will be set the true, if the variables have been normalized. (this script)
-	NCI_VERSION      = "NCI_VERSION"      // The revision of nci that was used to generate the normalized variables.
-	NCI_SERVICE_NAME = "NCI_SERVICE_NAME" // The commercial name of the used ci service. (e.g. GitLab CI, Travis CI, CircleCI, Jenkins)
-	NCI_SERVICE_SLUG = "NCI_SERVICE_SLUG" // The commercial name normalized as slug for use in scripts, will not be changed.
-
-	NCI_WORKER_ID      = "NCI_WORKER_ID"      // A unique id of the ci worker.
-	NCI_WORKER_NAME    = "NCI_WORKER_NAME"    // The human-readable name of the ci worker.
-	NCI_WORKER_VERSION = "NCI_WORKER_VERSION" // The version of the ci worker.
-	NCI_WORKER_ARCH    = "NCI_WORKER_ARCH"    // The arch of the ci worker. (ie. linux/amd64)
-
-	NCI_PIPELINE_TRIGGER         = "NCI_PIPELINE_TRIGGER"         // What triggered the pipeline. (ie. manual/push/trigger/api/schedule/pull_request/build)
-	NCI_PIPELINE_STAGE_NAME      = "NCI_PIPELINE_STAGE_NAME"      // Human readable name of the current stage.
-	NCI_PIPELINE_STAGE_SLUG      = "NCI_PIPELINE_STAGE_SLUG"      // Slug of the current stage.
-	NCI_PIPELINE_JOB_NAME        = "NCI_PIPELINE_JOB_NAME"        // Human readable name of the current job.
-	NCI_PIPELINE_JOB_SLUG        = "NCI_PIPELINE_JOB_SLUG"        // Slug of the current job.
-	NCI_PIPELINE_URL             = "NCI_PIPELINE_URL"             // The url to the pipeline
-	NCI_PIPELINE_PULL_REQUEST_ID = "NCI_PIPELINE_PULL_REQUEST_ID" // The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request.
-
-	NCI_PROJECT_ID             = "NCI_PROJECT_ID"             // Unique project id, can be used in deployments.
-	NCI_PROJECT_NAME           = "NCI_PROJECT_NAME"           // Unique project id, can be used in deployments.
-	NCI_PROJECT_PATH           = "NCI_PROJECT_PATH"           // Path of the namespace and the project
-	NCI_PROJECT_SLUG           = "NCI_PROJECT_SLUG"           // Project slug, that can be used in deployments.
-	NCI_PROJECT_DESCRIPTION    = "NCI_PROJECT_DESCRIPTION"    // The project description.
-	NCI_PROJECT_TOPICS         = "NCI_PROJECT_TOPICS"         // The topics / tags of the project.
-	NCI_PROJECT_ISSUE_URL      = "NCI_PROJECT_ISSUE_URL"      // A template for links to issues, contains a `{ID}` placeholder.
-	NCI_PROJECT_STARGAZERS     = "NCI_PROJECT_STARGAZERS"     // The number of people who `follow` / `bookmarked` the project.
-	NCI_PROJECT_FORKS          = "NCI_PROJECT_FORKS"          // The number of forks of the project.
-	NCI_PROJECT_DIR            = "NCI_PROJECT_DIR"            // Project directory on the local filesystem.
-	NCI_PROJECT_DEFAULT_BRANCH = "NCI_PROJECT_DEFAULT_BRANCH" //  The default branch
-	NCI_PROJECT_URL            = "NCI_PROJECT_URL"            // Project url
-
-	NCI_REPOSITORY_KIND        = "NCI_REPOSITORY_KIND"        //  The used version control system. (git)
-	NCI_REPOSITORY_REMOTE      = "NCI_REPOSITORY_REMOTE"      // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
-	NCI_REPOSITORY_HOST_SERVER = "NCI_REPOSITORY_HOST_SERVER" // Host of the git repository server, for example github.com
-	NCI_REPOSITORY_HOST_TYPE   = "NCI_REPOSITORY_HOST_TYPE"   // Type of the git repository server (github, gitlab, ...)
-	NCI_REPOSITORY_STATUS      = "NCI_REPOSITORY_STATUS"      // The repository status (dirty, clean)
-	NCI_COMMIT_REF_TYPE        = "NCI_COMMIT_REF_TYPE"        // The reference type. (branch / tag)
-	NCI_COMMIT_REF_NAME        = "NCI_COMMIT_REF_NAME"        // Human-readable name of the current repository reference.
-	NCI_COMMIT_REF_PATH        = "NCI_COMMIT_REF_PATH"        // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
-	NCI_COMMIT_REF_SLUG        = "NCI_COMMIT_REF_SLUG"        // Slug of the current repository reference.
-	NCI_COMMIT_REF_VCS         = "NCI_COMMIT_REF_VCS"         // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)
-	NCI_COMMIT_REF_RELEASE     = "NCI_COMMIT_REF_RELEASE"     // Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
-	NCI_COMMIT_SHA             = "NCI_COMMIT_SHA"             // A unique hash, that each commit gets.
-	NCI_COMMIT_SHA_SHORT       = "NCI_COMMIT_SHA_SHORT"       // A short form of the unique commit hash. (8 chars)
-	NCI_COMMIT_AUTHOR_NAME     = "NCI_COMMIT_AUTHOR_NAME"     // author name
-	NCI_COMMIT_AUTHOR_EMAIL    = "NCI_COMMIT_AUTHOR_EMAIL"    // author email
-	NCI_COMMIT_COMMITTER_NAME  = "NCI_COMMIT_COMMITTER_NAME"  // committer name
-	NCI_COMMIT_COMMITTER_EMAIL = "NCI_COMMIT_COMMITTER_EMAIL" // committer email
-	NCI_COMMIT_TITLE           = "NCI_COMMIT_TITLE"           // The title of the latest commit on the current reference.
-	NCI_COMMIT_DESCRIPTION     = "NCI_COMMIT_DESCRIPTION"     // The description of the latest commit on the current reference.
-	NCI_COMMIT_COUNT           = "NCI_COMMIT_COUNT"           // The total amount of commits inside of the current reference, can be used as build number.
-
-	NCI_CONTAINERREGISTRY_HOST       = "NCI_CONTAINERREGISTRY_HOST"       // The hostname of the container registry.
-	NCI_CONTAINERREGISTRY_USERNAME   = "NCI_CONTAINERREGISTRY_USERNAME"   // The username used for container registry authentication.
-	NCI_CONTAINERREGISTRY_PASSWORD   = "NCI_CONTAINERREGISTRY_PASSWORD"   // The password used for container registry authentication.
-	NCI_CONTAINERREGISTRY_REPOSITORY = "NCI_CONTAINERREGISTRY_REPOSITORY" // The repository, that should be used for the current project.
-	NCI_CONTAINERREGISTRY_TAG        = "NCI_CONTAINERREGISTRY_TAG"        // The tag that should be build.
-
-	NCI_LASTRELEASE_REF_NAME           = "NCI_LASTRELEASE_REF_NAME"           // Human readable name of the last stable release.
-	NCI_LASTRELEASE_REF_SLUG           = "NCI_LASTRELEASE_REF_SLUG"           // Slug of the last stable release.
-	NCI_LASTRELEASE_REF_VCS            = "NCI_LASTRELEASE_REF_VCS"            // Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
-	NCI_LASTRELEASE_COMMIT_AFTER_COUNT = "NCI_LASTRELEASE_COMMIT_AFTER_COUNT" // Holds the count of commits since the last stable release.
-
-	NCI_DEPLOY_FREEZE = "NCI_DEPLOY_FREEZE" // Currently in a deploy freeze window? (`true`, `false`)
+	NCI                                = "NCI"
+	NCI_VERSION                        = "NCI_VERSION"
+	NCI_SERVICE_NAME                   = "NCI_SERVICE_NAME"
+	NCI_SERVICE_SLUG                   = "NCI_SERVICE_SLUG"
+	NCI_WORKER_ID                      = "NCI_WORKER_ID"
+	NCI_WORKER_NAME                    = "NCI_WORKER_NAME"
+	NCI_WORKER_OS                      = "NCI_WORKER_OS"
+	NCI_WORKER_VERSION                 = "NCI_WORKER_VERSION"
+	NCI_WORKER_ARCH                    = "NCI_WORKER_ARCH"
+	NCI_PIPELINE_ID                    = "NCI_PIPELINE_ID"
+	NCI_PIPELINE_TRIGGER               = "NCI_PIPELINE_TRIGGER"
+	NCI_PIPELINE_STAGE_ID              = "NCI_PIPELINE_STAGE_ID"
+	NCI_PIPELINE_STAGE_NAME            = "NCI_PIPELINE_STAGE_NAME"
+	NCI_PIPELINE_STAGE_SLUG            = "NCI_PIPELINE_STAGE_SLUG"
+	NCI_PIPELINE_JOB_ID                = "NCI_PIPELINE_JOB_ID"
+	NCI_PIPELINE_JOB_NAME              = "NCI_PIPELINE_JOB_NAME"
+	NCI_PIPELINE_JOB_SLUG              = "NCI_PIPELINE_JOB_SLUG"
+	NCI_PIPELINE_URL                   = "NCI_PIPELINE_URL"
+	NCI_PIPELINE_PULL_REQUEST_ID       = "NCI_PIPELINE_PULL_REQUEST_ID"
+	NCI_PROJECT_ID                     = "NCI_PROJECT_ID"
+	NCI_PROJECT_NAME                   = "NCI_PROJECT_NAME"
+	NCI_PROJECT_PATH                   = "NCI_PROJECT_PATH"
+	NCI_PROJECT_SLUG                   = "NCI_PROJECT_SLUG"
+	NCI_PROJECT_DESCRIPTION            = "NCI_PROJECT_DESCRIPTION"
+	NCI_PROJECT_TOPICS                 = "NCI_PROJECT_TOPICS"
+	NCI_PROJECT_ISSUE_URL              = "NCI_PROJECT_ISSUE_URL"
+	NCI_PROJECT_STARGAZERS             = "NCI_PROJECT_STARGAZERS"
+	NCI_PROJECT_FORKS                  = "NCI_PROJECT_FORKS"
+	NCI_PROJECT_DIR                    = "NCI_PROJECT_DIR"
+	NCI_PROJECT_DEFAULT_BRANCH         = "NCI_PROJECT_DEFAULT_BRANCH"
+	NCI_PROJECT_URL                    = "NCI_PROJECT_URL"
+	NCI_REPOSITORY_KIND                = "NCI_REPOSITORY_KIND"
+	NCI_REPOSITORY_REMOTE              = "NCI_REPOSITORY_REMOTE"
+	NCI_REPOSITORY_HOST_SERVER         = "NCI_REPOSITORY_HOST_SERVER"
+	NCI_REPOSITORY_HOST_TYPE           = "NCI_REPOSITORY_HOST_TYPE"
+	NCI_REPOSITORY_STATUS              = "NCI_REPOSITORY_STATUS"
+	NCI_COMMIT_REF_TYPE                = "NCI_COMMIT_REF_TYPE"
+	NCI_COMMIT_REF_NAME                = "NCI_COMMIT_REF_NAME"
+	NCI_COMMIT_REF_PATH                = "NCI_COMMIT_REF_PATH"
+	NCI_COMMIT_REF_SLUG                = "NCI_COMMIT_REF_SLUG"
+	NCI_COMMIT_REF_VCS                 = "NCI_COMMIT_REF_VCS"
+	NCI_COMMIT_REF_RELEASE             = "NCI_COMMIT_REF_RELEASE"
+	NCI_COMMIT_SHA                     = "NCI_COMMIT_SHA"
+	NCI_COMMIT_SHA_SHORT               = "NCI_COMMIT_SHA_SHORT"
+	NCI_COMMIT_AUTHOR_NAME             = "NCI_COMMIT_AUTHOR_NAME"
+	NCI_COMMIT_AUTHOR_EMAIL            = "NCI_COMMIT_AUTHOR_EMAIL"
+	NCI_COMMIT_COMMITTER_NAME          = "NCI_COMMIT_COMMITTER_NAME"
+	NCI_COMMIT_COMMITTER_EMAIL         = "NCI_COMMIT_COMMITTER_EMAIL"
+	NCI_COMMIT_TITLE                   = "NCI_COMMIT_TITLE"
+	NCI_COMMIT_DESCRIPTION             = "NCI_COMMIT_DESCRIPTION"
+	NCI_COMMIT_COUNT                   = "NCI_COMMIT_COUNT"
+	NCI_CONTAINERREGISTRY_HOST         = "NCI_CONTAINERREGISTRY_HOST"
+	NCI_CONTAINERREGISTRY_USERNAME     = "NCI_CONTAINERREGISTRY_USERNAME"
+	NCI_CONTAINERREGISTRY_PASSWORD     = "NCI_CONTAINERREGISTRY_PASSWORD"
+	NCI_CONTAINERREGISTRY_REPOSITORY   = "NCI_CONTAINERREGISTRY_REPOSITORY"
+	NCI_CONTAINERREGISTRY_TAG          = "NCI_CONTAINERREGISTRY_TAG"
+	NCI_LASTRELEASE_REF_NAME           = "NCI_LASTRELEASE_REF_NAME"
+	NCI_LASTRELEASE_REF_SLUG           = "NCI_LASTRELEASE_REF_SLUG"
+	NCI_LASTRELEASE_REF_VCS            = "NCI_LASTRELEASE_REF_VCS"
+	NCI_LASTRELEASE_COMMIT_AFTER_COUNT = "NCI_LASTRELEASE_COMMIT_AFTER_COUNT"
+	NCI_DEPLOY_FREEZE                  = "NCI_DEPLOY_FREEZE"
 )
 
 type NormalizeCISpec struct {
-	DATA map[string]string // storage to hold any data unrelated to NCI
+	Found       string `validate:"required"`         // Will be set the true, if the variables have been normalized. (this script)
+	Version     string `validate:"required"`         // The revision of nci that was used to generate the normalized variables.
+	ServiceName string `validate:"required"`         // The commercial name of the used ci service. (e.g. GitLab CI, Travis CI, CircleCI, Jenkins)
+	ServiceSlug string `validate:"required,is-slug"` // The commercial name normalized as slug for use in scripts, will not be changed.
 
-	NCI              string `validate:"required"`         // Will be set the true, if the variables have been normalized. (this script)
-	NCI_VERSION      string `validate:"required"`         // The revision of nci that was used to generate the normalized variables.
-	NCI_SERVICE_NAME string `validate:"required"`         // The commercial name of the used ci service. (e.g. GitLab CI, Travis CI, CircleCI, Jenkins)
-	NCI_SERVICE_SLUG string `validate:"required,is-slug"` // The commercial name normalized as slug for use in scripts, will not be changed.
+	WorkerId      string `validate:"required"` // A unique id of the ci worker.
+	WorkerName    string `validate:"required"` // The human readable name of the ci worker.
+	WorkerOS      string // Worker OS or OS Image
+	WorkerVersion string `validate:"required"`         // The version of the ci worker.
+	WorkerArch    string `validate:"required,is-arch"` // The arch of the ci worker. (ie. linux/amd64)
 
-	NCI_WORKER_ID      string `validate:"required"`         // A unique id of the ci worker.
-	NCI_WORKER_NAME    string `validate:"required"`         // The human readable name of the ci worker.
-	NCI_WORKER_VERSION string `validate:"required"`         // The version of the ci worker.
-	NCI_WORKER_ARCH    string `validate:"required,is-arch"` // The arch of the ci worker. (ie. linux/amd64)
+	PipelineId            string `validate:"required"`
+	PipelineTrigger       string `validate:"required,oneof=cli manual push trigger api schedule pull_request build"` // What triggered the pipeline. (ie. manual/push/trigger/api/schedule/pull_request/build)
+	PipelineStageId       string
+	PipelineStageName     string `validate:"required"`         // Human readable name of the current stage.
+	PipelineStageSlug     string `validate:"required,is-slug"` // Slug of the current stage.
+	PipelineJobId         string
+	PipelineJobName       string `validate:"required"`         // Human readable name of the current job.
+	PipelineJobSlug       string `validate:"required,is-slug"` // Slug of the current job.
+	PipelineUrl           string // Pipeline URL
+	PipelinePullRequestId string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
 
-	NCI_PIPELINE_TRIGGER         string `validate:"required,oneof=cli manual push trigger api schedule pull_request build"` // What triggered the pipeline. (ie. manual/push/trigger/api/schedule/pull_request/build)
-	NCI_PIPELINE_STAGE_NAME      string `validate:"required"`                                                               // Human readable name of the current stage.
-	NCI_PIPELINE_STAGE_SLUG      string `validate:"required,is-slug"`                                                       // Slug of the current stage.
-	NCI_PIPELINE_JOB_NAME        string `validate:"required"`                                                               // Human readable name of the current job.
-	NCI_PIPELINE_JOB_SLUG        string `validate:"required,is-slug"`                                                       // Slug of the current job.
-	NCI_PIPELINE_URL             string // Pipeline URL
-	NCI_PIPELINE_PULL_REQUEST_ID string `validate:"required_if=NCI_PIPELINE_TRIGGER pull_request"` // The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request.
+	ProjectId            string // Unique project id, can be used in deployments.
+	ProjectName          string // Unique project id, can be used in deployments.
+	ProjectPath          string // Path of the Namespace and the project
+	ProjectSlug          string `validate:"required,is-slug"` // Project slug, that can be used in deployments.
+	ProjectDescription   string // The project description.
+	ProjectTopics        string // The topics / tags of the project.
+	ProjectIssueUrl      string // A template for links to issues, contains a `{ID}` placeholder.
+	ProjectStargazers    string `validate:"number"` // The number of people who `follow` / `bookmarked` the project.
+	ProjectForks         string `validate:"number"` // The number of forks of the project.
+	ProjectDir           string // Project directory on the local filesystem.
+	ProjectUrl           string
+	ProjectDefaultBranch string `` // The default branch
 
-	NCI_PROJECT_ID             string // Unique project id, can be used in deployments.
-	NCI_PROJECT_NAME           string // Unique project id, can be used in deployments.
-	NCI_PROJECT_PATH           string // Path of the Namespace and the project
-	NCI_PROJECT_SLUG           string `validate:"required,is-slug"` // Project slug, that can be used in deployments.
-	NCI_PROJECT_DESCRIPTION    string // The project description.
-	NCI_PROJECT_TOPICS         string // The topics / tags of the project.
-	NCI_PROJECT_ISSUE_URL      string // A template for links to issues, contains a `{ID}` placeholder.
-	NCI_PROJECT_STARGAZERS     string `validate:"number"` // The number of people who `follow` / `bookmarked` the project.
-	NCI_PROJECT_FORKS          string `validate:"number"` // The number of forks of the project.
-	NCI_PROJECT_DIR            string // Project directory on the local filesystem.
-	NCI_PROJECT_URL            string
-	NCI_PROJECT_DEFAULT_BRANCH string `` // The default branch
+	ContainerregistryHost       string // The hostname of the container registry.
+	ContainerregistryUsername   string // The username used for container registry authentication.
+	ContainerregistryPassword   string // The password used for container registry authentication.
+	ContainerregistryRepository string `validate:"required"` // The repository, that should be used for the current project.
+	ContainerregistryTag        string `validate:"required"` // The tag that should be build.
 
-	NCI_CONTAINERREGISTRY_HOST       string // The hostname of the container registry.
-	NCI_CONTAINERREGISTRY_USERNAME   string // The username used for container registry authentication.
-	NCI_CONTAINERREGISTRY_PASSWORD   string // The password used for container registry authentication.
-	NCI_CONTAINERREGISTRY_REPOSITORY string `validate:"required"` // The repository, that should be used for the current project.
-	NCI_CONTAINERREGISTRY_TAG        string `validate:"required"` // The tag that should be build.
+	RepositoryKind       string `validate:"required"` //  The used version control system. (git)
+	RepositoryRemote     string `validate:"required"` // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+	RepositoryHostServer string `validate:"required"` // Host of the git repository server, for example github.com
+	RepositoryHostType   string `validate:"required"` // Type of the git repository server (github, gitlab, ...)
+	RepositoryStatus     string `validate:"required"` // The repository status (dirty, clean)
+	CommitRefType        string `validate:"required"` // The reference type. (branch / tag)
+	CommitRefName        string `validate:"required"` // Human readable name of the current repository reference.
+	CommitRefPath        string `validate:"required"` // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
+	CommitRefSlug        string `validate:"required"` // Slug of the current repository reference.
+	CommitRefVcs         string `validate:"required"` // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)// Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
+	CommitRefRelease     string `validate:"required"` // Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
+	CommitSha            string `validate:"required"` // A unique hash, that each commit gets.
+	CommitShaShort       string `validate:"required"` // A short form of the unique commit hash. (8 chars)
+	CommitAuthorName     string `validate:"required"` // author name
+	CommitAuthorEmail    string `validate:"required"` // author email
+	CommitCommitterName  string `validate:"required"` // committer name
+	CommitCommitterEmail string `validate:"required"` // committer email
+	CommitTitle          string `validate:"required"` // The title of the latest commit on the current reference.
+	CommitDescription    string // The description of the latest commit on the current reference.
+	CommitCount          string `validate:"required"` // The total amount of commits inside of the current reference, can be used as build number.
 
-	NCI_REPOSITORY_KIND        string `validate:"required"` //  The used version control system. (git)
-	NCI_REPOSITORY_REMOTE      string `validate:"required"` // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
-	NCI_REPOSITORY_HOST_SERVER string `validate:"required"` // Host of the git repository server, for example github.com
-	NCI_REPOSITORY_HOST_TYPE   string `validate:"required"` // Type of the git repository server (github, gitlab, ...)
-	NCI_REPOSITORY_STATUS      string `validate:"required"` // The repository status (dirty, clean)
-	NCI_COMMIT_REF_TYPE        string `validate:"required"` // The reference type. (branch / tag)
-	NCI_COMMIT_REF_NAME        string `validate:"required"` // Human readable name of the current repository reference.
-	NCI_COMMIT_REF_PATH        string `validate:"required"` // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
-	NCI_COMMIT_REF_SLUG        string `validate:"required"` // Slug of the current repository reference.
-	NCI_COMMIT_REF_VCS         string `validate:"required"` // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)// Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
-	NCI_COMMIT_REF_RELEASE     string `validate:"required"` // Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
-	NCI_COMMIT_SHA             string `validate:"required"` // A unique hash, that each commit gets.
-	NCI_COMMIT_SHA_SHORT       string `validate:"required"` // A short form of the unique commit hash. (8 chars)
-	NCI_COMMIT_AUTHOR_NAME     string `validate:"required"` // author name
-	NCI_COMMIT_AUTHOR_EMAIL    string `validate:"required"` // author email
-	NCI_COMMIT_COMMITTER_NAME  string `validate:"required"` // committer name
-	NCI_COMMIT_COMMITTER_EMAIL string `validate:"required"` // committer email
-	NCI_COMMIT_TITLE           string `validate:"required"` // The title of the latest commit on the current reference.
-	NCI_COMMIT_DESCRIPTION     string // The description of the latest commit on the current reference.
-	NCI_COMMIT_COUNT           string `validate:"required"` // The total amount of commits inside of the current reference, can be used as build number.
+	LastreleaseRefName          string `validate:"required"` // Human readable name of the last stable release.
+	LastreleaseRefSlug          string `validate:"required"` // Slug of the last stable release.
+	LastreleaseRefVcs           string `validate:"required"` // Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
+	LastreleaseCommitAfterCount string `validate:"required"` // Holds the count of commits since the last stable release.
 
-	NCI_LASTRELEASE_REF_NAME           string `validate:"required"` // Human readable name of the last stable release.
-	NCI_LASTRELEASE_REF_SLUG           string `validate:"required"` // Slug of the last stable release.
-	NCI_LASTRELEASE_REF_VCS            string `validate:"required"` // Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)
-	NCI_LASTRELEASE_COMMIT_AFTER_COUNT string `validate:"required"` // Holds the count of commits since the last stable release.
-
-	NCI_DEPLOY_FREEZE string `validate:"required,boolean"` // Currently in a deploy freeze window? (`true`, `false`)
+	DeployFreeze string `validate:"required,boolean"` // Currently in a deploy freeze window? (`true`, `false`)
 }
 
 func OfMap(data map[string]string) NormalizeCISpec {
 	return NormalizeCISpec{
-		DATA:                               data,
-		NCI:                                data[NCI],
-		NCI_VERSION:                        data[NCI_VERSION],
-		NCI_SERVICE_NAME:                   data[NCI_SERVICE_NAME],
-		NCI_SERVICE_SLUG:                   data[NCI_SERVICE_SLUG],
-		NCI_WORKER_ID:                      data[NCI_WORKER_ID],
-		NCI_WORKER_NAME:                    data[NCI_WORKER_NAME],
-		NCI_WORKER_VERSION:                 data[NCI_WORKER_VERSION],
-		NCI_WORKER_ARCH:                    data[NCI_WORKER_ARCH],
-		NCI_PIPELINE_TRIGGER:               data[NCI_PIPELINE_TRIGGER],
-		NCI_PIPELINE_STAGE_NAME:            data[NCI_PIPELINE_STAGE_NAME],
-		NCI_PIPELINE_STAGE_SLUG:            data[NCI_PIPELINE_STAGE_SLUG],
-		NCI_PIPELINE_JOB_NAME:              data[NCI_PIPELINE_JOB_NAME],
-		NCI_PIPELINE_JOB_SLUG:              data[NCI_PIPELINE_JOB_SLUG],
-		NCI_PIPELINE_URL:                   data[NCI_PIPELINE_URL],
-		NCI_PIPELINE_PULL_REQUEST_ID:       data[NCI_PIPELINE_PULL_REQUEST_ID],
-		NCI_PROJECT_ID:                     data[NCI_PROJECT_ID],
-		NCI_PROJECT_NAME:                   data[NCI_PROJECT_NAME],
-		NCI_PROJECT_PATH:                   data[NCI_PROJECT_PATH],
-		NCI_PROJECT_SLUG:                   data[NCI_PROJECT_SLUG],
-		NCI_PROJECT_DESCRIPTION:            data[NCI_PROJECT_DESCRIPTION],
-		NCI_PROJECT_TOPICS:                 data[NCI_PROJECT_TOPICS],
-		NCI_PROJECT_ISSUE_URL:              data[NCI_PROJECT_ISSUE_URL],
-		NCI_PROJECT_STARGAZERS:             data[NCI_PROJECT_STARGAZERS],
-		NCI_PROJECT_FORKS:                  data[NCI_PROJECT_FORKS],
-		NCI_PROJECT_DEFAULT_BRANCH:         data[NCI_PROJECT_DEFAULT_BRANCH],
-		NCI_PROJECT_URL:                    data[NCI_PROJECT_URL],
-		NCI_PROJECT_DIR:                    data[NCI_PROJECT_DIR],
-		NCI_CONTAINERREGISTRY_HOST:         data[NCI_CONTAINERREGISTRY_HOST],
-		NCI_CONTAINERREGISTRY_USERNAME:     data[NCI_CONTAINERREGISTRY_USERNAME],
-		NCI_CONTAINERREGISTRY_PASSWORD:     data[NCI_CONTAINERREGISTRY_PASSWORD],
-		NCI_CONTAINERREGISTRY_REPOSITORY:   data[NCI_CONTAINERREGISTRY_REPOSITORY],
-		NCI_CONTAINERREGISTRY_TAG:          data[NCI_CONTAINERREGISTRY_TAG],
-		NCI_REPOSITORY_KIND:                data[NCI_REPOSITORY_KIND],
-		NCI_REPOSITORY_REMOTE:              data[NCI_REPOSITORY_REMOTE],
-		NCI_REPOSITORY_HOST_SERVER:         data[NCI_REPOSITORY_HOST_SERVER],
-		NCI_REPOSITORY_HOST_TYPE:           data[NCI_REPOSITORY_HOST_TYPE],
-		NCI_REPOSITORY_STATUS:              data[NCI_REPOSITORY_STATUS],
-		NCI_COMMIT_REF_TYPE:                data[NCI_COMMIT_REF_TYPE],
-		NCI_COMMIT_REF_NAME:                data[NCI_COMMIT_REF_NAME],
-		NCI_COMMIT_REF_PATH:                data[NCI_COMMIT_REF_PATH],
-		NCI_COMMIT_REF_SLUG:                data[NCI_COMMIT_REF_SLUG],
-		NCI_COMMIT_REF_VCS:                 data[NCI_COMMIT_REF_VCS],
-		NCI_COMMIT_REF_RELEASE:             data[NCI_COMMIT_REF_RELEASE],
-		NCI_COMMIT_SHA:                     data[NCI_COMMIT_SHA],
-		NCI_COMMIT_SHA_SHORT:               data[NCI_COMMIT_SHA_SHORT],
-		NCI_COMMIT_AUTHOR_NAME:             data[NCI_COMMIT_AUTHOR_NAME],
-		NCI_COMMIT_AUTHOR_EMAIL:            data[NCI_COMMIT_AUTHOR_EMAIL],
-		NCI_COMMIT_COMMITTER_NAME:          data[NCI_COMMIT_COMMITTER_NAME],
-		NCI_COMMIT_COMMITTER_EMAIL:         data[NCI_COMMIT_COMMITTER_EMAIL],
-		NCI_COMMIT_TITLE:                   data[NCI_COMMIT_TITLE],
-		NCI_COMMIT_DESCRIPTION:             data[NCI_COMMIT_DESCRIPTION],
-		NCI_COMMIT_COUNT:                   data[NCI_COMMIT_COUNT],
-		NCI_LASTRELEASE_REF_NAME:           data[NCI_LASTRELEASE_REF_NAME],
-		NCI_LASTRELEASE_REF_SLUG:           data[NCI_LASTRELEASE_REF_SLUG],
-		NCI_LASTRELEASE_REF_VCS:            data[NCI_LASTRELEASE_REF_VCS],
-		NCI_LASTRELEASE_COMMIT_AFTER_COUNT: data[NCI_LASTRELEASE_COMMIT_AFTER_COUNT],
-		NCI_DEPLOY_FREEZE:                  data[NCI_DEPLOY_FREEZE],
+		Found:                       data[NCI],
+		Version:                     data[NCI_VERSION],
+		ServiceName:                 data[NCI_SERVICE_NAME],
+		ServiceSlug:                 data[NCI_SERVICE_SLUG],
+		WorkerId:                    data[NCI_WORKER_ID],
+		WorkerName:                  data[NCI_WORKER_NAME],
+		WorkerOS:                    data[NCI_WORKER_OS],
+		WorkerVersion:               data[NCI_WORKER_VERSION],
+		WorkerArch:                  data[NCI_WORKER_ARCH],
+		PipelineId:                  data[NCI_PIPELINE_ID],
+		PipelineTrigger:             data[NCI_PIPELINE_TRIGGER],
+		PipelineStageId:             data[NCI_PIPELINE_STAGE_ID],
+		PipelineStageName:           data[NCI_PIPELINE_STAGE_NAME],
+		PipelineStageSlug:           data[NCI_PIPELINE_STAGE_SLUG],
+		PipelineJobId:               data[NCI_PIPELINE_JOB_ID],
+		PipelineJobName:             data[NCI_PIPELINE_JOB_NAME],
+		PipelineJobSlug:             data[NCI_PIPELINE_JOB_SLUG],
+		PipelineUrl:                 data[NCI_PIPELINE_URL],
+		PipelinePullRequestId:       data[NCI_PIPELINE_PULL_REQUEST_ID],
+		ProjectId:                   data[NCI_PROJECT_ID],
+		ProjectName:                 data[NCI_PROJECT_NAME],
+		ProjectPath:                 data[NCI_PROJECT_PATH],
+		ProjectSlug:                 data[NCI_PROJECT_SLUG],
+		ProjectDescription:          data[NCI_PROJECT_DESCRIPTION],
+		ProjectTopics:               data[NCI_PROJECT_TOPICS],
+		ProjectIssueUrl:             data[NCI_PROJECT_ISSUE_URL],
+		ProjectStargazers:           data[NCI_PROJECT_STARGAZERS],
+		ProjectForks:                data[NCI_PROJECT_FORKS],
+		ProjectDefaultBranch:        data[NCI_PROJECT_DEFAULT_BRANCH],
+		ProjectUrl:                  data[NCI_PROJECT_URL],
+		ProjectDir:                  data[NCI_PROJECT_DIR],
+		ContainerregistryHost:       data[NCI_CONTAINERREGISTRY_HOST],
+		ContainerregistryUsername:   data[NCI_CONTAINERREGISTRY_USERNAME],
+		ContainerregistryPassword:   data[NCI_CONTAINERREGISTRY_PASSWORD],
+		ContainerregistryRepository: data[NCI_CONTAINERREGISTRY_REPOSITORY],
+		ContainerregistryTag:        data[NCI_CONTAINERREGISTRY_TAG],
+		RepositoryKind:              data[NCI_REPOSITORY_KIND],
+		RepositoryRemote:            data[NCI_REPOSITORY_REMOTE],
+		RepositoryHostServer:        data[NCI_REPOSITORY_HOST_SERVER],
+		RepositoryHostType:          data[NCI_REPOSITORY_HOST_TYPE],
+		RepositoryStatus:            data[NCI_REPOSITORY_STATUS],
+		CommitRefType:               data[NCI_COMMIT_REF_TYPE],
+		CommitRefName:               data[NCI_COMMIT_REF_NAME],
+		CommitRefPath:               data[NCI_COMMIT_REF_PATH],
+		CommitRefSlug:               data[NCI_COMMIT_REF_SLUG],
+		CommitRefVcs:                data[NCI_COMMIT_REF_VCS],
+		CommitRefRelease:            data[NCI_COMMIT_REF_RELEASE],
+		CommitSha:                   data[NCI_COMMIT_SHA],
+		CommitShaShort:              data[NCI_COMMIT_SHA_SHORT],
+		CommitAuthorName:            data[NCI_COMMIT_AUTHOR_NAME],
+		CommitAuthorEmail:           data[NCI_COMMIT_AUTHOR_EMAIL],
+		CommitCommitterName:         data[NCI_COMMIT_COMMITTER_NAME],
+		CommitCommitterEmail:        data[NCI_COMMIT_COMMITTER_EMAIL],
+		CommitTitle:                 data[NCI_COMMIT_TITLE],
+		CommitDescription:           data[NCI_COMMIT_DESCRIPTION],
+		CommitCount:                 data[NCI_COMMIT_COUNT],
+		LastreleaseRefName:          data[NCI_LASTRELEASE_REF_NAME],
+		LastreleaseRefSlug:          data[NCI_LASTRELEASE_REF_SLUG],
+		LastreleaseRefVcs:           data[NCI_LASTRELEASE_REF_VCS],
+		LastreleaseCommitAfterCount: data[NCI_LASTRELEASE_COMMIT_AFTER_COUNT],
+		DeployFreeze:                data[NCI_DEPLOY_FREEZE],
 	}
 }
 
 func ToMap(spec NormalizeCISpec) map[string]string {
-	data := spec.DATA
-	if data == nil {
-		data = make(map[string]string)
-	}
+	data := make(map[string]string)
+	data[NCI] = spec.Found
+	data[NCI_VERSION] = spec.Version
+	data[NCI_SERVICE_NAME] = spec.ServiceName
+	data[NCI_SERVICE_SLUG] = spec.ServiceSlug
 
-	data[NCI] = spec.NCI
-	data[NCI_VERSION] = spec.NCI_VERSION
-	data[NCI_SERVICE_NAME] = spec.NCI_SERVICE_NAME
-	data[NCI_SERVICE_SLUG] = spec.NCI_SERVICE_SLUG
+	data[NCI_WORKER_ID] = spec.WorkerId
+	data[NCI_WORKER_NAME] = spec.WorkerName
+	data[NCI_WORKER_OS] = spec.WorkerOS
+	data[NCI_WORKER_VERSION] = spec.WorkerVersion
+	data[NCI_WORKER_ARCH] = spec.WorkerArch
 
-	data[NCI_WORKER_ID] = spec.NCI_WORKER_ID
-	data[NCI_WORKER_NAME] = spec.NCI_WORKER_NAME
-	data[NCI_WORKER_VERSION] = spec.NCI_WORKER_VERSION
-	data[NCI_WORKER_ARCH] = spec.NCI_WORKER_ARCH
+	data[NCI_PIPELINE_ID] = spec.PipelineId
+	data[NCI_PIPELINE_TRIGGER] = spec.PipelineTrigger
+	data[NCI_PIPELINE_STAGE_ID] = spec.PipelineStageId
+	data[NCI_PIPELINE_STAGE_NAME] = spec.PipelineStageName
+	data[NCI_PIPELINE_STAGE_SLUG] = spec.PipelineStageSlug
+	data[NCI_PIPELINE_JOB_ID] = spec.PipelineJobId
+	data[NCI_PIPELINE_JOB_NAME] = spec.PipelineJobName
+	data[NCI_PIPELINE_JOB_SLUG] = spec.PipelineJobSlug
+	data[NCI_PIPELINE_URL] = spec.PipelineUrl
+	data[NCI_PIPELINE_PULL_REQUEST_ID] = spec.PipelinePullRequestId
 
-	data[NCI_PIPELINE_TRIGGER] = spec.NCI_PIPELINE_TRIGGER
-	data[NCI_PIPELINE_STAGE_NAME] = spec.NCI_PIPELINE_STAGE_NAME
-	data[NCI_PIPELINE_STAGE_SLUG] = spec.NCI_PIPELINE_STAGE_SLUG
-	data[NCI_PIPELINE_JOB_NAME] = spec.NCI_PIPELINE_JOB_NAME
-	data[NCI_PIPELINE_JOB_SLUG] = spec.NCI_PIPELINE_JOB_SLUG
-	data[NCI_PIPELINE_URL] = spec.NCI_PIPELINE_URL
-	data[NCI_PIPELINE_PULL_REQUEST_ID] = spec.NCI_PIPELINE_PULL_REQUEST_ID
+	data[NCI_PROJECT_ID] = spec.ProjectId
+	data[NCI_PROJECT_NAME] = spec.ProjectName
+	data[NCI_PROJECT_PATH] = spec.ProjectPath
+	data[NCI_PROJECT_SLUG] = spec.ProjectSlug
+	data[NCI_PROJECT_DESCRIPTION] = spec.ProjectDescription
+	data[NCI_PROJECT_TOPICS] = spec.ProjectTopics
+	data[NCI_PROJECT_ISSUE_URL] = spec.ProjectIssueUrl
+	data[NCI_PROJECT_STARGAZERS] = spec.ProjectStargazers
+	data[NCI_PROJECT_FORKS] = spec.ProjectForks
+	data[NCI_PROJECT_DEFAULT_BRANCH] = spec.ProjectDefaultBranch
+	data[NCI_PROJECT_URL] = spec.ProjectUrl
+	data[NCI_PROJECT_DIR] = spec.ProjectDir
 
-	data[NCI_PROJECT_ID] = spec.NCI_PROJECT_ID
-	data[NCI_PROJECT_NAME] = spec.NCI_PROJECT_NAME
-	data[NCI_PROJECT_PATH] = spec.NCI_PROJECT_PATH
-	data[NCI_PROJECT_SLUG] = spec.NCI_PROJECT_SLUG
-	data[NCI_PROJECT_DESCRIPTION] = spec.NCI_PROJECT_DESCRIPTION
-	data[NCI_PROJECT_TOPICS] = spec.NCI_PROJECT_TOPICS
-	data[NCI_PROJECT_ISSUE_URL] = spec.NCI_PROJECT_ISSUE_URL
-	data[NCI_PROJECT_STARGAZERS] = spec.NCI_PROJECT_STARGAZERS
-	data[NCI_PROJECT_FORKS] = spec.NCI_PROJECT_FORKS
-	data[NCI_PROJECT_DEFAULT_BRANCH] = spec.NCI_PROJECT_DEFAULT_BRANCH
-	data[NCI_PROJECT_URL] = spec.NCI_PROJECT_URL
-	data[NCI_PROJECT_DIR] = spec.NCI_PROJECT_DIR
+	data[NCI_CONTAINERREGISTRY_HOST] = spec.ContainerregistryHost
+	data[NCI_CONTAINERREGISTRY_USERNAME] = spec.ContainerregistryUsername
+	data[NCI_CONTAINERREGISTRY_PASSWORD] = spec.ContainerregistryPassword
+	data[NCI_CONTAINERREGISTRY_REPOSITORY] = spec.ContainerregistryRepository
+	data[NCI_CONTAINERREGISTRY_TAG] = spec.ContainerregistryTag
 
-	data[NCI_CONTAINERREGISTRY_HOST] = spec.NCI_CONTAINERREGISTRY_HOST
-	data[NCI_CONTAINERREGISTRY_USERNAME] = spec.NCI_CONTAINERREGISTRY_USERNAME
-	data[NCI_CONTAINERREGISTRY_PASSWORD] = spec.NCI_CONTAINERREGISTRY_PASSWORD
-	data[NCI_CONTAINERREGISTRY_REPOSITORY] = spec.NCI_CONTAINERREGISTRY_REPOSITORY
-	data[NCI_CONTAINERREGISTRY_TAG] = spec.NCI_CONTAINERREGISTRY_TAG
+	data[NCI_REPOSITORY_KIND] = spec.RepositoryKind
+	data[NCI_REPOSITORY_REMOTE] = spec.RepositoryRemote
+	data[NCI_REPOSITORY_HOST_SERVER] = spec.RepositoryHostServer
+	data[NCI_REPOSITORY_HOST_TYPE] = spec.RepositoryHostType
+	data[NCI_REPOSITORY_STATUS] = spec.RepositoryStatus
+	data[NCI_COMMIT_REF_TYPE] = spec.CommitRefType
+	data[NCI_COMMIT_REF_NAME] = spec.CommitRefName
+	data[NCI_COMMIT_REF_PATH] = spec.CommitRefPath
+	data[NCI_COMMIT_REF_SLUG] = spec.CommitRefSlug
+	data[NCI_COMMIT_REF_VCS] = spec.CommitRefVcs
+	data[NCI_COMMIT_REF_RELEASE] = spec.CommitRefRelease
+	data[NCI_COMMIT_SHA] = spec.CommitSha
+	data[NCI_COMMIT_SHA_SHORT] = spec.CommitShaShort
+	data[NCI_COMMIT_AUTHOR_NAME] = spec.CommitAuthorName
+	data[NCI_COMMIT_AUTHOR_EMAIL] = spec.CommitAuthorEmail
+	data[NCI_COMMIT_COMMITTER_NAME] = spec.CommitCommitterName
+	data[NCI_COMMIT_COMMITTER_EMAIL] = spec.CommitCommitterEmail
+	data[NCI_COMMIT_TITLE] = spec.CommitTitle
+	data[NCI_COMMIT_DESCRIPTION] = spec.CommitDescription
+	data[NCI_COMMIT_COUNT] = spec.CommitCount
 
-	data[NCI_REPOSITORY_KIND] = spec.NCI_REPOSITORY_KIND
-	data[NCI_REPOSITORY_REMOTE] = spec.NCI_REPOSITORY_REMOTE
-	data[NCI_REPOSITORY_HOST_SERVER] = spec.NCI_REPOSITORY_HOST_SERVER
-	data[NCI_REPOSITORY_HOST_TYPE] = spec.NCI_REPOSITORY_HOST_TYPE
-	data[NCI_REPOSITORY_STATUS] = spec.NCI_REPOSITORY_STATUS
-	data[NCI_COMMIT_REF_TYPE] = spec.NCI_COMMIT_REF_TYPE
-	data[NCI_COMMIT_REF_NAME] = spec.NCI_COMMIT_REF_NAME
-	data[NCI_COMMIT_REF_PATH] = spec.NCI_COMMIT_REF_PATH
-	data[NCI_COMMIT_REF_SLUG] = spec.NCI_COMMIT_REF_SLUG
-	data[NCI_COMMIT_REF_VCS] = spec.NCI_COMMIT_REF_VCS
-	data[NCI_COMMIT_REF_RELEASE] = spec.NCI_COMMIT_REF_RELEASE
-	data[NCI_COMMIT_SHA] = spec.NCI_COMMIT_SHA
-	data[NCI_COMMIT_SHA_SHORT] = spec.NCI_COMMIT_SHA_SHORT
-	data[NCI_COMMIT_AUTHOR_NAME] = spec.NCI_COMMIT_AUTHOR_NAME
-	data[NCI_COMMIT_AUTHOR_EMAIL] = spec.NCI_COMMIT_AUTHOR_EMAIL
-	data[NCI_COMMIT_COMMITTER_NAME] = spec.NCI_COMMIT_COMMITTER_NAME
-	data[NCI_COMMIT_COMMITTER_EMAIL] = spec.NCI_COMMIT_COMMITTER_EMAIL
-	data[NCI_COMMIT_TITLE] = spec.NCI_COMMIT_TITLE
-	data[NCI_COMMIT_DESCRIPTION] = spec.NCI_COMMIT_DESCRIPTION
-	data[NCI_COMMIT_COUNT] = spec.NCI_COMMIT_COUNT
+	data[NCI_LASTRELEASE_REF_NAME] = spec.LastreleaseRefName
+	data[NCI_LASTRELEASE_REF_SLUG] = spec.LastreleaseRefSlug
+	data[NCI_LASTRELEASE_REF_VCS] = spec.LastreleaseRefVcs
+	data[NCI_LASTRELEASE_COMMIT_AFTER_COUNT] = spec.LastreleaseCommitAfterCount
 
-	data[NCI_LASTRELEASE_REF_NAME] = spec.NCI_LASTRELEASE_REF_NAME
-	data[NCI_LASTRELEASE_REF_SLUG] = spec.NCI_LASTRELEASE_REF_SLUG
-	data[NCI_LASTRELEASE_REF_VCS] = spec.NCI_LASTRELEASE_REF_VCS
-	data[NCI_LASTRELEASE_COMMIT_AFTER_COUNT] = spec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT
-
-	data[NCI_DEPLOY_FREEZE] = spec.NCI_DEPLOY_FREEZE
+	data[NCI_DEPLOY_FREEZE] = spec.DeployFreeze
 
 	return data
 }

@@ -5,16 +5,14 @@ type NCISpec interface {
 	Validate() error
 }
 
-type PipelineTrigger string
-
 const (
-	PipelineTriggerCLI         PipelineTrigger = "cli"
-	PipelineTriggerManual      PipelineTrigger = "manual"
-	PipelineTriggerPush        PipelineTrigger = "push"
-	PipelineTriggerPullRequest PipelineTrigger = "pull_request"
-	PipelineTriggerSchedule    PipelineTrigger = "schedule"
-	PipelineTriggerBuild       PipelineTrigger = "build" // triggered by the completion of a different build
-	PipelineTriggerUnknown     PipelineTrigger = "unknown"
+	PipelineTriggerCLI         = "cli"
+	PipelineTriggerManual      = "manual"
+	PipelineTriggerPush        = "push"
+	PipelineTriggerPullRequest = "pull_request"
+	PipelineTriggerSchedule    = "schedule"
+	PipelineTriggerBuild       = "build" // triggered by the completion of a different build
+	PipelineTriggerUnknown     = "unknown"
 )
 
 const (
