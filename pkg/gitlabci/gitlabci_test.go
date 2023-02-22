@@ -49,6 +49,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	// - worker
 	assert.Equal(t, "12270837", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "4-blue.shared.runners-manager.gitlab.com/default", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "gitlab_hosted_vm", normalized["NCI_WORKER_TYPE"])
 	assert.Equal(t, "14.10.0~beta.50.g1f2fe53e", normalized["NCI_WORKER_VERSION"])
 	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
 	// - pipeline
@@ -57,6 +58,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_SLUG"])
+	assert.Equal(t, "2022-05-10T20:20:01Z", normalized["NCI_PIPELINE_JOB_STARTED_AT"])
 	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887", normalized["NCI_PIPELINE_URL"])
 	// - project
 	assert.Equal(t, "35974876", normalized["NCI_PROJECT_ID"])

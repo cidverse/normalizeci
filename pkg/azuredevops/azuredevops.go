@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
@@ -54,6 +55,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	// worker
 	nci.WorkerId = env["AGENT_ID"]
 	nci.WorkerName = env["AGENT_MACHINENAME"]
+	nci.WorkerType = "azuredevops_hosted_vm"
 	nci.WorkerOS = env["ImageOS"] + ":" + env["ImageVersion"]
 	nci.WorkerVersion = env["AGENT_VERSION"]
 	nci.WorkerArch = runtime.GOOS + "/" + runtime.GOARCH
@@ -79,6 +81,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobId = env["SYSTEM_JOBID"]
 	nci.PipelineJobName = env["SYSTEM_JOBNAME"] // SYSTEM_JOBDISPLAYNAME
 	nci.PipelineJobSlug = slug.Make(env["SYSTEM_JOBNAME"])
+	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
 	nci.PipelineUrl = fmt.Sprintf("%s%s/_build/results?buildId=%s", env["SYSTEM_TEAMFOUNDATIONSERVERURI"], env["SYSTEM_TEAMPROJECT"], env["BUILD_BUILDID"])
 
 	// repository

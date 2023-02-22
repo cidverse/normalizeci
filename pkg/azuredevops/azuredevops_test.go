@@ -49,6 +49,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	// - worker
 	assert.Equal(t, "9", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "fv-az158-714", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "azuredevops_hosted_vm", normalized["NCI_WORKER_TYPE"])
 	assert.Equal(t, "ubuntu20:20220503.1", normalized["NCI_WORKER_OS"])
 	assert.Equal(t, "2.202.1", normalized["NCI_WORKER_VERSION"])
 	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
@@ -62,6 +63,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "3dc8fd7e-4368-5a92-293e-d53cefc8c4b3", normalized["NCI_PIPELINE_JOB_ID"])
 	assert.Equal(t, "__default", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "default", normalized["NCI_PIPELINE_JOB_SLUG"])
+	assert.NotNil(t, normalized["NCI_PIPELINE_JOB_STARTED_AT"])
 	assert.Equal(t, "https://heuer.visualstudio.com/cienvsamples/_build/results?buildId=11", normalized["NCI_PIPELINE_URL"])
 }
 

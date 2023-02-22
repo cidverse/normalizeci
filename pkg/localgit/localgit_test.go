@@ -42,7 +42,22 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, normalizer.name, normalized[ncispec.NCI_SERVICE_NAME])
 	assert.Equal(t, normalizer.slug, normalized[ncispec.NCI_SERVICE_SLUG])
 	// - worker
+	assert.Equal(t, "local", normalized[ncispec.NCI_WORKER_ID])
+	assert.Equal(t, "localhost", normalized[ncispec.NCI_WORKER_NAME])
+	assert.Equal(t, "local", normalized[ncispec.NCI_WORKER_TYPE])
+	assert.NotNil(t, normalized[ncispec.NCI_WORKER_OS])
+	assert.Equal(t, "1.0.0", normalized[ncispec.NCI_WORKER_VERSION])
+	assert.NotNil(t, normalized[ncispec.NCI_WORKER_ARCH])
 	// - pipeline
+	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_ID])
+	assert.Equal(t, ncispec.PipelineTriggerCLI, normalized[ncispec.NCI_PIPELINE_TRIGGER])
+	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_STAGE_ID])
+	assert.Equal(t, ncispec.PipelineStageDefault, normalized[ncispec.NCI_PIPELINE_STAGE_NAME])
+	assert.Equal(t, ncispec.PipelineStageDefault, normalized[ncispec.NCI_PIPELINE_STAGE_SLUG])
+	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_ID])
+	assert.Equal(t, ncispec.PipelineJobDefault, normalized[ncispec.NCI_PIPELINE_JOB_NAME])
+	assert.Equal(t, ncispec.PipelineJobDefault, normalized[ncispec.NCI_PIPELINE_JOB_SLUG])
+	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_STARTED_AT])
 	// - container registry
 	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_HOST])
 	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_USERNAME])

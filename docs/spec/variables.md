@@ -16,13 +16,14 @@ Spec-Version: `0.3.0`
 
 ## worker
 
-| Variable             | Description                                  |
-|----------------------|----------------------------------------------|
-| `NCI_WORKER_ID`      | A unique id of the ci worker.                |
-| `NCI_WORKER_NAME`    | The human readable name of the ci worker.    |
-| `NCI_WORKER_OS`      | OS / OS Image of the ci worker.              |
-| `NCI_WORKER_VERSION` | The version of the ci worker.                |
-| `NCI_WORKER_ARCH`    | The arch of the ci worker. (ie. linux/amd64) |
+| Variable             | Description                                           |
+|----------------------|-------------------------------------------------------|
+| `NCI_WORKER_ID`      | A unique id of the ci worker.                         |
+| `NCI_WORKER_NAME`    | The human readable name of the ci worker.             |
+| `NCI_WORKER_TYPE`    | Runner Type (github_hosted_vm, gitlab_hosted_vm, ...) |
+| `NCI_WORKER_OS`      | OS / OS Image of the ci worker.                       |
+| `NCI_WORKER_VERSION` | The version of the ci worker.                         |
+| `NCI_WORKER_ARCH`    | The arch of the ci worker. (ie. linux/amd64)          |
 
 ## pipeline
 
@@ -36,6 +37,7 @@ Spec-Version: `0.3.0`
 | `NCI_PIPELINE_JOB_ID`          | Pipeline Job ID                                                                           |
 | `NCI_PIPELINE_JOB_NAME`        | Human readable name of the current job.                                                   |
 | `NCI_PIPELINE_JOB_SLUG`        | Slug of the current job.                                                                  |
+| `NCI_PIPELINE_JOB_STARTED_AT`  | Pipeline Started At                                                                       |
 | `NCI_PIPELINE_URL`             | Pipeline URL                                                                              |
 | `NCI_PIPELINE_PULL_REQUEST_ID` | The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request. |
 

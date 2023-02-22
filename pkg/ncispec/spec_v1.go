@@ -7,6 +7,7 @@ const (
 	NCI_SERVICE_SLUG                   = "NCI_SERVICE_SLUG"
 	NCI_WORKER_ID                      = "NCI_WORKER_ID"
 	NCI_WORKER_NAME                    = "NCI_WORKER_NAME"
+	NCI_WORKER_TYPE                    = "NCI_WORKER_TYPE"
 	NCI_WORKER_OS                      = "NCI_WORKER_OS"
 	NCI_WORKER_VERSION                 = "NCI_WORKER_VERSION"
 	NCI_WORKER_ARCH                    = "NCI_WORKER_ARCH"
@@ -18,6 +19,7 @@ const (
 	NCI_PIPELINE_JOB_ID                = "NCI_PIPELINE_JOB_ID"
 	NCI_PIPELINE_JOB_NAME              = "NCI_PIPELINE_JOB_NAME"
 	NCI_PIPELINE_JOB_SLUG              = "NCI_PIPELINE_JOB_SLUG"
+	NCI_PIPELINE_JOB_STARTED_AT        = "NCI_PIPELINE_JOB_STARTED_AT"
 	NCI_PIPELINE_URL                   = "NCI_PIPELINE_URL"
 	NCI_PIPELINE_PULL_REQUEST_ID       = "NCI_PIPELINE_PULL_REQUEST_ID"
 	NCI_PROJECT_ID                     = "NCI_PROJECT_ID"
@@ -72,6 +74,7 @@ type NormalizeCISpec struct {
 
 	WorkerId      string `validate:"required"` // A unique id of the ci worker.
 	WorkerName    string `validate:"required"` // The human readable name of the ci worker.
+	WorkerType    string `validate:"required"`
 	WorkerOS      string // Worker OS or OS Image
 	WorkerVersion string `validate:"required"`         // The version of the ci worker.
 	WorkerArch    string `validate:"required,is-arch"` // The arch of the ci worker. (ie. linux/amd64)
@@ -84,6 +87,7 @@ type NormalizeCISpec struct {
 	PipelineJobId         string
 	PipelineJobName       string `validate:"required"`         // Human readable name of the current job.
 	PipelineJobSlug       string `validate:"required,is-slug"` // Slug of the current job.
+	PipelineJobStartedAt  string `validate:"required"`
 	PipelineUrl           string // Pipeline URL
 	PipelinePullRequestId string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
 
@@ -137,37 +141,43 @@ type NormalizeCISpec struct {
 
 func OfMap(data map[string]string) NormalizeCISpec {
 	return NormalizeCISpec{
-		Found:                       data[NCI],
-		Version:                     data[NCI_VERSION],
-		ServiceName:                 data[NCI_SERVICE_NAME],
-		ServiceSlug:                 data[NCI_SERVICE_SLUG],
-		WorkerId:                    data[NCI_WORKER_ID],
-		WorkerName:                  data[NCI_WORKER_NAME],
-		WorkerOS:                    data[NCI_WORKER_OS],
-		WorkerVersion:               data[NCI_WORKER_VERSION],
-		WorkerArch:                  data[NCI_WORKER_ARCH],
-		PipelineId:                  data[NCI_PIPELINE_ID],
-		PipelineTrigger:             data[NCI_PIPELINE_TRIGGER],
-		PipelineStageId:             data[NCI_PIPELINE_STAGE_ID],
-		PipelineStageName:           data[NCI_PIPELINE_STAGE_NAME],
-		PipelineStageSlug:           data[NCI_PIPELINE_STAGE_SLUG],
-		PipelineJobId:               data[NCI_PIPELINE_JOB_ID],
-		PipelineJobName:             data[NCI_PIPELINE_JOB_NAME],
-		PipelineJobSlug:             data[NCI_PIPELINE_JOB_SLUG],
-		PipelineUrl:                 data[NCI_PIPELINE_URL],
-		PipelinePullRequestId:       data[NCI_PIPELINE_PULL_REQUEST_ID],
-		ProjectId:                   data[NCI_PROJECT_ID],
-		ProjectName:                 data[NCI_PROJECT_NAME],
-		ProjectPath:                 data[NCI_PROJECT_PATH],
-		ProjectSlug:                 data[NCI_PROJECT_SLUG],
-		ProjectDescription:          data[NCI_PROJECT_DESCRIPTION],
-		ProjectTopics:               data[NCI_PROJECT_TOPICS],
-		ProjectIssueUrl:             data[NCI_PROJECT_ISSUE_URL],
-		ProjectStargazers:           data[NCI_PROJECT_STARGAZERS],
-		ProjectForks:                data[NCI_PROJECT_FORKS],
-		ProjectDefaultBranch:        data[NCI_PROJECT_DEFAULT_BRANCH],
-		ProjectUrl:                  data[NCI_PROJECT_URL],
-		ProjectDir:                  data[NCI_PROJECT_DIR],
+		Found:       data[NCI],
+		Version:     data[NCI_VERSION],
+		ServiceName: data[NCI_SERVICE_NAME],
+		ServiceSlug: data[NCI_SERVICE_SLUG],
+
+		WorkerId:      data[NCI_WORKER_ID],
+		WorkerName:    data[NCI_WORKER_NAME],
+		WorkerType:    data[NCI_WORKER_TYPE],
+		WorkerOS:      data[NCI_WORKER_OS],
+		WorkerVersion: data[NCI_WORKER_VERSION],
+		WorkerArch:    data[NCI_WORKER_ARCH],
+
+		PipelineId:            data[NCI_PIPELINE_ID],
+		PipelineTrigger:       data[NCI_PIPELINE_TRIGGER],
+		PipelineStageId:       data[NCI_PIPELINE_STAGE_ID],
+		PipelineStageName:     data[NCI_PIPELINE_STAGE_NAME],
+		PipelineStageSlug:     data[NCI_PIPELINE_STAGE_SLUG],
+		PipelineJobId:         data[NCI_PIPELINE_JOB_ID],
+		PipelineJobName:       data[NCI_PIPELINE_JOB_NAME],
+		PipelineJobSlug:       data[NCI_PIPELINE_JOB_SLUG],
+		PipelineJobStartedAt:  data[NCI_PIPELINE_JOB_STARTED_AT],
+		PipelineUrl:           data[NCI_PIPELINE_URL],
+		PipelinePullRequestId: data[NCI_PIPELINE_PULL_REQUEST_ID],
+
+		ProjectId:            data[NCI_PROJECT_ID],
+		ProjectName:          data[NCI_PROJECT_NAME],
+		ProjectPath:          data[NCI_PROJECT_PATH],
+		ProjectSlug:          data[NCI_PROJECT_SLUG],
+		ProjectDescription:   data[NCI_PROJECT_DESCRIPTION],
+		ProjectTopics:        data[NCI_PROJECT_TOPICS],
+		ProjectIssueUrl:      data[NCI_PROJECT_ISSUE_URL],
+		ProjectStargazers:    data[NCI_PROJECT_STARGAZERS],
+		ProjectForks:         data[NCI_PROJECT_FORKS],
+		ProjectDefaultBranch: data[NCI_PROJECT_DEFAULT_BRANCH],
+		ProjectUrl:           data[NCI_PROJECT_URL],
+		ProjectDir:           data[NCI_PROJECT_DIR],
+
 		ContainerregistryHost:       data[NCI_CONTAINERREGISTRY_HOST],
 		ContainerregistryUsername:   data[NCI_CONTAINERREGISTRY_USERNAME],
 		ContainerregistryPassword:   data[NCI_CONTAINERREGISTRY_PASSWORD],
@@ -178,26 +188,29 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		RepositoryHostServer:        data[NCI_REPOSITORY_HOST_SERVER],
 		RepositoryHostType:          data[NCI_REPOSITORY_HOST_TYPE],
 		RepositoryStatus:            data[NCI_REPOSITORY_STATUS],
-		CommitRefType:               data[NCI_COMMIT_REF_TYPE],
-		CommitRefName:               data[NCI_COMMIT_REF_NAME],
-		CommitRefPath:               data[NCI_COMMIT_REF_PATH],
-		CommitRefSlug:               data[NCI_COMMIT_REF_SLUG],
-		CommitRefVcs:                data[NCI_COMMIT_REF_VCS],
-		CommitRefRelease:            data[NCI_COMMIT_REF_RELEASE],
-		CommitSha:                   data[NCI_COMMIT_SHA],
-		CommitShaShort:              data[NCI_COMMIT_SHA_SHORT],
-		CommitAuthorName:            data[NCI_COMMIT_AUTHOR_NAME],
-		CommitAuthorEmail:           data[NCI_COMMIT_AUTHOR_EMAIL],
-		CommitCommitterName:         data[NCI_COMMIT_COMMITTER_NAME],
-		CommitCommitterEmail:        data[NCI_COMMIT_COMMITTER_EMAIL],
-		CommitTitle:                 data[NCI_COMMIT_TITLE],
-		CommitDescription:           data[NCI_COMMIT_DESCRIPTION],
-		CommitCount:                 data[NCI_COMMIT_COUNT],
+
+		CommitRefType:        data[NCI_COMMIT_REF_TYPE],
+		CommitRefName:        data[NCI_COMMIT_REF_NAME],
+		CommitRefPath:        data[NCI_COMMIT_REF_PATH],
+		CommitRefSlug:        data[NCI_COMMIT_REF_SLUG],
+		CommitRefVcs:         data[NCI_COMMIT_REF_VCS],
+		CommitRefRelease:     data[NCI_COMMIT_REF_RELEASE],
+		CommitSha:            data[NCI_COMMIT_SHA],
+		CommitShaShort:       data[NCI_COMMIT_SHA_SHORT],
+		CommitAuthorName:     data[NCI_COMMIT_AUTHOR_NAME],
+		CommitAuthorEmail:    data[NCI_COMMIT_AUTHOR_EMAIL],
+		CommitCommitterName:  data[NCI_COMMIT_COMMITTER_NAME],
+		CommitCommitterEmail: data[NCI_COMMIT_COMMITTER_EMAIL],
+		CommitTitle:          data[NCI_COMMIT_TITLE],
+		CommitDescription:    data[NCI_COMMIT_DESCRIPTION],
+		CommitCount:          data[NCI_COMMIT_COUNT],
+
 		LastreleaseRefName:          data[NCI_LASTRELEASE_REF_NAME],
 		LastreleaseRefSlug:          data[NCI_LASTRELEASE_REF_SLUG],
 		LastreleaseRefVcs:           data[NCI_LASTRELEASE_REF_VCS],
 		LastreleaseCommitAfterCount: data[NCI_LASTRELEASE_COMMIT_AFTER_COUNT],
-		DeployFreeze:                data[NCI_DEPLOY_FREEZE],
+
+		DeployFreeze: data[NCI_DEPLOY_FREEZE],
 	}
 }
 
@@ -210,6 +223,7 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 
 	data[NCI_WORKER_ID] = spec.WorkerId
 	data[NCI_WORKER_NAME] = spec.WorkerName
+	data[NCI_WORKER_TYPE] = spec.WorkerType
 	data[NCI_WORKER_OS] = spec.WorkerOS
 	data[NCI_WORKER_VERSION] = spec.WorkerVersion
 	data[NCI_WORKER_ARCH] = spec.WorkerArch
@@ -222,6 +236,7 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PIPELINE_JOB_ID] = spec.PipelineJobId
 	data[NCI_PIPELINE_JOB_NAME] = spec.PipelineJobName
 	data[NCI_PIPELINE_JOB_SLUG] = spec.PipelineJobSlug
+	data[NCI_PIPELINE_JOB_STARTED_AT] = spec.PipelineJobStartedAt
 	data[NCI_PIPELINE_URL] = spec.PipelineUrl
 	data[NCI_PIPELINE_PULL_REQUEST_ID] = spec.PipelinePullRequestId
 

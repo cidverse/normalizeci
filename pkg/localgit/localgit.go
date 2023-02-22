@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
@@ -48,6 +49,8 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	// worker
 	nci.WorkerId = "local"
 	nci.WorkerName = "localhost"
+	nci.WorkerType = "local"
+	nci.WorkerOS = runtime.GOOS
 	nci.WorkerVersion = "1.0.0"
 	nci.WorkerArch = runtime.GOOS + "/" + runtime.GOARCH
 
@@ -60,6 +63,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobId = nciutil.GenerateSnowflakeId()
 	nci.PipelineJobName = ncispec.PipelineJobDefault
 	nci.PipelineJobSlug = ncispec.PipelineJobDefault
+	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())

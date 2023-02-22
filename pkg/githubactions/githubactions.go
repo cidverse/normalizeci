@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
@@ -55,6 +56,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	// worker
 	nci.WorkerId = env["RUNNER_TRACKING_ID"]
 	nci.WorkerName = env["RUNNER_TRACKING_ID"]
+	nci.WorkerType = "github_hosted_vm"
 	nci.WorkerOS = env["ImageOS"] + ":" + env["ImageVersion"]
 	nci.WorkerVersion = "latest"
 	nci.WorkerArch = runtime.GOOS + "/" + runtime.GOARCH
@@ -79,6 +81,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineStageSlug = slug.Make(env["GITHUB_WORKFLOW"])
 	nci.PipelineJobName = env["GITHUB_ACTION"]
 	nci.PipelineJobSlug = slug.Make(env["GITHUB_ACTION"])
+	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
 	nci.PipelineUrl = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
 
 	// repository

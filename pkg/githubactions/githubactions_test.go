@@ -49,6 +49,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	// - worker
 	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized["NCI_WORKER_ID"])
 	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized["NCI_WORKER_NAME"])
+	assert.Equal(t, "github_hosted_vm", normalized["NCI_WORKER_TYPE"])
 	assert.Equal(t, "ubuntu20:20220503.1", normalized["NCI_WORKER_OS"])
 	assert.Equal(t, "latest", normalized["NCI_WORKER_VERSION"])
 	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized["NCI_WORKER_ARCH"])
@@ -59,6 +60,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "ci", normalized["NCI_PIPELINE_STAGE_SLUG"])
 	assert.Equal(t, "__run", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "run", normalized["NCI_PIPELINE_JOB_SLUG"])
+	assert.NotNil(t, normalized["NCI_PIPELINE_JOB_STARTED_AT"])
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples/actions/runs/2303126757", normalized["NCI_PIPELINE_URL"])
 	// - project
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized["NCI_PROJECT_URL"])
