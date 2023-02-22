@@ -15,6 +15,8 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
+var gitlabMockClient *http.Client
+
 func GetGitLabToken(host string) string {
 	if len(os.Getenv(common.ToEnvName(host)+"_TOKEN")) > 0 {
 		return os.Getenv(common.ToEnvName(host) + "_TOKEN")
@@ -55,6 +57,13 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string,
 		if gitlabClientErr != nil {
 			return nil, gitlabClientErr
 		}
+	}
+	if gitlabMockClient != nil {
+		gitlabClient, _ = gitlab.NewClient(
+			glToken,
+			gitlab.WithBaseURL("https://"+host),
+			gitlab.WithHTTPClient(gitlabMockClient),
+		)
 	}
 
 	// query project

@@ -2,6 +2,7 @@ package projectdetails
 
 import (
 	"context"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -12,6 +13,8 @@ import (
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"
 )
+
+var githubMockClient *http.Client
 
 func GetProjectDetailsGitHub(host string, repoRemote string) (map[string]string, error) {
 	projectDetails := make(map[string]string)
@@ -34,6 +37,9 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (map[string]string,
 		)
 		tc := oauth2.NewClient(ctx, ts)
 		client = github.NewClient(tc)
+	}
+	if githubMockClient != nil {
+		client = github.NewClient(githubMockClient)
 	}
 
 	repo, _, repoErr := client.Repositories.Get(ctx, repoPathSplit[0], repoPathSplit[1])
