@@ -30,11 +30,7 @@ func (n Normalizer) GetSlug() string {
 
 // Check if this package can handle the current environment
 func (n Normalizer) Check(env map[string]string) bool {
-	if env["GITLAB_CI"] == "true" {
-		return true
-	}
-
-	return false
+	return env["GITLAB_CI"] == "true"
 }
 
 // Normalize normalizes the environment variables into the common format
@@ -57,10 +53,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 
 	// pipeline
 	nci.PipelineId = env["CI_PIPELINE_ID"]
-	nci.PipelineTrigger = env["CI_PIPELINE_SOURCE"]
-	if nci.PipelineTrigger == ncispec.PipelineTriggerPullRequest {
-		nci.PipelinePullRequestId = env["CI_MERGE_REQUEST_IID"]
-	}
+	nci.PipelineTrigger = gitlabTriggerNormalize(env["CI_PIPELINE_SOURCE"])
 	nci.PipelineStageName = env["CI_JOB_STAGE"]
 	nci.PipelineStageSlug = slug.Make(env["CI_JOB_STAGE"])
 	nci.PipelineJobId = env["CI_JOB_ID"]
@@ -68,6 +61,13 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobSlug = slug.Make(env["CI_JOB_NAME"])
 	nci.PipelineJobStartedAt = env["CI_JOB_STARTED_AT"]
 	nci.PipelineUrl = env["CI_JOB_URL"]
+
+	// merge request
+	if mergeRequestId, isMergeRequest := env["CI_MERGE_REQUEST_IID"]; isMergeRequest {
+		nci.MergeRequestId = mergeRequestId
+		nci.MergeRequestSourceBranchName = env["CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"]
+		nci.MergeRequestTargetBranchName = env["CI_MERGE_REQUEST_TARGET_BRANCH_NAME"]
+	}
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
@@ -162,4 +162,15 @@ func NewNormalizer() Normalizer {
 	}
 
 	return entity
+}
+
+func gitlabTriggerNormalize(input string) string {
+	if input == "merge_request_event" || input == "external_pull_request_event" {
+		return ncispec.PipelineTriggerMergeRequest
+	}
+	if input == "schedule" {
+		return ncispec.PipelineTriggerSchedule
+	}
+
+	return input
 }

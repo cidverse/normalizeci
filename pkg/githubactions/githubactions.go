@@ -36,11 +36,7 @@ func (n Normalizer) GetSlug() string {
 
 // Check if this package can handle the current environment
 func (n Normalizer) Check(env map[string]string) bool {
-	if env["GITHUB_ACTIONS"] == "true" {
-		return true
-	}
-
-	return false
+	return env["GITHUB_ACTIONS"] == "true"
 }
 
 // Normalize normalizes the environment variables into the common format
@@ -68,21 +64,23 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	case "push":
 		nci.PipelineTrigger = ncispec.PipelineTriggerPush
 	case "pull_request":
-		nci.PipelineTrigger = ncispec.PipelineTriggerPullRequest
+		nci.PipelineTrigger = ncispec.PipelineTriggerMergeRequest
 	default:
 		nci.PipelineTrigger = ncispec.PipelineTriggerUnknown
 	}
-	if nci.PipelineTrigger == ncispec.PipelineTriggerPullRequest {
-		// PR
-		splitRef := strings.Split(env["GITHUB_REF"], "/")
-		nci.PipelinePullRequestId = splitRef[2]
-	}
+
 	nci.PipelineStageName = env["GITHUB_WORKFLOW"]
 	nci.PipelineStageSlug = slug.Make(env["GITHUB_WORKFLOW"])
 	nci.PipelineJobName = env["GITHUB_ACTION"]
 	nci.PipelineJobSlug = slug.Make(env["GITHUB_ACTION"])
 	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
 	nci.PipelineUrl = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
+
+	// PR
+	if nci.PipelineTrigger == ncispec.PipelineTriggerMergeRequest {
+		splitRef := strings.Split(env["GITHUB_REF"], "/")
+		nci.MergeRequestId = splitRef[2]
+	}
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())

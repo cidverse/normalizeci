@@ -1,69 +1,71 @@
 package ncispec
 
 const (
-	NCI                                = "NCI"
-	NCI_VERSION                        = "NCI_VERSION"
-	NCI_SERVICE_NAME                   = "NCI_SERVICE_NAME"
-	NCI_SERVICE_SLUG                   = "NCI_SERVICE_SLUG"
-	NCI_WORKER_ID                      = "NCI_WORKER_ID"
-	NCI_WORKER_NAME                    = "NCI_WORKER_NAME"
-	NCI_WORKER_TYPE                    = "NCI_WORKER_TYPE"
-	NCI_WORKER_OS                      = "NCI_WORKER_OS"
-	NCI_WORKER_VERSION                 = "NCI_WORKER_VERSION"
-	NCI_WORKER_ARCH                    = "NCI_WORKER_ARCH"
-	NCI_PIPELINE_ID                    = "NCI_PIPELINE_ID"
-	NCI_PIPELINE_TRIGGER               = "NCI_PIPELINE_TRIGGER"
-	NCI_PIPELINE_STAGE_ID              = "NCI_PIPELINE_STAGE_ID"
-	NCI_PIPELINE_STAGE_NAME            = "NCI_PIPELINE_STAGE_NAME"
-	NCI_PIPELINE_STAGE_SLUG            = "NCI_PIPELINE_STAGE_SLUG"
-	NCI_PIPELINE_JOB_ID                = "NCI_PIPELINE_JOB_ID"
-	NCI_PIPELINE_JOB_NAME              = "NCI_PIPELINE_JOB_NAME"
-	NCI_PIPELINE_JOB_SLUG              = "NCI_PIPELINE_JOB_SLUG"
-	NCI_PIPELINE_JOB_STARTED_AT        = "NCI_PIPELINE_JOB_STARTED_AT"
-	NCI_PIPELINE_URL                   = "NCI_PIPELINE_URL"
-	NCI_PIPELINE_PULL_REQUEST_ID       = "NCI_PIPELINE_PULL_REQUEST_ID"
-	NCI_PROJECT_ID                     = "NCI_PROJECT_ID"
-	NCI_PROJECT_NAME                   = "NCI_PROJECT_NAME"
-	NCI_PROJECT_PATH                   = "NCI_PROJECT_PATH"
-	NCI_PROJECT_SLUG                   = "NCI_PROJECT_SLUG"
-	NCI_PROJECT_DESCRIPTION            = "NCI_PROJECT_DESCRIPTION"
-	NCI_PROJECT_TOPICS                 = "NCI_PROJECT_TOPICS"
-	NCI_PROJECT_ISSUE_URL              = "NCI_PROJECT_ISSUE_URL"
-	NCI_PROJECT_STARGAZERS             = "NCI_PROJECT_STARGAZERS"
-	NCI_PROJECT_FORKS                  = "NCI_PROJECT_FORKS"
-	NCI_PROJECT_DIR                    = "NCI_PROJECT_DIR"
-	NCI_PROJECT_DEFAULT_BRANCH         = "NCI_PROJECT_DEFAULT_BRANCH"
-	NCI_PROJECT_URL                    = "NCI_PROJECT_URL"
-	NCI_REPOSITORY_KIND                = "NCI_REPOSITORY_KIND"
-	NCI_REPOSITORY_REMOTE              = "NCI_REPOSITORY_REMOTE"
-	NCI_REPOSITORY_HOST_SERVER         = "NCI_REPOSITORY_HOST_SERVER"
-	NCI_REPOSITORY_HOST_TYPE           = "NCI_REPOSITORY_HOST_TYPE"
-	NCI_REPOSITORY_STATUS              = "NCI_REPOSITORY_STATUS"
-	NCI_COMMIT_REF_TYPE                = "NCI_COMMIT_REF_TYPE"
-	NCI_COMMIT_REF_NAME                = "NCI_COMMIT_REF_NAME"
-	NCI_COMMIT_REF_PATH                = "NCI_COMMIT_REF_PATH"
-	NCI_COMMIT_REF_SLUG                = "NCI_COMMIT_REF_SLUG"
-	NCI_COMMIT_REF_VCS                 = "NCI_COMMIT_REF_VCS"
-	NCI_COMMIT_REF_RELEASE             = "NCI_COMMIT_REF_RELEASE"
-	NCI_COMMIT_SHA                     = "NCI_COMMIT_SHA"
-	NCI_COMMIT_SHA_SHORT               = "NCI_COMMIT_SHA_SHORT"
-	NCI_COMMIT_AUTHOR_NAME             = "NCI_COMMIT_AUTHOR_NAME"
-	NCI_COMMIT_AUTHOR_EMAIL            = "NCI_COMMIT_AUTHOR_EMAIL"
-	NCI_COMMIT_COMMITTER_NAME          = "NCI_COMMIT_COMMITTER_NAME"
-	NCI_COMMIT_COMMITTER_EMAIL         = "NCI_COMMIT_COMMITTER_EMAIL"
-	NCI_COMMIT_TITLE                   = "NCI_COMMIT_TITLE"
-	NCI_COMMIT_DESCRIPTION             = "NCI_COMMIT_DESCRIPTION"
-	NCI_COMMIT_COUNT                   = "NCI_COMMIT_COUNT"
-	NCI_CONTAINERREGISTRY_HOST         = "NCI_CONTAINERREGISTRY_HOST"
-	NCI_CONTAINERREGISTRY_USERNAME     = "NCI_CONTAINERREGISTRY_USERNAME"
-	NCI_CONTAINERREGISTRY_PASSWORD     = "NCI_CONTAINERREGISTRY_PASSWORD"
-	NCI_CONTAINERREGISTRY_REPOSITORY   = "NCI_CONTAINERREGISTRY_REPOSITORY"
-	NCI_CONTAINERREGISTRY_TAG          = "NCI_CONTAINERREGISTRY_TAG"
-	NCI_LASTRELEASE_REF_NAME           = "NCI_LASTRELEASE_REF_NAME"
-	NCI_LASTRELEASE_REF_SLUG           = "NCI_LASTRELEASE_REF_SLUG"
-	NCI_LASTRELEASE_REF_VCS            = "NCI_LASTRELEASE_REF_VCS"
-	NCI_LASTRELEASE_COMMIT_AFTER_COUNT = "NCI_LASTRELEASE_COMMIT_AFTER_COUNT"
-	NCI_DEPLOY_FREEZE                  = "NCI_DEPLOY_FREEZE"
+	NCI                                  = "NCI"
+	NCI_VERSION                          = "NCI_VERSION"
+	NCI_SERVICE_NAME                     = "NCI_SERVICE_NAME"
+	NCI_SERVICE_SLUG                     = "NCI_SERVICE_SLUG"
+	NCI_WORKER_ID                        = "NCI_WORKER_ID"
+	NCI_WORKER_NAME                      = "NCI_WORKER_NAME"
+	NCI_WORKER_TYPE                      = "NCI_WORKER_TYPE"
+	NCI_WORKER_OS                        = "NCI_WORKER_OS"
+	NCI_WORKER_VERSION                   = "NCI_WORKER_VERSION"
+	NCI_WORKER_ARCH                      = "NCI_WORKER_ARCH"
+	NCI_PIPELINE_ID                      = "NCI_PIPELINE_ID"
+	NCI_PIPELINE_TRIGGER                 = "NCI_PIPELINE_TRIGGER"
+	NCI_PIPELINE_STAGE_ID                = "NCI_PIPELINE_STAGE_ID"
+	NCI_PIPELINE_STAGE_NAME              = "NCI_PIPELINE_STAGE_NAME"
+	NCI_PIPELINE_STAGE_SLUG              = "NCI_PIPELINE_STAGE_SLUG"
+	NCI_PIPELINE_JOB_ID                  = "NCI_PIPELINE_JOB_ID"
+	NCI_PIPELINE_JOB_NAME                = "NCI_PIPELINE_JOB_NAME"
+	NCI_PIPELINE_JOB_SLUG                = "NCI_PIPELINE_JOB_SLUG"
+	NCI_PIPELINE_JOB_STARTED_AT          = "NCI_PIPELINE_JOB_STARTED_AT"
+	NCI_PIPELINE_URL                     = "NCI_PIPELINE_URL"
+	NCI_MERGE_REQUEST_ID                 = "NCI_MERGE_REQUEST_ID"
+	NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME = "NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+	NCI_MERGE_REQUEST_TARGET_BRANCH_NAME = "NCI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+	NCI_PROJECT_ID                       = "NCI_PROJECT_ID"
+	NCI_PROJECT_NAME                     = "NCI_PROJECT_NAME"
+	NCI_PROJECT_PATH                     = "NCI_PROJECT_PATH"
+	NCI_PROJECT_SLUG                     = "NCI_PROJECT_SLUG"
+	NCI_PROJECT_DESCRIPTION              = "NCI_PROJECT_DESCRIPTION"
+	NCI_PROJECT_TOPICS                   = "NCI_PROJECT_TOPICS"
+	NCI_PROJECT_ISSUE_URL                = "NCI_PROJECT_ISSUE_URL"
+	NCI_PROJECT_STARGAZERS               = "NCI_PROJECT_STARGAZERS"
+	NCI_PROJECT_FORKS                    = "NCI_PROJECT_FORKS"
+	NCI_PROJECT_DIR                      = "NCI_PROJECT_DIR"
+	NCI_PROJECT_DEFAULT_BRANCH           = "NCI_PROJECT_DEFAULT_BRANCH"
+	NCI_PROJECT_URL                      = "NCI_PROJECT_URL"
+	NCI_REPOSITORY_KIND                  = "NCI_REPOSITORY_KIND"
+	NCI_REPOSITORY_REMOTE                = "NCI_REPOSITORY_REMOTE"
+	NCI_REPOSITORY_HOST_SERVER           = "NCI_REPOSITORY_HOST_SERVER"
+	NCI_REPOSITORY_HOST_TYPE             = "NCI_REPOSITORY_HOST_TYPE"
+	NCI_REPOSITORY_STATUS                = "NCI_REPOSITORY_STATUS"
+	NCI_COMMIT_REF_TYPE                  = "NCI_COMMIT_REF_TYPE"
+	NCI_COMMIT_REF_NAME                  = "NCI_COMMIT_REF_NAME"
+	NCI_COMMIT_REF_PATH                  = "NCI_COMMIT_REF_PATH"
+	NCI_COMMIT_REF_SLUG                  = "NCI_COMMIT_REF_SLUG"
+	NCI_COMMIT_REF_VCS                   = "NCI_COMMIT_REF_VCS"
+	NCI_COMMIT_REF_RELEASE               = "NCI_COMMIT_REF_RELEASE"
+	NCI_COMMIT_SHA                       = "NCI_COMMIT_SHA"
+	NCI_COMMIT_SHA_SHORT                 = "NCI_COMMIT_SHA_SHORT"
+	NCI_COMMIT_AUTHOR_NAME               = "NCI_COMMIT_AUTHOR_NAME"
+	NCI_COMMIT_AUTHOR_EMAIL              = "NCI_COMMIT_AUTHOR_EMAIL"
+	NCI_COMMIT_COMMITTER_NAME            = "NCI_COMMIT_COMMITTER_NAME"
+	NCI_COMMIT_COMMITTER_EMAIL           = "NCI_COMMIT_COMMITTER_EMAIL"
+	NCI_COMMIT_TITLE                     = "NCI_COMMIT_TITLE"
+	NCI_COMMIT_DESCRIPTION               = "NCI_COMMIT_DESCRIPTION"
+	NCI_COMMIT_COUNT                     = "NCI_COMMIT_COUNT"
+	NCI_CONTAINERREGISTRY_HOST           = "NCI_CONTAINERREGISTRY_HOST"
+	NCI_CONTAINERREGISTRY_USERNAME       = "NCI_CONTAINERREGISTRY_USERNAME"
+	NCI_CONTAINERREGISTRY_PASSWORD       = "NCI_CONTAINERREGISTRY_PASSWORD"
+	NCI_CONTAINERREGISTRY_REPOSITORY     = "NCI_CONTAINERREGISTRY_REPOSITORY"
+	NCI_CONTAINERREGISTRY_TAG            = "NCI_CONTAINERREGISTRY_TAG"
+	NCI_LASTRELEASE_REF_NAME             = "NCI_LASTRELEASE_REF_NAME"
+	NCI_LASTRELEASE_REF_SLUG             = "NCI_LASTRELEASE_REF_SLUG"
+	NCI_LASTRELEASE_REF_VCS              = "NCI_LASTRELEASE_REF_VCS"
+	NCI_LASTRELEASE_COMMIT_AFTER_COUNT   = "NCI_LASTRELEASE_COMMIT_AFTER_COUNT"
+	NCI_DEPLOY_FREEZE                    = "NCI_DEPLOY_FREEZE"
 )
 
 type NormalizeCISpec struct {
@@ -79,17 +81,20 @@ type NormalizeCISpec struct {
 	WorkerVersion string `validate:"required"`         // The version of the ci worker.
 	WorkerArch    string `validate:"required,is-arch"` // The arch of the ci worker. (ie. linux/amd64)
 
-	PipelineId            string `validate:"required"`
-	PipelineTrigger       string `validate:"required,oneof=cli manual push trigger api schedule pull_request build"` // What triggered the pipeline. (ie. manual/push/trigger/api/schedule/pull_request/build)
-	PipelineStageId       string
-	PipelineStageName     string `validate:"required"`         // Human readable name of the current stage.
-	PipelineStageSlug     string `validate:"required,is-slug"` // Slug of the current stage.
-	PipelineJobId         string
-	PipelineJobName       string `validate:"required"`         // Human readable name of the current job.
-	PipelineJobSlug       string `validate:"required,is-slug"` // Slug of the current job.
-	PipelineJobStartedAt  string `validate:"required"`
-	PipelineUrl           string // Pipeline URL
-	PipelinePullRequestId string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
+	PipelineId           string `validate:"required"`
+	PipelineTrigger      string `validate:"required,oneof=cli manual push trigger api schedule pull_request build"` // What triggered the pipeline. (ie. manual/push/trigger/api/schedule/pull_request/build)
+	PipelineStageId      string
+	PipelineStageName    string `validate:"required"`         // Human readable name of the current stage.
+	PipelineStageSlug    string `validate:"required,is-slug"` // Slug of the current stage.
+	PipelineJobId        string
+	PipelineJobName      string `validate:"required"`         // Human readable name of the current job.
+	PipelineJobSlug      string `validate:"required,is-slug"` // Slug of the current job.
+	PipelineJobStartedAt string `validate:"required"`
+	PipelineUrl          string // Pipeline URL
+
+	MergeRequestId               string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
+	MergeRequestSourceBranchName string
+	MergeRequestTargetBranchName string
 
 	ProjectId            string // Unique project id, can be used in deployments.
 	ProjectName          string // Unique project id, can be used in deployments.
@@ -153,17 +158,20 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		WorkerVersion: data[NCI_WORKER_VERSION],
 		WorkerArch:    data[NCI_WORKER_ARCH],
 
-		PipelineId:            data[NCI_PIPELINE_ID],
-		PipelineTrigger:       data[NCI_PIPELINE_TRIGGER],
-		PipelineStageId:       data[NCI_PIPELINE_STAGE_ID],
-		PipelineStageName:     data[NCI_PIPELINE_STAGE_NAME],
-		PipelineStageSlug:     data[NCI_PIPELINE_STAGE_SLUG],
-		PipelineJobId:         data[NCI_PIPELINE_JOB_ID],
-		PipelineJobName:       data[NCI_PIPELINE_JOB_NAME],
-		PipelineJobSlug:       data[NCI_PIPELINE_JOB_SLUG],
-		PipelineJobStartedAt:  data[NCI_PIPELINE_JOB_STARTED_AT],
-		PipelineUrl:           data[NCI_PIPELINE_URL],
-		PipelinePullRequestId: data[NCI_PIPELINE_PULL_REQUEST_ID],
+		PipelineId:           data[NCI_PIPELINE_ID],
+		PipelineTrigger:      data[NCI_PIPELINE_TRIGGER],
+		PipelineStageId:      data[NCI_PIPELINE_STAGE_ID],
+		PipelineStageName:    data[NCI_PIPELINE_STAGE_NAME],
+		PipelineStageSlug:    data[NCI_PIPELINE_STAGE_SLUG],
+		PipelineJobId:        data[NCI_PIPELINE_JOB_ID],
+		PipelineJobName:      data[NCI_PIPELINE_JOB_NAME],
+		PipelineJobSlug:      data[NCI_PIPELINE_JOB_SLUG],
+		PipelineJobStartedAt: data[NCI_PIPELINE_JOB_STARTED_AT],
+		PipelineUrl:          data[NCI_PIPELINE_URL],
+
+		MergeRequestId:               data[NCI_MERGE_REQUEST_ID],
+		MergeRequestSourceBranchName: data[NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME],
+		MergeRequestTargetBranchName: data[NCI_MERGE_REQUEST_TARGET_BRANCH_NAME],
 
 		ProjectId:            data[NCI_PROJECT_ID],
 		ProjectName:          data[NCI_PROJECT_NAME],
@@ -238,7 +246,10 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PIPELINE_JOB_SLUG] = spec.PipelineJobSlug
 	data[NCI_PIPELINE_JOB_STARTED_AT] = spec.PipelineJobStartedAt
 	data[NCI_PIPELINE_URL] = spec.PipelineUrl
-	data[NCI_PIPELINE_PULL_REQUEST_ID] = spec.PipelinePullRequestId
+
+	data[NCI_MERGE_REQUEST_ID] = spec.MergeRequestId
+	data[NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME] = spec.MergeRequestSourceBranchName
+	data[NCI_MERGE_REQUEST_TARGET_BRANCH_NAME] = spec.MergeRequestTargetBranchName
 
 	data[NCI_PROJECT_ID] = spec.ProjectId
 	data[NCI_PROJECT_NAME] = spec.ProjectName

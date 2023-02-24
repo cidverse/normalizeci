@@ -35,11 +35,7 @@ func (n Normalizer) GetSlug() string {
 
 // Check if this package can handle the current environment
 func (n Normalizer) Check(env map[string]string) bool {
-	if env["TF_BUILD"] == "True" {
-		return true
-	}
-
-	return false
+	return env["TF_BUILD"] == "True"
 }
 
 // Normalize normalizes the environment variables into the common format
@@ -69,7 +65,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	} else if env["BUILD_REASON"] == "Schedule" {
 		nci.PipelineTrigger = ncispec.PipelineTriggerSchedule
 	} else if env["BUILD_REASON"] == "PullRequest" {
-		nci.PipelineTrigger = ncispec.PipelineTriggerPullRequest
+		nci.PipelineTrigger = ncispec.PipelineTriggerMergeRequest
 	} else if env["BUILD_REASON"] == "BuildCompletion" {
 		nci.PipelineTrigger = ncispec.PipelineTriggerBuild
 	} else {
