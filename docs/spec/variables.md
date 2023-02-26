@@ -38,6 +38,7 @@ Spec-Version: `0.3.0`
 | `NCI_PIPELINE_JOB_NAME`        | Human readable name of the current job.                                                   |
 | `NCI_PIPELINE_JOB_SLUG`        | Slug of the current job.                                                                  |
 | `NCI_PIPELINE_JOB_STARTED_AT`  | Pipeline Started At                                                                       |
+| `NCI_PIPELINE_ATTEMPT`         | Run Attempt                                                                               |
 | `NCI_PIPELINE_URL`             | Pipeline URL                                                                              |
 | `NCI_PIPELINE_PULL_REQUEST_ID` | The number of the pull request, is only present if `NCI_PIPELINE_TRIGGER` = pull_request. |
 

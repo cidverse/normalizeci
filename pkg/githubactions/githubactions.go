@@ -74,6 +74,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobName = env["GITHUB_ACTION"]
 	nci.PipelineJobSlug = slug.Make(env["GITHUB_ACTION"])
 	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
+	nci.PipelineAttempt = env["GITHUB_RUN_ATTEMPT"]
 	nci.PipelineUrl = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
 
 	// PR

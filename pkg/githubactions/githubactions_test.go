@@ -61,6 +61,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "__run", normalized[ncispec.NCI_PIPELINE_JOB_NAME])
 	assert.Equal(t, "run", normalized[ncispec.NCI_PIPELINE_JOB_SLUG])
 	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_STARTED_AT])
+	assert.Equal(t, "1", normalized[ncispec.NCI_PIPELINE_ATTEMPT])
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples/actions/runs/2303126757", normalized[ncispec.NCI_PIPELINE_URL])
 	// - project
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized[ncispec.NCI_PROJECT_URL])

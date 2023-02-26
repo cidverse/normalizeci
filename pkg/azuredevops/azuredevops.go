@@ -78,6 +78,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobName = env["SYSTEM_JOBNAME"] // SYSTEM_JOBDISPLAYNAME
 	nci.PipelineJobSlug = slug.Make(env["SYSTEM_JOBNAME"])
 	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
+	nci.PipelineAttempt = env["SYSTEM_JOBATTEMPT"]
 	nci.PipelineUrl = fmt.Sprintf("%s%s/_build/results?buildId=%s", env["SYSTEM_TEAMFOUNDATIONSERVERURI"], env["SYSTEM_TEAMPROJECT"], env["BUILD_BUILDID"])
 
 	// repository

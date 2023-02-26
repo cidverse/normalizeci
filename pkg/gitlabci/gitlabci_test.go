@@ -59,6 +59,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_NAME"])
 	assert.Equal(t, "build", normalized["NCI_PIPELINE_JOB_SLUG"])
 	assert.Equal(t, "2022-05-10T20:20:01Z", normalized["NCI_PIPELINE_JOB_STARTED_AT"])
+	assert.Equal(t, "1", normalized["NCI_PIPELINE_ATTEMPT"])
 	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887", normalized["NCI_PIPELINE_URL"])
 	// - project
 	assert.Equal(t, "35974876", normalized["NCI_PROJECT_ID"])

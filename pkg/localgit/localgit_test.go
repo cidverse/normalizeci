@@ -58,6 +58,7 @@ func TestEnvironmentNormalizer(t *testing.T) {
 	assert.Equal(t, ncispec.PipelineJobDefault, normalized[ncispec.NCI_PIPELINE_JOB_NAME])
 	assert.Equal(t, ncispec.PipelineJobDefault, normalized[ncispec.NCI_PIPELINE_JOB_SLUG])
 	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_STARTED_AT])
+	assert.Equal(t, "1", normalized["NCI_PIPELINE_ATTEMPT"])
 	// - container registry
 	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_HOST])
 	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_USERNAME])

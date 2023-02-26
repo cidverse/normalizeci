@@ -60,6 +60,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobName = env["CI_JOB_NAME"]
 	nci.PipelineJobSlug = slug.Make(env["CI_JOB_NAME"])
 	nci.PipelineJobStartedAt = env["CI_JOB_STARTED_AT"]
+	nci.PipelineAttempt = "1"
 	nci.PipelineUrl = env["CI_JOB_URL"]
 
 	// merge request

@@ -20,6 +20,7 @@ const (
 	NCI_PIPELINE_JOB_NAME                = "NCI_PIPELINE_JOB_NAME"
 	NCI_PIPELINE_JOB_SLUG                = "NCI_PIPELINE_JOB_SLUG"
 	NCI_PIPELINE_JOB_STARTED_AT          = "NCI_PIPELINE_JOB_STARTED_AT"
+	NCI_PIPELINE_ATTEMPT                 = "NCI_PIPELINE_ATTEMPT"
 	NCI_PIPELINE_URL                     = "NCI_PIPELINE_URL"
 	NCI_MERGE_REQUEST_ID                 = "NCI_MERGE_REQUEST_ID"
 	NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME = "NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
@@ -90,6 +91,7 @@ type NormalizeCISpec struct {
 	PipelineJobName      string `validate:"required"`         // Human readable name of the current job.
 	PipelineJobSlug      string `validate:"required,is-slug"` // Slug of the current job.
 	PipelineJobStartedAt string `validate:"required"`
+	PipelineAttempt      string `validate:"number"`
 	PipelineUrl          string // Pipeline URL
 
 	MergeRequestId               string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
@@ -167,6 +169,7 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		PipelineJobName:      data[NCI_PIPELINE_JOB_NAME],
 		PipelineJobSlug:      data[NCI_PIPELINE_JOB_SLUG],
 		PipelineJobStartedAt: data[NCI_PIPELINE_JOB_STARTED_AT],
+		PipelineAttempt:      data[NCI_PIPELINE_ATTEMPT],
 		PipelineUrl:          data[NCI_PIPELINE_URL],
 
 		MergeRequestId:               data[NCI_MERGE_REQUEST_ID],
@@ -245,6 +248,7 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PIPELINE_JOB_NAME] = spec.PipelineJobName
 	data[NCI_PIPELINE_JOB_SLUG] = spec.PipelineJobSlug
 	data[NCI_PIPELINE_JOB_STARTED_AT] = spec.PipelineJobStartedAt
+	data[NCI_PIPELINE_ATTEMPT] = spec.PipelineAttempt
 	data[NCI_PIPELINE_URL] = spec.PipelineUrl
 
 	data[NCI_MERGE_REQUEST_ID] = spec.MergeRequestId

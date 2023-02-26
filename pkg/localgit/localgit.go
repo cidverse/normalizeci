@@ -64,6 +64,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobName = ncispec.PipelineJobDefault
 	nci.PipelineJobSlug = ncispec.PipelineJobDefault
 	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
+	nci.PipelineAttempt = "1"
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
