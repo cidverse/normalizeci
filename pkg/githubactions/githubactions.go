@@ -8,13 +8,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
-
-	"github.com/cidverse/normalizeci/pkg/common"
 )
 
 // Normalizer is the implementation of the normalizer
@@ -73,7 +72,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineStageSlug = slug.Make(env["GITHUB_WORKFLOW"])
 	nci.PipelineJobName = env["GITHUB_ACTION"]
 	nci.PipelineJobSlug = slug.Make(env["GITHUB_ACTION"])
-	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
+	nci.PipelineJobStartedAt = time.Now().UTC().Format(time.RFC3339)
 	nci.PipelineAttempt = env["GITHUB_RUN_ATTEMPT"]
 	nci.PipelineUrl = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
 
@@ -138,6 +137,24 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 
 	// control
 	nci.DeployFreeze = "false"
+
+	// query workflow and workflow run
+	wfRun, wf, err := GetGithubWorkflowRun(env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
+	if err == nil {
+		// pipeline
+		nci.PipelineJobStartedAt = wfRun.GetRunStartedAt().UTC().Format(time.RFC3339)
+		nci.PipelineConfigFile = wf.GetPath()
+	}
+
+	// parse event
+	githubEvent, err := GetGithubEvent(os.Getenv("GITHUB_EVENT_NAME"), os.Getenv("GITHUB_EVENT_PATH"))
+	if err == nil {
+		ev := githubEvent.(map[string]interface{})
+		if _, ok := ev["inputs"]; ok {
+			// TODO: convert inputs into NormalizeCIVariable
+			nci.PipelineVariables = []ncispec.NormalizeCIVariable{}
+		}
+	}
 
 	return ncispec.ToMap(nci)
 }

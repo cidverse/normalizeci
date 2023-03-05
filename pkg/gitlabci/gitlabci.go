@@ -61,6 +61,7 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.PipelineJobSlug = slug.Make(env["CI_JOB_NAME"])
 	nci.PipelineJobStartedAt = env["CI_JOB_STARTED_AT"]
 	nci.PipelineAttempt = "1"
+	nci.PipelineConfigFile = "gitlab-ci.yml"
 	nci.PipelineUrl = env["CI_JOB_URL"]
 
 	// merge request
