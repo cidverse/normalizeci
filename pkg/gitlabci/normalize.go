@@ -122,6 +122,18 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		nci.DeployFreeze = "false"
 	}
 
+	// custom input parameters
+	variables, err := GetGitlabPipelineRun(env["CI_SERVER_URL"], env["CI_PROJECT_ID"], env["CI_PIPELINE_ID"], env["CI_JOB_TOKEN"])
+	if err == nil {
+		v := make(map[string]string)
+
+		for _, variable := range variables {
+			v[variable.Key] = variable.Value
+		}
+
+		nci.PipelineInput = v
+	}
+
 	return ncispec.ToMap(nci)
 }
 

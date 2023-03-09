@@ -167,7 +167,6 @@ func getInputFromEnv(data map[string]string) map[string]string {
 }
 
 func OfMap(data map[string]string) NormalizeCISpec {
-
 	return NormalizeCISpec{
 		Found:       data[NCI],
 		Version:     data[NCI_VERSION],
