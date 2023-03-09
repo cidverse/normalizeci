@@ -11,28 +11,6 @@ import (
 	"github.com/gosimple/slug"
 )
 
-// Normalizer is the implementation of the normalizer
-type Normalizer struct {
-	version string
-	name    string
-	slug    string
-}
-
-// GetName returns the name of the normalizer
-func (n Normalizer) GetName() string {
-	return n.name
-}
-
-// GetSlug returns the slug of the normalizer
-func (n Normalizer) GetSlug() string {
-	return n.slug
-}
-
-// Check if this package can handle the current environment
-func (n Normalizer) Check(env map[string]string) bool {
-	return env["GITLAB_CI"] == "true"
-}
-
 // Normalize normalizes the environment variables into the common format
 func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	var nci ncispec.NormalizeCISpec
@@ -126,16 +104,16 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.ProjectDir = projectDir
 
 	// container registry
-	nci.ContainerregistryHost = env["CI_REGISTRY"]
-	nci.ContainerregistryRepository = env["CI_REGISTRY_IMAGE"]
+	nci.ContainerRegistryHost = env["CI_REGISTRY"]
+	nci.ContainerRegistryRepository = env["CI_REGISTRY_IMAGE"]
 	if len(env["CI_DEPLOY_USER"]) > 0 {
-		nci.ContainerregistryUsername = env["CI_DEPLOY_USER"]
-		nci.ContainerregistryPassword = env["CI_DEPLOY_PASSWORD"]
+		nci.ContainerRegistryUsername = env["CI_DEPLOY_USER"]
+		nci.ContainerRegistryPassword = env["CI_DEPLOY_PASSWORD"]
 	} else {
-		nci.ContainerregistryUsername = env["CI_REGISTRY_USER"]
-		nci.ContainerregistryPassword = env["CI_REGISTRY_PASSWORD"]
+		nci.ContainerRegistryUsername = env["CI_REGISTRY_USER"]
+		nci.ContainerRegistryPassword = env["CI_REGISTRY_PASSWORD"]
 	}
-	nci.ContainerregistryTag = nci.CommitRefRelease
+	nci.ContainerRegistryTag = nci.CommitRefRelease
 
 	// control
 	if _, ok := env["CI_DEPLOY_FREEZE"]; ok {
@@ -145,25 +123,6 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	}
 
 	return ncispec.ToMap(nci)
-}
-
-func (n Normalizer) Denormalize(env map[string]string) map[string]string {
-	data := make(map[string]string)
-
-	data["GITLAB_CI"] = "true"
-
-	return data
-}
-
-// NewNormalizer gets a instance of the normalizer
-func NewNormalizer() Normalizer {
-	entity := Normalizer{
-		version: "0.3.0",
-		name:    "GitLab CI",
-		slug:    "gitlab-ci",
-	}
-
-	return entity
 }
 
 func gitlabTriggerNormalize(input string) string {

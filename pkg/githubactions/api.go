@@ -29,6 +29,9 @@ var githubMockClient *http.Client
 //   - *github.Workflow: A pointer to the retrieved GitHub workflow object associated with the workflow run.
 //   - error: An error value, if any.
 func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.WorkflowRun, *github.Workflow, error) {
+	if repositoryPath == "" {
+		return nil, nil, fmt.Errorf("no repositoryPath provided")
+	}
 	rPath := strings.SplitN(repositoryPath, "/", 2)
 	owner := rPath[0]
 	name := rPath[1]
@@ -65,7 +68,7 @@ func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.Workflow
 	return workflowRun, workflow, nil
 }
 
-// GetGithubEvent reads a JSON file containing a GitHub event
+// ParseGithubEvent reads a JSON file containing a GitHub event
 //
 // Parameters:
 //   - eventType: the GitHub event type
@@ -74,7 +77,7 @@ func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.Workflow
 // Returns:
 //   - github.Event: A struct representing the parsed GitHub event.
 //   - error: An error value, if any. If an error occurs while reading or parsing the file, it will be returned along with an informative error message.
-func GetGithubEvent(eventType string, eventFile string) (interface{}, error) {
+func ParseGithubEvent(eventType string, eventFile string) (interface{}, error) {
 	// read payload
 	eventJSONBytes, err := os.ReadFile(eventFile) // just pass the file name
 	if err != nil {

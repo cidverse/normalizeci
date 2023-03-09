@@ -104,7 +104,7 @@ func GetDirectoryNameFromPath(path string) string {
 	return parent
 }
 
-// GetHostFromURL gets the host from a url
+// GetHostFromURL gets the host from an url
 func GetHostFromURL(addr string) string {
 	u, err := url.Parse(addr)
 	if err != nil {

@@ -113,15 +113,15 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 	nci.ProjectDir = projectDir
 
 	// container registry
-	nci.ContainerregistryHost = ""
-	nci.ContainerregistryUsername = ""
-	nci.ContainerregistryPassword = ""
+	nci.ContainerRegistryHost = ""
+	nci.ContainerRegistryUsername = ""
+	nci.ContainerRegistryPassword = ""
 	if len(nci.ProjectPath) > 0 {
-		nci.ContainerregistryRepository = nci.ProjectPath
+		nci.ContainerRegistryRepository = nci.ProjectPath
 	} else {
-		nci.ContainerregistryRepository = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+		nci.ContainerRegistryRepository = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
 	}
-	nci.ContainerregistryTag = nci.CommitRefRelease
+	nci.ContainerRegistryTag = nci.CommitRefRelease
 
 	nci.DeployFreeze = "false"
 

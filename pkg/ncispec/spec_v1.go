@@ -1,5 +1,9 @@
 package ncispec
 
+import (
+	"strings"
+)
+
 const (
 	NCI                                  = "NCI"
 	NCI_VERSION                          = "NCI_VERSION"
@@ -23,6 +27,7 @@ const (
 	NCI_PIPELINE_ATTEMPT                 = "NCI_PIPELINE_ATTEMPT"
 	NCI_PIPELINE_CONFIG_FILE             = "NCI_PIPELINE_CONFIG_FILE"
 	NCI_PIPELINE_URL                     = "NCI_PIPELINE_URL"
+	NCI_PIPELINE_INPUT                   = "NCI_PIPELINE_INPUT"
 	NCI_MERGE_REQUEST_ID                 = "NCI_MERGE_REQUEST_ID"
 	NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME = "NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
 	NCI_MERGE_REQUEST_TARGET_BRANCH_NAME = "NCI_MERGE_REQUEST_TARGET_BRANCH_NAME"
@@ -95,7 +100,7 @@ type NormalizeCISpec struct {
 	PipelineAttempt      string `validate:"number"`
 	PipelineConfigFile   string // Pipeline Config File
 	PipelineUrl          string // Pipeline URL
-	PipelineVariables    []NormalizeCIVariable
+	PipelineInput        map[string]string
 
 	MergeRequestId               string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
 	MergeRequestSourceBranchName string
@@ -114,11 +119,11 @@ type NormalizeCISpec struct {
 	ProjectUrl           string
 	ProjectDefaultBranch string `` // The default branch
 
-	ContainerregistryHost       string // The hostname of the container registry.
-	ContainerregistryUsername   string // The username used for container registry authentication.
-	ContainerregistryPassword   string // The password used for container registry authentication.
-	ContainerregistryRepository string `validate:"required"` // The repository, that should be used for the current project.
-	ContainerregistryTag        string `validate:"required"` // The tag that should be build.
+	ContainerRegistryHost       string // The hostname of the container registry.
+	ContainerRegistryUsername   string // The username used for container registry authentication.
+	ContainerRegistryPassword   string // The password used for container registry authentication.
+	ContainerRegistryRepository string `validate:"required"` // The repository, that should be used for the current project.
+	ContainerRegistryTag        string `validate:"required"` // The tag that should be build.
 
 	RepositoryKind       string `validate:"required"` //  The used version control system. (git)
 	RepositoryRemote     string `validate:"required"` // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
@@ -126,7 +131,7 @@ type NormalizeCISpec struct {
 	RepositoryHostType   string `validate:"required"` // Type of the git repository server (github, gitlab, ...)
 	RepositoryStatus     string `validate:"required"` // The repository status (dirty, clean)
 	CommitRefType        string `validate:"required"` // The reference type. (branch / tag)
-	CommitRefName        string `validate:"required"` // Human readable name of the current repository reference.
+	CommitRefName        string `validate:"required"` // Human-readable name of the current repository reference.
 	CommitRefPath        string `validate:"required"` // Combination of the ref type and ref name. (tag/v1.0.0 or branch/main)
 	CommitRefSlug        string `validate:"required"` // Slug of the current repository reference.
 	CommitRefVcs         string `validate:"required"` // Holds the vcs specific absolute reference name. (ex: `refs/heads/main`)// Release version of the artifact, without leading `v` or `/` - should be in format `x.y.z` or `feature-abc`.
@@ -149,13 +154,20 @@ type NormalizeCISpec struct {
 	DeployFreeze string `validate:"required,boolean"` // Currently in a deploy freeze window? (`true`, `false`)
 }
 
-type NormalizeCIVariable struct {
-	Key   string `validate:"required"`
-	Scope string
-	Value string
+func getInputFromEnv(data map[string]string) map[string]string {
+	var result map[string]string
+
+	for k, v := range data {
+		if strings.HasPrefix(k, NCI_PIPELINE_INPUT) {
+			result[strings.TrimPrefix(k, NCI_PIPELINE_INPUT+"_")] = v
+		}
+	}
+
+	return result
 }
 
 func OfMap(data map[string]string) NormalizeCISpec {
+
 	return NormalizeCISpec{
 		Found:       data[NCI],
 		Version:     data[NCI_VERSION],
@@ -181,6 +193,7 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		PipelineAttempt:      data[NCI_PIPELINE_ATTEMPT],
 		PipelineConfigFile:   data[NCI_PIPELINE_CONFIG_FILE],
 		PipelineUrl:          data[NCI_PIPELINE_URL],
+		PipelineInput:        getInputFromEnv(data),
 
 		MergeRequestId:               data[NCI_MERGE_REQUEST_ID],
 		MergeRequestSourceBranchName: data[NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME],
@@ -199,11 +212,11 @@ func OfMap(data map[string]string) NormalizeCISpec {
 		ProjectUrl:           data[NCI_PROJECT_URL],
 		ProjectDir:           data[NCI_PROJECT_DIR],
 
-		ContainerregistryHost:       data[NCI_CONTAINERREGISTRY_HOST],
-		ContainerregistryUsername:   data[NCI_CONTAINERREGISTRY_USERNAME],
-		ContainerregistryPassword:   data[NCI_CONTAINERREGISTRY_PASSWORD],
-		ContainerregistryRepository: data[NCI_CONTAINERREGISTRY_REPOSITORY],
-		ContainerregistryTag:        data[NCI_CONTAINERREGISTRY_TAG],
+		ContainerRegistryHost:       data[NCI_CONTAINERREGISTRY_HOST],
+		ContainerRegistryUsername:   data[NCI_CONTAINERREGISTRY_USERNAME],
+		ContainerRegistryPassword:   data[NCI_CONTAINERREGISTRY_PASSWORD],
+		ContainerRegistryRepository: data[NCI_CONTAINERREGISTRY_REPOSITORY],
+		ContainerRegistryTag:        data[NCI_CONTAINERREGISTRY_TAG],
 		RepositoryKind:              data[NCI_REPOSITORY_KIND],
 		RepositoryRemote:            data[NCI_REPOSITORY_REMOTE],
 		RepositoryHostServer:        data[NCI_REPOSITORY_HOST_SERVER],
@@ -261,6 +274,11 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PIPELINE_ATTEMPT] = spec.PipelineAttempt
 	data[NCI_PIPELINE_CONFIG_FILE] = spec.PipelineConfigFile
 	data[NCI_PIPELINE_URL] = spec.PipelineUrl
+	if spec.PipelineInput != nil {
+		for k, v := range spec.PipelineInput {
+			data[NCI_PIPELINE_INPUT+"_"+k] = v
+		}
+	}
 
 	data[NCI_MERGE_REQUEST_ID] = spec.MergeRequestId
 	data[NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME] = spec.MergeRequestSourceBranchName
@@ -279,11 +297,11 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 	data[NCI_PROJECT_URL] = spec.ProjectUrl
 	data[NCI_PROJECT_DIR] = spec.ProjectDir
 
-	data[NCI_CONTAINERREGISTRY_HOST] = spec.ContainerregistryHost
-	data[NCI_CONTAINERREGISTRY_USERNAME] = spec.ContainerregistryUsername
-	data[NCI_CONTAINERREGISTRY_PASSWORD] = spec.ContainerregistryPassword
-	data[NCI_CONTAINERREGISTRY_REPOSITORY] = spec.ContainerregistryRepository
-	data[NCI_CONTAINERREGISTRY_TAG] = spec.ContainerregistryTag
+	data[NCI_CONTAINERREGISTRY_HOST] = spec.ContainerRegistryHost
+	data[NCI_CONTAINERREGISTRY_USERNAME] = spec.ContainerRegistryUsername
+	data[NCI_CONTAINERREGISTRY_PASSWORD] = spec.ContainerRegistryPassword
+	data[NCI_CONTAINERREGISTRY_REPOSITORY] = spec.ContainerRegistryRepository
+	data[NCI_CONTAINERREGISTRY_TAG] = spec.ContainerRegistryTag
 
 	data[NCI_REPOSITORY_KIND] = spec.RepositoryKind
 	data[NCI_REPOSITORY_REMOTE] = spec.RepositoryRemote
