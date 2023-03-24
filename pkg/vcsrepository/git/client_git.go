@@ -124,21 +124,26 @@ func (c GitClient) VCSHead() (vcsHead vcsapi.VCSRef, err error) {
 		// detached HEAD, check git reflog for the true reference
 		gitRefLogFile := filepath.Join(c.dir, ".git", "logs", "HEAD")
 		lastLine := readLastLine(gitRefLogFile)
-
-		pattern := regexp.MustCompile(`.*checkout: moving from (?P<FROM>.*) to (?P<TO>.*)$`)
-		match := pattern.FindStringSubmatch(lastLine)
-
-		if strings.HasPrefix(match[2], "refs/remotes/pull") {
-			// handle github merge request as virtual branch
-			return vcsapi.VCSRef{Type: "branch", Value: match[2][13:], Hash: ref.Hash().String()}, nil
-		} else if len(match[2]) == 40 {
-			return vcsapi.VCSRef{Type: "branch", Value: match[1], Hash: ref.Hash().String()}, nil
-		} else {
-			return vcsapi.VCSRef{Type: "tag", Value: match[2], Hash: ref.Hash().String()}, nil
-		}
+		return ParseGitRefLogLine(lastLine, ref.Hash().String()), nil
 	}
 
 	return vcsapi.VCSRef{}, errors.New("can't determinate repo head")
+}
+
+func ParseGitRefLogLine(line string, hash string) vcsapi.VCSRef {
+	pattern := regexp.MustCompile(`.*checkout: moving from (?P<FROM>.*) to (?P<TO>.*)$`)
+	match := pattern.FindStringSubmatch(line)
+
+	if strings.HasPrefix(match[2], "refs/remotes/pull") {
+		// handle github merge request as virtual branch
+		return vcsapi.VCSRef{Type: "branch", Value: match[2][13:], Hash: hash}
+	} else if len(match[2]) == 40 {
+		return vcsapi.VCSRef{Type: "branch", Value: match[1], Hash: hash}
+	} else if strings.HasPrefix(match[2], "refs/tags/") {
+		return vcsapi.VCSRef{Type: "tag", Value: match[2][10:], Hash: hash}
+	} else {
+		return vcsapi.VCSRef{Type: "tag", Value: match[2], Hash: hash}
+	}
 }
 
 func (c GitClient) GetTags() []vcsapi.VCSRef {
