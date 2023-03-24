@@ -14,7 +14,14 @@ import (
 	"github.com/gosimple/slug"
 )
 
+var MockClient vcsapi.Client
+
 func GetVCSClient(dir string) (vcsapi.Client, error) {
+	// mocked client
+	if MockClient != nil {
+		return MockClient, nil
+	}
+
 	// git
 	cg, _ := gitclient.NewGitClient(dir)
 	if cg.Check() {

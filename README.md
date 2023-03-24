@@ -77,7 +77,7 @@ Invoke-Expression "$nenv"
 Install the latest version as library:
 
 ```bash
-go get -u github.com/cidverse/normalizeci
+go get -u github.com/cidverse/normalizeci/pkg
 ```
 
 And access the normalized environment, by default it will search for the vcs repo based on the current working directory.

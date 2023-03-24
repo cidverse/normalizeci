@@ -5,10 +5,12 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNormalizer_Normalize_Common(t *testing.T) {
+	vcsrepository.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{})
 
@@ -19,6 +21,7 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Worker(t *testing.T) {
+	vcsrepository.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"CI_RUNNER_ID":          "12270837",
@@ -34,6 +37,7 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
+	vcsrepository.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"CI_PIPELINE_ID":     "535898514",
@@ -58,6 +62,7 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_MergeRequest(t *testing.T) {
+	vcsrepository.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"CI_MERGE_REQUEST_IID":                "153",
@@ -71,6 +76,7 @@ func TestNormalizer_Normalize_MergeRequest(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Project(t *testing.T) {
+	vcsrepository.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"CI_PROJECT_ID":          "35974876",
