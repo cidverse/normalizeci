@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,10 +14,10 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{})
 
-	assert.Equal(t, "true", normalized[ncispec.NCI])
-	assert.Equal(t, normalizer.version, normalized[ncispec.NCI_VERSION])
-	assert.Equal(t, normalizer.name, normalized[ncispec.NCI_SERVICE_NAME])
-	assert.Equal(t, normalizer.slug, normalized[ncispec.NCI_SERVICE_SLUG])
+	assert.Equal(t, "true", normalized.Found)
+	assert.Equal(t, normalizer.version, normalized.Version)
+	assert.Equal(t, normalizer.name, normalized.ServiceName)
+	assert.Equal(t, normalizer.slug, normalized.ServiceSlug)
 }
 
 func TestNormalizer_Normalize_Worker(t *testing.T) {
@@ -29,12 +28,12 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 		"ImageVersion":       "20220503.1",
 	})
 
-	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized[ncispec.NCI_WORKER_ID])
-	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized[ncispec.NCI_WORKER_NAME])
-	assert.Equal(t, "github_hosted_vm", normalized[ncispec.NCI_WORKER_TYPE])
-	assert.Equal(t, "ubuntu20:20220503.1", normalized[ncispec.NCI_WORKER_OS])
-	assert.Equal(t, "latest", normalized[ncispec.NCI_WORKER_VERSION])
-	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized[ncispec.NCI_WORKER_ARCH])
+	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized.WorkerId)
+	assert.Equal(t, "github_969396af-1899-4849-9318-7807141c54e9", normalized.WorkerName)
+	assert.Equal(t, "github_hosted_vm", normalized.WorkerType)
+	assert.Equal(t, "ubuntu20:20220503.1", normalized.WorkerOS)
+	assert.Equal(t, "latest", normalized.WorkerVersion)
+	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized.WorkerArch)
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
@@ -49,15 +48,15 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 		"GITHUB_REPOSITORY":  "cidverse/cienvsamples",
 	})
 
-	assert.Equal(t, "2303126757", normalized[ncispec.NCI_PIPELINE_ID])
-	assert.Equal(t, "push", normalized[ncispec.NCI_PIPELINE_TRIGGER])
-	assert.Equal(t, "ci", normalized[ncispec.NCI_PIPELINE_STAGE_NAME])
-	assert.Equal(t, "ci", normalized[ncispec.NCI_PIPELINE_STAGE_SLUG])
-	assert.Equal(t, "__run", normalized[ncispec.NCI_PIPELINE_JOB_NAME])
-	assert.Equal(t, "run", normalized[ncispec.NCI_PIPELINE_JOB_SLUG])
-	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_STARTED_AT])
-	assert.Equal(t, "1", normalized[ncispec.NCI_PIPELINE_ATTEMPT])
-	assert.Equal(t, "https://github.com/cidverse/cienvsamples/actions/runs/2303126757", normalized[ncispec.NCI_PIPELINE_URL])
+	assert.Equal(t, "2303126757", normalized.PipelineId)
+	assert.Equal(t, "push", normalized.PipelineTrigger)
+	assert.Equal(t, "ci", normalized.PipelineStageName)
+	assert.Equal(t, "ci", normalized.PipelineStageSlug)
+	assert.Equal(t, "__run", normalized.PipelineJobName)
+	assert.Equal(t, "run", normalized.PipelineJobSlug)
+	assert.NotNil(t, normalized.PipelineJobStartedAt)
+	assert.Equal(t, "1", normalized.PipelineAttempt)
+	assert.Equal(t, "https://github.com/cidverse/cienvsamples/actions/runs/2303126757", normalized.PipelineUrl)
 }
 
 func TestNormalizer_Normalize_Project(t *testing.T) {
@@ -67,7 +66,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 		"GITHUB_REPOSITORY": "cidverse/cienvsamples",
 	})
 
-	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized[ncispec.NCI_PROJECT_URL])
+	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized.ProjectUrl)
 }
 
 func TestNormalizer_Normalize_PullRequest(t *testing.T) {
@@ -77,7 +76,7 @@ func TestNormalizer_Normalize_PullRequest(t *testing.T) {
 		"GITHUB_REF":        "refs/pull/519/merge",
 	})
 
-	assert.Equal(t, "519", normalized[ncispec.NCI_MERGE_REQUEST_ID])
+	assert.Equal(t, "519", normalized.MergeRequestId)
 }
 
 func TestNormalizer_Normalize_WorkflowAPI(t *testing.T) {
@@ -93,6 +92,6 @@ func TestNormalizer_Normalize_WorkflowAPI(t *testing.T) {
 		"GITHUB_REPOSITORY": "cidverse/cienvsamples",
 	})
 
-	assert.Equal(t, "2022-05-10T20:20:59Z", normalized[ncispec.NCI_PIPELINE_JOB_STARTED_AT])
-	assert.Equal(t, ".github/workflows/ci.yml", normalized[ncispec.NCI_PIPELINE_CONFIG_FILE])
+	assert.Equal(t, "2022-05-10T20:20:59Z", normalized.PipelineJobStartedAt)
+	assert.Equal(t, ".github/workflows/ci.yml", normalized.PipelineConfigFile)
 }

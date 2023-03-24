@@ -11,19 +11,18 @@ import (
 
 func normalizationCommand(format string, output string, strict bool, targets []string) {
 	// run normalization
-	var normalizedEnv = normalizeci.RunDefaultNormalization()
+	var normalized = normalizeci.Normalize()
 
 	// set normalized variables in current session
-	var nci = ncispec.OfMap(normalizedEnv)
-	outputEnv := ncispec.ToMap(nci)
+	outputEnv := ncispec.ToMap(normalized)
 
 	// set process env
-	normalizeci.SetProcessEnvironment(normalizedEnv)
+	normalizeci.SetProcessEnvironment(ncispec.ToMap(normalized))
 
 	// targets
 	if len(targets) > 0 {
 		for _, target := range targets {
-			denormalized := normalizeci.RunDenormalization(target, normalizedEnv)
+			denormalized := normalizeci.Denormalize(target, normalized)
 			for key, value := range denormalized {
 				outputEnv[key] = value
 			}
@@ -39,7 +38,7 @@ func normalizationCommand(format string, output string, strict bool, targets []s
 
 	// validate?
 	if strict {
-		errors := nci.Validate()
+		errors := normalized.Validate()
 		if len(errors) > 0 {
 			for _, line := range errors {
 				fmt.Printf("%s: %s [%s]\n", line.Field, line.Description, line.Value)

@@ -1,5 +1,9 @@
 package azuredevops
 
-func (n Normalizer) Denormalize(env map[string]string) map[string]string {
+import (
+	"github.com/cidverse/normalizeci/pkg/ncispec"
+)
+
+func (n Normalizer) Denormalize(spec ncispec.NormalizeCISpec) map[string]string {
 	return make(map[string]string)
 }

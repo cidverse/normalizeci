@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/rs/zerolog/log"
 
 	"github.com/cidverse/normalizeci/pkg/azuredevops"
@@ -25,17 +26,17 @@ func init() {
 	normalizers = append(normalizers, localgit.NewNormalizer())
 }
 
-func RunDefaultNormalization() map[string]string {
+func Normalize() ncispec.NormalizeCISpec {
 	env := common.GetMachineEnvironment()
-	return RunNormalization(env)
+	return NormalizeEnv(env)
 }
 
-// RunNormalization executes the ci normalization for all supported services
-func RunNormalization(env map[string]string) map[string]string {
+// NormalizeEnv executes the ci normalization for all supported services
+func NormalizeEnv(env map[string]string) ncispec.NormalizeCISpec {
 	// normalize (iterate over all supported systems and normalize variables if possible)
-	var normalized map[string]string
+	var normalized ncispec.NormalizeCISpec
 	for _, normalizer := range normalizers {
-		if normalizer.Check(env) == true {
+		if normalizer.Check(env) {
 			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
 			normalized = normalizer.Normalize(env)
 			break
@@ -47,8 +48,8 @@ func RunNormalization(env map[string]string) map[string]string {
 	return normalized
 }
 
-// RunDenormalization will generate ci variables for the target service
-func RunDenormalization(target string, env map[string]string) map[string]string {
+// Denormalize will generate ci variables for the target service
+func Denormalize(target string, env ncispec.NormalizeCISpec) map[string]string {
 	// denormalize
 	var normalized map[string]string
 	for _, normalizer := range normalizers {

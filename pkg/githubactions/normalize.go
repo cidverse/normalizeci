@@ -20,7 +20,7 @@ import (
 )
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env map[string]string) map[string]string {
+func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 	var nci ncispec.NormalizeCISpec
 
 	// common
@@ -150,5 +150,5 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 		nci.PipelineInput = variables
 	}
 
-	return ncispec.ToMap(nci)
+	return nci
 }

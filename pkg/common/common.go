@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/rs/zerolog/log"
 )
 
@@ -15,8 +16,8 @@ type Normalizer interface {
 	GetName() string
 	GetSlug() string
 	Check(env map[string]string) bool
-	Normalize(env map[string]string) map[string]string
-	Denormalize(env map[string]string) map[string]string
+	Normalize(env map[string]string) ncispec.NormalizeCISpec
+	Denormalize(spec ncispec.NormalizeCISpec) map[string]string
 }
 
 // GetMachineEnvironment returns a map with all environment variables set on the machine

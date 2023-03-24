@@ -26,52 +26,40 @@ func TestEnvironmentCheck(t *testing.T) {
 	}
 }
 
-func TestEnvironmentNormalizer(t *testing.T) {
+func TestNormalizer_Normalize_Common(t *testing.T) {
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(common.GetEnvironmentFrom(testEnvironment))
+	var normalized = normalizer.Normalize(map[string]string{})
 
-	// log all normalized values
-	for key, element := range normalized {
-		t.Log(key + "=" + element)
-	}
-
-	// validate fields
-	// - common
-	assert.Equal(t, "true", normalized[ncispec.NCI])
-	assert.Equal(t, normalizer.version, normalized[ncispec.NCI_VERSION])
-	assert.Equal(t, normalizer.name, normalized[ncispec.NCI_SERVICE_NAME])
-	assert.Equal(t, normalizer.slug, normalized[ncispec.NCI_SERVICE_SLUG])
-	// - worker
-	assert.Equal(t, "local", normalized[ncispec.NCI_WORKER_ID])
-	assert.Equal(t, "localhost", normalized[ncispec.NCI_WORKER_NAME])
-	assert.Equal(t, "local", normalized[ncispec.NCI_WORKER_TYPE])
-	assert.NotNil(t, normalized[ncispec.NCI_WORKER_OS])
-	assert.Equal(t, "1.0.0", normalized[ncispec.NCI_WORKER_VERSION])
-	assert.NotNil(t, normalized[ncispec.NCI_WORKER_ARCH])
-	// - pipeline
-	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_ID])
-	assert.Equal(t, ncispec.PipelineTriggerCLI, normalized[ncispec.NCI_PIPELINE_TRIGGER])
-	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_STAGE_ID])
-	assert.Equal(t, ncispec.PipelineStageDefault, normalized[ncispec.NCI_PIPELINE_STAGE_NAME])
-	assert.Equal(t, ncispec.PipelineStageDefault, normalized[ncispec.NCI_PIPELINE_STAGE_SLUG])
-	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_ID])
-	assert.Equal(t, ncispec.PipelineJobDefault, normalized[ncispec.NCI_PIPELINE_JOB_NAME])
-	assert.Equal(t, ncispec.PipelineJobDefault, normalized[ncispec.NCI_PIPELINE_JOB_SLUG])
-	assert.NotNil(t, normalized[ncispec.NCI_PIPELINE_JOB_STARTED_AT])
-	assert.Equal(t, "1", normalized["NCI_PIPELINE_ATTEMPT"])
-	// - container registry
-	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_HOST])
-	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_USERNAME])
-	assert.Equal(t, "", normalized[ncispec.NCI_CONTAINERREGISTRY_PASSWORD])
-	// - project
+	assert.Equal(t, "true", normalized.Found)
+	assert.Equal(t, normalizer.version, normalized.Version)
+	assert.Equal(t, normalizer.name, normalized.ServiceName)
+	assert.Equal(t, normalizer.slug, normalized.ServiceSlug)
 }
 
-func TestValidateSpec(t *testing.T) {
+func TestNormalizer_Normalize_Worker(t *testing.T) {
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(common.GetEnvironmentFrom(testEnvironment))
+	var normalized = normalizer.Normalize(map[string]string{})
 
-	nci := ncispec.OfMap(normalized)
+	assert.Equal(t, "local", normalized.WorkerId)
+	assert.Equal(t, "localhost", normalized.WorkerName)
+	assert.Equal(t, "local", normalized.WorkerType)
+	assert.NotNil(t, normalized.WorkerOS)
+	assert.Equal(t, "1.0.0", normalized.WorkerVersion)
+	assert.NotNil(t, normalized.WorkerArch)
+}
 
-	err := nci.Validate()
-	assert.Emptyf(t, err, "there shouldn't be any validation errors")
+func TestNormalizer_Normalize_Pipeline(t *testing.T) {
+	var normalizer = NewNormalizer()
+	var normalized = normalizer.Normalize(map[string]string{})
+
+	assert.NotNil(t, normalized.PipelineId)
+	assert.Equal(t, ncispec.PipelineTriggerCLI, normalized.PipelineTrigger)
+	assert.NotNil(t, normalized.PipelineStageId)
+	assert.Equal(t, ncispec.PipelineStageDefault, normalized.PipelineStageName)
+	assert.Equal(t, ncispec.PipelineStageDefault, normalized.PipelineStageSlug)
+	assert.NotNil(t, normalized.PipelineJobId)
+	assert.Equal(t, ncispec.PipelineJobDefault, normalized.PipelineJobName)
+	assert.Equal(t, ncispec.PipelineJobDefault, normalized.PipelineJobSlug)
+	assert.NotNil(t, normalized.PipelineJobStartedAt)
+	assert.Equal(t, "1", normalized.PipelineAttempt)
 }

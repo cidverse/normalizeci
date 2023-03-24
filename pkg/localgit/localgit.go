@@ -37,7 +37,7 @@ func (n Normalizer) Check(env map[string]string) bool {
 }
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env map[string]string) map[string]string {
+func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 	var nci ncispec.NormalizeCISpec
 
 	// common
@@ -125,14 +125,14 @@ func (n Normalizer) Normalize(env map[string]string) map[string]string {
 
 	nci.DeployFreeze = "false"
 
-	return ncispec.ToMap(nci)
+	return nci
 }
 
-func (n Normalizer) Denormalize(env map[string]string) map[string]string {
-	return env
+func (n Normalizer) Denormalize(spec ncispec.NormalizeCISpec) map[string]string {
+	return make(map[string]string)
 }
 
-// NewNormalizer gets a instance of the normalizer
+// NewNormalizer gets an instance of the normalizer
 func NewNormalizer() Normalizer {
 	entity := Normalizer{
 		version: "0.3.0",
