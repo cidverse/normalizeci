@@ -94,10 +94,6 @@ Spec-Version: `0.3.0`
 | `NCI_COMMIT_TITLE`                   | The title of the latest commit on the current reference.                                                    |
 | `NCI_COMMIT_DESCRIPTION`             | The description of the latest commit on the current reference.                                              |
 | `NCI_COMMIT_COUNT`                   | The total amount of commits inside of the current reference, can be used as build number.                   |
-| `NCI_LASTRELEASE_REF_NAME`           | Human readable name of the last stable release.                                                             |
-| `NCI_LASTRELEASE_REF_SLUG`           | Slug of the last stable release.                                                                            |
-| `NCI_LASTRELEASE_REF_VCS`            | Holds the vcs specific absolute reference name of the last stable release. (ex: `refs/heads/main`)          |
-| `NCI_LASTRELEASE_COMMIT_AFTER_COUNT` | Holds the count of commits since the last stable release.                                                   |
 
 ## control
 

@@ -140,18 +140,5 @@ func GetVCSRepositoryInformation(dir string) (data map[string]string, err error)
 		data[ncispec.NCI_COMMIT_COUNT] = strconv.Itoa(50)
 	}
 
-	latest, latestErr := client.FindLatestRelease(false)
-	if latestErr == nil {
-		data[ncispec.NCI_LASTRELEASE_REF_NAME] = latest.Version
-		data[ncispec.NCI_LASTRELEASE_REF_SLUG] = slug.Make(latest.Version)
-		data[ncispec.NCI_LASTRELEASE_REF_VCS] = client.VCSRefToInternalRef(vcsapi.VCSRef{Type: latest.Type, Value: latest.Value, Hash: latest.Hash})
-		data[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT] = "0"
-
-		commits, commitsErr := client.FindCommitsBetween(&head, &vcsapi.VCSRef{Type: latest.Type, Value: latest.Value, Hash: latest.Hash}, false, 0)
-		if commitsErr == nil {
-			data[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT] = strconv.Itoa(len(commits))
-		}
-	}
-
 	return data, nil
 }
