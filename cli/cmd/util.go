@@ -4,17 +4,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/cidverse/normalizeci/pkg/normalizeci"
 	"github.com/rs/zerolog/log"
 )
-
-func defaultFormat(value string) string {
-	if value == "systemdefault" {
-		return normalizeci.GetDefaultFormat()
-	}
-
-	return value
-}
 
 func fileOutput(file string, content string) {
 	contentByteArray := []byte(content)

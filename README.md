@@ -8,7 +8,7 @@
 ## features
 
 - **normalization** - check the env vars and the local repository to provide a [common set of env vars](docs/spec/variables.md) on any ci platform.
-- **compatibility** - convert the common env vars into a specific format (ie. gitlab) to run a script made for gitlab on any ci provider.
+- **compatibility** - convert the common env vars into a specific format (i.e. gitlab) to run a script made for gitlab on any ci provider.
 
 ## installation
 
@@ -28,21 +28,22 @@ sudo chmod +x /usr/local/bin/normalizeci
 
 Examples:
 
-| Id  | Command                                        | Description                                                                       |
-|-----|------------------------------------------------|-----------------------------------------------------------------------------------|
-| 1   | `normalizeci --format export --output nci.env` | generate nci variables in format export for unix systems, stored as file          |
-| 2   | `normalizeci --format powershell`              | generate nci variables in format export for windows powershell, written to stdout |
-| 3   | `normalizeci --output nci.env`                 | generate nci variables in the suggested format for the current system             |
-| 4   | `normalizeci --hostenv --output nci.env`       | additionally to 3 includes all env vars from the host                             |
-| 5   | `normalizeci --format cmd`                     | generate nci variables in format export for windows cmd, written to stdout        |
-| 6   | `normalizeci -v`                               | print version information                                                         |
+| Id  | Command                                                  | Description                                                                       |
+|-----|----------------------------------------------------------|-----------------------------------------------------------------------------------|
+| 1   | `normalizeci normalize --format export --output nci.env` | generate nci variables in format export for unix systems, stored as file          |
+| 2   | `normalizeci normalize --format powershell`              | generate nci variables in format export for windows powershell, written to stdout |
+| 3   | `normalizeci normalize --output nci.env`                 | generate nci variables in the suggested format for the current system             |
+| 4   | `normalizeci normalize --hostenv --output nci.env`       | additionally to 3 includes all env vars from the host                             |
+| 5   | `normalizeci normalize --format cmd`                     | generate nci variables in format export for windows cmd, written to stdout        |
+| 6   | `normalizeci denormalize --target gitlab`                | generate a gitlab ci like environment based on the normalized environment         |
+| 7   | `normalizeci version`                                    | print version information                                                         |
 
 #### file based
 
 Linux/MacOS
 
 ```bash
-normalizeci --format export --output nci.env
+normalizeci normalize --format export --output nci.env
 source nci.env
 rm nci.env
 ```
@@ -50,7 +51,7 @@ rm nci.env
 Windows
 
 ```powershell
-normalizeci --format powershell --output nci.ps1
+normalizeci normalize --format powershell --output nci.ps1
 & .\nci.ps1
 rm nci.ps1
 ```
@@ -62,13 +63,13 @@ The NormalizeCI CLI will return the commands to set the normalized variables in 
 Linux/MacOS
 
 ```bash
-eval $(normalizeci)
+eval $(normalizeci normalize)
 ```
 
 Windows
 
 ```powershell
-$nenv = normalizeci
+$nenv = normalizeci normalize
 Invoke-Expression "$nenv"
 ```
 

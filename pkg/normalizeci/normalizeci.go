@@ -1,6 +1,7 @@
 package normalizeci
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"runtime"
@@ -66,16 +67,16 @@ func Denormalize(target string, env ncispec.NormalizeCISpec) map[string]string {
 }
 
 // FormatEnvironment makes the normalized environment available in the current session
-func FormatEnvironment(normalized map[string]string, format string) string {
+func FormatEnvironment(normalized map[string]string, format string) (string, error) {
 	if format == "export" {
-		return setNormalizedEnvironmentExport(normalized)
+		return setNormalizedEnvironmentExport(normalized), nil
 	} else if format == "powershell" {
-		return setNormalizedEnvironmentPowershell(normalized)
+		return setNormalizedEnvironmentPowershell(normalized), nil
 	} else if format == "cmd" {
-		return setNormalizedEnvironmentCmd(normalized)
+		return setNormalizedEnvironmentCmd(normalized), nil
 	}
 
-	return ""
+	return "", errors.New("unsupported format: " + format)
 }
 
 func GetDefaultFormat() string {

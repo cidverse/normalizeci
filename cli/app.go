@@ -9,14 +9,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// Version will be set at build time
-var Version string
-
-// CommitHash will be set at build time
-var CommitHash string
-
-// BuildAt will be set at build time
-var BuildAt string
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+	status  = "clean"
+)
 
 // Init Hook
 func init() {
@@ -32,10 +30,11 @@ func init() {
 		zerolog.SetGlobalLevel(zerolog.TraceLevel)
 	}
 
-	// version information
-	cmd.Version = Version
-	cmd.CommitHash = CommitHash
-	cmd.BuildAt = BuildAt
+	// Set Version Information
+	cmd.Version = version
+	cmd.CommitHash = commit
+	cmd.BuildAt = date
+	cmd.RepositoryStatus = status
 }
 
 // CLI Main Entrypoint
