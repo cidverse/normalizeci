@@ -5,10 +5,9 @@ import (
 	"testing"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/pkg/normalizer/common"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/cidverse/normalizeci/pkg/common"
 )
 
 var testEnvironment []string

@@ -5,14 +5,14 @@ import (
 	"os"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/cidverse/normalizeci/pkg/normalizeci"
+	"github.com/cidverse/normalizeci/pkg/normalizer"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	rootCmd.AddCommand(denormalizeCmd)
-	denormalizeCmd.PersistentFlags().StringP("format", "f", normalizeci.GetDefaultFormat(), "The format in which to store the normalized variables. (export, powershell, cmd)")
+	denormalizeCmd.PersistentFlags().StringP("format", "f", normalizer.GetDefaultFormat(), "The format in which to store the normalized variables. (export, powershell, cmd)")
 	denormalizeCmd.PersistentFlags().StringP("output", "o", "", "Write output to this file instead of writing it to stdout.")
 	denormalizeCmd.PersistentFlags().Bool("strict", false, "Validate the generated variables against the spec and fail on errors?")
 	denormalizeCmd.PersistentFlags().StringArrayP("target", "t", []string{}, "Additionally generates the environment for the target ci services")
@@ -28,14 +28,14 @@ var denormalizeCmd = &cobra.Command{
 		targets, _ := cmd.Flags().GetStringArray("target")
 
 		// run normalization
-		var normalized = normalizeci.Normalize()
+		var normalized = normalizer.Normalize()
 		outputEnv := make(map[string]string)
-		normalizeci.SetProcessEnvironment(ncispec.ToMap(normalized))
+		normalizer.SetProcessEnvironment(ncispec.ToMap(normalized))
 
 		// targets
 		if len(targets) > 0 {
 			for _, target := range targets {
-				denormalized := normalizeci.Denormalize(target, normalized)
+				denormalized := normalizer.Denormalize(target, normalized)
 				for key, value := range denormalized {
 					outputEnv[key] = value
 				}
@@ -43,7 +43,7 @@ var denormalizeCmd = &cobra.Command{
 		}
 
 		// content?
-		content, err := normalizeci.FormatEnvironment(outputEnv, format)
+		content, err := normalizer.FormatEnvironment(outputEnv, format)
 		if err != nil {
 			log.Fatal().Str("format", format).Str("supported", "export,powershell,cmd").Msg("unsupported format!")
 		}

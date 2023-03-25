@@ -1,23 +1,40 @@
-package githubactions
+package localgit
 
 import (
-	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
-	"strings"
 	"time"
 
-	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
+	"github.com/cidverse/normalizeci/pkg/normalizer/common"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
-	"github.com/google/go-github/v50/github"
 	"github.com/gosimple/slug"
-	"github.com/rs/zerolog/log"
 )
+
+// Normalizer is the implementation of the normalizer
+type Normalizer struct {
+	version string
+	name    string
+	slug    string
+}
+
+// GetName returns the name of the normalizer
+func (n Normalizer) GetName() string {
+	return n.name
+}
+
+// GetSlug returns the slug of the normalizer
+func (n Normalizer) GetSlug() string {
+	return n.slug
+}
+
+// Check if this package can handle the current environment
+func (n Normalizer) Check(env map[string]string) bool {
+	return true
+}
 
 // Normalize normalizes the environment variables into the common format
 func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
@@ -30,38 +47,24 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 	nci.ServiceSlug = n.slug
 
 	// worker
-	nci.WorkerId = env["RUNNER_TRACKING_ID"]
-	nci.WorkerName = env["RUNNER_TRACKING_ID"]
-	nci.WorkerType = "github_hosted_vm"
-	nci.WorkerOS = env["ImageOS"] + ":" + env["ImageVersion"]
-	nci.WorkerVersion = "latest"
+	nci.WorkerId = "local"
+	nci.WorkerName = "localhost"
+	nci.WorkerType = "local"
+	nci.WorkerOS = runtime.GOOS
+	nci.WorkerVersion = "1.0.0"
 	nci.WorkerArch = runtime.GOOS + "/" + runtime.GOARCH
 
 	// pipeline
-	nci.PipelineId = env["GITHUB_RUN_ID"]
-	pipelineEvent := env["GITHUB_EVENT_NAME"]
-	switch pipelineEvent {
-	case "push":
-		nci.PipelineTrigger = ncispec.PipelineTriggerPush
-	case "pull_request":
-		nci.PipelineTrigger = ncispec.PipelineTriggerMergeRequest
-	default:
-		nci.PipelineTrigger = ncispec.PipelineTriggerUnknown
-	}
-
-	nci.PipelineStageName = env["GITHUB_WORKFLOW"]
-	nci.PipelineStageSlug = slug.Make(env["GITHUB_WORKFLOW"])
-	nci.PipelineJobName = env["GITHUB_ACTION"]
-	nci.PipelineJobSlug = slug.Make(env["GITHUB_ACTION"])
-	nci.PipelineJobStartedAt = time.Now().UTC().Format(time.RFC3339)
-	nci.PipelineAttempt = env["GITHUB_RUN_ATTEMPT"]
-	nci.PipelineUrl = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
-
-	// PR
-	if nci.PipelineTrigger == ncispec.PipelineTriggerMergeRequest {
-		splitRef := strings.Split(env["GITHUB_REF"], "/")
-		nci.MergeRequestId = splitRef[2]
-	}
+	nci.PipelineId = nciutil.GenerateSnowflakeId()
+	nci.PipelineTrigger = ncispec.PipelineTriggerCLI
+	nci.PipelineStageId = nciutil.GenerateSnowflakeId()
+	nci.PipelineStageName = ncispec.PipelineStageDefault
+	nci.PipelineStageSlug = ncispec.PipelineStageDefault
+	nci.PipelineJobId = nciutil.GenerateSnowflakeId()
+	nci.PipelineJobName = ncispec.PipelineJobDefault
+	nci.PipelineJobSlug = ncispec.PipelineJobDefault
+	nci.PipelineJobStartedAt = time.Now().Format(time.RFC3339)
+	nci.PipelineAttempt = "1"
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
@@ -106,49 +109,36 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 	nci.ProjectStargazers = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_STARGAZERS)
 	nci.ProjectForks = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_FORKS)
 	nci.ProjectDefaultBranch = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DEFAULT_BRANCH)
-	nci.ProjectUrl = nciutil.GetValueFromMap(env, "GITHUB_SERVER_URL") + "/" + nciutil.GetValueFromMap(env, "GITHUB_REPOSITORY")
+	nci.ProjectUrl = nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_URL)
 	nci.ProjectDir = projectDir
 
 	// container registry
 	nci.ContainerRegistryHost = ""
-	nci.ContainerRegistryRepository = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
 	nci.ContainerRegistryUsername = ""
 	nci.ContainerRegistryPassword = ""
+	if len(nci.ProjectPath) > 0 {
+		nci.ContainerRegistryRepository = nci.ProjectPath
+	} else {
+		nci.ContainerRegistryRepository = slug.Make(common.GetDirectoryNameFromPath(filepath.Join(vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())+string(os.PathSeparator), "file")))
+	}
 	nci.ContainerRegistryTag = nci.CommitRefRelease
 
-	// control
 	nci.DeployFreeze = "false"
 
-	// query workflow and workflow run
-	wfRun, wf, err := GetGithubWorkflowRun(env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
-	if err == nil {
-		// pipeline
-		nci.PipelineJobStartedAt = wfRun.GetRunStartedAt().UTC().Format(time.RFC3339)
-		nci.PipelineConfigFile = wf.GetPath()
-	}
-
-	// parse event
-	githubEvent, err := ParseGithubEvent(os.Getenv("GITHUB_EVENT_NAME"), os.Getenv("GITHUB_EVENT_PATH"))
-	if err == nil {
-		variables := make(map[string]string)
-
-		// workflow dispatch event can have custom input parameters
-		if dispatchEvent, ok := githubEvent.(*github.WorkflowDispatchEvent); ok {
-			if dispatchEvent.Inputs != nil {
-				var inputs map[string]interface{}
-				err := json.Unmarshal(dispatchEvent.Inputs, &inputs)
-				if err != nil {
-					log.Error().Err(err).Msg("failed to parse inputs in github workflow dispatch event")
-				}
-
-				for key, value := range inputs {
-					variables[key] = fmt.Sprintf("%v", value)
-				}
-			}
-		}
-
-		nci.PipelineInput = variables
-	}
-
 	return nci
+}
+
+func (n Normalizer) Denormalize(spec ncispec.NormalizeCISpec) map[string]string {
+	return make(map[string]string)
+}
+
+// NewNormalizer gets an instance of the normalizer
+func NewNormalizer() Normalizer {
+	entity := Normalizer{
+		version: "0.3.0",
+		name:    "Local Git Repository",
+		slug:    "local-git",
+	}
+
+	return entity
 }

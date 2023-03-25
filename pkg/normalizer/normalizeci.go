@@ -1,4 +1,4 @@
-package normalizeci
+package normalizer
 
 import (
 	"errors"
@@ -7,14 +7,13 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/pkg/normalizer/azuredevops"
+	"github.com/cidverse/normalizeci/pkg/normalizer/common"
+	"github.com/cidverse/normalizeci/pkg/normalizer/githubactions"
+	"github.com/cidverse/normalizeci/pkg/normalizer/gitlabci"
+	"github.com/cidverse/normalizeci/pkg/normalizer/localgit"
 	"github.com/rs/zerolog/log"
-
-	"github.com/cidverse/normalizeci/pkg/azuredevops"
-	"github.com/cidverse/normalizeci/pkg/githubactions"
-	"github.com/cidverse/normalizeci/pkg/gitlabci"
-	"github.com/cidverse/normalizeci/pkg/localgit"
 )
 
 // holds all known normalizers

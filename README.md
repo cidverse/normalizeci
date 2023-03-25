@@ -5,6 +5,8 @@
 
 > A cli tool (or go library) to provide a foundation for a platform-agnostic CICD process.
 
+**Documentation**: https://cidverse.github.io/normalizeci/
+
 ## features
 
 - **normalization** - check the env vars and the local repository to provide a [common set of env vars](docs/spec/variables.md) on any ci platform.
@@ -93,12 +95,12 @@ var normalized = normalizeci.RunDefaultNormalization()
 
 ## supported systems
 
-| NAME                                               | SLUG             |
-|----------------------------------------------------|------------------|
-| [Azure DevOps Pipeline](pkg/azuredevops/README.md) | `azure-devops`   |
-| [GitLab CI/CD](pkg/gitlabci/README.md)             | `gitlab-ci`      |
-| [GitHub Actions](pkg/githubactions/README.md)      | `github-actions` |
-| [Local Git Repository](pkg/localgit/README.md)     | `local`          |
+| NAME                  | SLUG             |
+|-----------------------|------------------|
+| Azure DevOps Pipeline | `azure-devops`   |
+| GitLab CI/CD]         | `gitlab-ci`      |
+| GitHub Actions        | `github-actions` |
+| Local Git Repository  | `local`          |
 
 *Note:* If none of the above systems is detected, repository information is determined based on the local Git repository.
 
@@ -110,27 +112,27 @@ var normalized = normalizeci.RunDefaultNormalization()
 
 *Note:*: If you want to contribute, feel free to pick one of the following services and add a package to normalize their variables.
 
-| NAME                                            | SLUG            |
-|-------------------------------------------------|-----------------|
-| [AppVeyor](pkg_wip/appveyor/README.md)          | `appveyor`      |
-| [AWS CodeBuild](pkg_wip/awscodebuild/README.md) | `aws-codebuild` |
-| [Bamboo](pkg_wip/bamboo/README.md)              | `bamboo`        |
-| [Bitbucket](pkg_wip/bitbucket/README.md)        | `bitbucket`     |
-| [Bitrise](pkg_wip/bitrise/README.md)            | `bitrise`       |
-| [Buddy](pkg_wip/buddy/README.md)                | `buddy`         |
-| [Buildkite](pkg_wip/buildkite/README.md)        | `buildkite`     |
-| [CircleCI](pkg_wip/circleci/README.md)          | `circleci`      |
-| [Cirrus CI](pkg_wip/cirrusci/README.md)         | `cirrusci`      |
-| [Codefresh](pkg_wip/codefresh/README.md)        | `codefresh`     |
-| [Codeship](pkg_wip/codeship/README.md)          | `codeship`      |
-| [Drone](pkg_wip/drone/README.md)                | `drone`         |
-| [Jenkins](pkg_wip/jenkins/README.md)            | `jenkins`       |
-| [Sail CI](pkg_wip/sailci/README.md)             | `sailci`        |
-| [Semaphore](pkg_wip/semaphore/README.md)        | `semaphore`     |
-| [Shippable](pkg_wip/shippable/README.md)        | `shippable`     |
-| [TeamCity](pkg_wip/teamcity/README.md)          | `teamcity`      |
-| [Travis CI](pkg_wip/travisci/README.md)         | `travis-ci`     |
-| [Wercker](pkg_wip/wercker/README.md)            | `wercker`       |
+| NAME          | SLUG            |
+|---------------|-----------------|
+| AppVeyor      | `appveyor`      |
+| AWS CodeBuild | `aws-codebuild` |
+| Bamboo        | `bamboo`        |
+| Bitbucket     | `bitbucket`     |
+| Bitrise       | `bitrise`       |
+| Buddy         | `buddy`         |
+| Buildkite     | `buildkite`     |
+| CircleCI      | `circleci`      |
+| Cirrus CI     | `cirrusci`      |
+| Codefresh     | `codefresh`     |
+| Codeship      | `codeship`      |
+| Drone         | `drone`         |
+| Jenkins       | `jenkins`       |
+| Sail CI       | `sailci`        |
+| Semaphore     | `semaphore`     |
+| Shippable     | `shippable`     |
+| TeamCity      | `teamcity`      |
+| Travis CI     | `travis-ci`     |
+| Wercker       | `wercker`       |
 
 ## License
 

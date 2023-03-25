@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cidverse/normalizeci/pkg/common"
 	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/pkg/normalizer/common"
 	"github.com/google/go-github/v50/github"
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"

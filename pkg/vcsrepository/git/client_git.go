@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/cidverse/normalizeci/pkg/common"
+	"github.com/cidverse/normalizeci/pkg/normalizer/common"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -18,6 +18,10 @@ import (
 	"github.com/go-git/go-git/v5/utils/merkletrie"
 	"github.com/rs/zerolog/log"
 )
+
+const REF_HEADS = "refs/heads/"
+const REF_TAGS = "refs/tags/"
+const REF_REMOTES = "refs/remotes/"
 
 type GitClient struct {
 	dir        string
@@ -99,9 +103,9 @@ func (c GitClient) VCSHostType(server string) string {
 
 func (c GitClient) VCSRefToInternalRef(ref vcsapi.VCSRef) string {
 	if ref.Type == "branch" {
-		return `refs/heads/` + ref.Value
+		return REF_HEADS + ref.Value
 	} else if ref.Type == "tag" {
-		return `refs/tags/` + strings.TrimPrefix(ref.Value, "tags/")
+		return REF_TAGS + strings.TrimPrefix(ref.Value, "tags/")
 	}
 
 	return ref.Hash
@@ -114,10 +118,10 @@ func (c GitClient) VCSHead() (vcsHead vcsapi.VCSRef, err error) {
 		return vcsapi.VCSRef{}, err
 	}
 
-	if strings.HasPrefix(ref.Name().String(), "refs/heads/") {
+	if strings.HasPrefix(ref.Name().String(), REF_HEADS) {
 		branchName := ref.Name().String()[11:]
 		return vcsapi.VCSRef{Type: "branch", Value: branchName, Hash: ref.Hash().String()}, nil
-	} else if strings.HasPrefix(ref.Name().String(), "refs/tags/") {
+	} else if strings.HasPrefix(ref.Name().String(), REF_TAGS) {
 		tagName := ref.Name().String()[10:]
 		return vcsapi.VCSRef{Type: "tag", Value: tagName, Hash: ref.Hash().String()}, nil
 	} else if ref.Name().String() == "HEAD" {
@@ -134,15 +138,15 @@ func ParseGitRefLogLine(line string, hash string) vcsapi.VCSRef {
 	pattern := regexp.MustCompile(`.*checkout: moving from (?P<FROM>.*) to (?P<TO>.*)$`)
 	match := pattern.FindStringSubmatch(line)
 
-	if strings.HasPrefix(match[2], "refs/remotes/pull") {
+	if strings.HasPrefix(match[2], REF_REMOTES+"pull") {
 		// handle github merge request as virtual branch
 		return vcsapi.VCSRef{Type: "branch", Value: match[2][13:], Hash: hash}
 	} else if len(match[2]) == 40 {
 		return vcsapi.VCSRef{Type: "branch", Value: match[1], Hash: hash}
-	} else if strings.HasPrefix(match[2], "refs/tags/") {
+	} else if strings.HasPrefix(match[2], REF_TAGS) {
 		return vcsapi.VCSRef{Type: "tag", Value: match[2][10:], Hash: hash}
 	} else {
-		return vcsapi.VCSRef{Type: "tag", Value: match[2], Hash: hash}
+		return vcsapi.VCSRef{Type: "branch", Value: match[2], Hash: hash}
 	}
 }
 
@@ -156,7 +160,7 @@ func (c GitClient) GetTags() []vcsapi.VCSRef {
 				if r.Name().IsTag() {
 					t := vcsapi.VCSRef{
 						Type:  "tag",
-						Value: strings.TrimPrefix(r.Name().String(), "refs/tags/"),
+						Value: strings.TrimPrefix(r.Name().String(), REF_TAGS),
 						Hash:  r.Hash().String(),
 					}
 					tags = append(tags, t)
@@ -182,7 +186,7 @@ func (c GitClient) GetTagsByHash(hash string) []vcsapi.VCSRef {
 				if r.Name().IsTag() {
 					t := vcsapi.VCSRef{
 						Type:  "tag",
-						Value: strings.TrimPrefix(r.Name().String(), "refs/tags/"),
+						Value: strings.TrimPrefix(r.Name().String(), REF_TAGS),
 						Hash:  r.Hash().String(),
 					}
 
