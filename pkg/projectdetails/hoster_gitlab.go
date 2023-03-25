@@ -1,7 +1,6 @@
 package projectdetails
 
 import (
-	"crypto/tls"
 	"fmt"
 	"net/http"
 	"os"
@@ -11,7 +10,6 @@ import (
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/normalizer/common"
 	"github.com/gosimple/slug"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -35,33 +33,17 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string,
 	projectDetails := make(map[string]string)
 	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, fmt.Sprintf("https://%s/", host)), fmt.Sprintf("git@%s:", host)), ".git")
 	glToken := GetGitLabToken(host)
+	gitlabUrl := "https://" + host
 
 	// client
-	gitlabClient, gitlabClientErr := gitlab.NewClient(glToken, gitlab.WithBaseURL("https://"+host))
+	gitlabClient, gitlabClientErr := gitlab.NewClient(glToken, gitlab.WithBaseURL(gitlabUrl))
 	if gitlabClientErr != nil {
 		return nil, gitlabClientErr
-	}
-
-	// client with InsecureSkipVerify for .local domains
-	if strings.HasSuffix(host, ".local") {
-		tr := &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-		retryClient := retryablehttp.NewClient()
-		retryClient.HTTPClient.Transport = tr
-		gitlabClient, gitlabClientErr = gitlab.NewClient(
-			glToken,
-			gitlab.WithBaseURL("https://"+host),
-			gitlab.WithHTTPClient(retryClient.HTTPClient),
-		)
-		if gitlabClientErr != nil {
-			return nil, gitlabClientErr
-		}
 	}
 	if gitlabMockClient != nil {
 		gitlabClient, _ = gitlab.NewClient(
 			glToken,
-			gitlab.WithBaseURL("https://"+host),
+			gitlab.WithBaseURL(gitlabUrl),
 			gitlab.WithHTTPClient(gitlabMockClient),
 		)
 	}
