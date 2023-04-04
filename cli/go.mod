@@ -7,7 +7,7 @@ replace github.com/cidverse/normalizeci/pkg => ../pkg
 require (
 	github.com/cidverse/normalizeci/pkg v0.0.0-00010101000000-000000000000
 	github.com/rs/zerolog v1.29.0
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 )
 
 require (
