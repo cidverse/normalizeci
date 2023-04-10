@@ -3,7 +3,7 @@ module github.com/cidverse/normalizeci/pkg
 go 1.20
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.0
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/go-git/go-git/v5 v5.6.1
 	github.com/go-playground/validator/v10 v10.12.0
