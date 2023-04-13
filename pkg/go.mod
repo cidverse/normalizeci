@@ -10,7 +10,7 @@ require (
 	github.com/google/go-github/v51 v51.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/jarcoal/httpmock v1.3.0
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/stretchr/testify v1.8.2
 	github.com/xanzy/go-gitlab v0.82.0
