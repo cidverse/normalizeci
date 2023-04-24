@@ -14,7 +14,7 @@ import (
 	"github.com/cidverse/normalizeci/pkg/normalizer/common"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
-	"github.com/google/go-github/v51/github"
+	"github.com/google/go-github/v52/github"
 	"github.com/gosimple/slug"
 	"github.com/rs/zerolog/log"
 )

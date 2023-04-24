@@ -7,7 +7,6 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/go-git/go-git/v5 v5.6.1
 	github.com/go-playground/validator/v10 v10.12.0
-	github.com/google/go-github/v51 v51.0.0
 	github.com/google/go-github/v52 v52.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/jarcoal/httpmock v1.3.0

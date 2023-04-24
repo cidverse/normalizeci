@@ -19,9 +19,10 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const REF_HEADS = "refs/heads/"
 const REF_TAGS = "refs/tags/"
+const REF_HEADS = "refs/heads/"
 const REF_REMOTES = "refs/remotes/"
+const TAGS = "tags/"
 
 type GitClient struct {
 	dir        string
@@ -118,12 +119,12 @@ func (c GitClient) VCSHead() (vcsHead vcsapi.VCSRef, err error) {
 		return vcsapi.VCSRef{}, err
 	}
 
-	if strings.HasPrefix(ref.Name().String(), REF_HEADS) {
+	if strings.HasPrefix(ref.Name().String(), REF_TAGS) {
+		tagName := ref.Name().String()[len(REF_TAGS):]
+		return vcsapi.VCSRef{Type: "tag", Value: tagName, Hash: ref.Hash().String()}, nil
+	} else if strings.HasPrefix(ref.Name().String(), REF_HEADS) {
 		branchName := ref.Name().String()[11:]
 		return vcsapi.VCSRef{Type: "branch", Value: branchName, Hash: ref.Hash().String()}, nil
-	} else if strings.HasPrefix(ref.Name().String(), REF_TAGS) {
-		tagName := ref.Name().String()[10:]
-		return vcsapi.VCSRef{Type: "tag", Value: tagName, Hash: ref.Hash().String()}, nil
 	} else if ref.Name().String() == "HEAD" {
 		// detached HEAD, check git reflog for the true reference
 		gitRefLogFile := filepath.Join(c.dir, ".git", "logs", "HEAD")
@@ -145,6 +146,8 @@ func ParseGitRefLogLine(line string, hash string) vcsapi.VCSRef {
 		return vcsapi.VCSRef{Type: "branch", Value: match[1], Hash: hash}
 	} else if strings.HasPrefix(match[2], REF_TAGS) {
 		return vcsapi.VCSRef{Type: "tag", Value: match[2][10:], Hash: hash}
+	} else if strings.HasPrefix(match[2], TAGS) { // checkout: moving from develop to tags/v1.0.0
+		return vcsapi.VCSRef{Type: "tag", Value: match[2][len(TAGS):], Hash: hash}
 	} else {
 		return vcsapi.VCSRef{Type: "branch", Value: match[2], Hash: hash}
 	}

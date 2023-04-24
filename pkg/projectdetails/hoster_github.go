@@ -9,7 +9,7 @@ import (
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
 	"github.com/cidverse/normalizeci/pkg/normalizer/common"
-	"github.com/google/go-github/v51/github"
+	"github.com/google/go-github/v52/github"
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"
 )
