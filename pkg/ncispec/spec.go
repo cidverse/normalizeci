@@ -102,7 +102,7 @@ type NormalizeCISpec struct {
 	PipelineUrl          string // Pipeline URL
 	PipelineInput        map[string]string
 
-	MergeRequestId               string `validate:"required_if=PipelineTrigger pull_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
+	MergeRequestId               string `validate:"required_if=PipelineTrigger merge_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
 	MergeRequestSourceBranchName string
 	MergeRequestTargetBranchName string
 

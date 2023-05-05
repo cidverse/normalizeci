@@ -62,6 +62,12 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 		splitRef := strings.Split(env["GITHUB_REF"], "/")
 		nci.MergeRequestId = splitRef[2]
 	}
+	if mrHeadRef, ok := env["GITHUB_HEAD_REF"]; ok {
+		nci.MergeRequestSourceBranchName = mrHeadRef
+	}
+	if mrBaseRef, ok := env["GITHUB_BASE_REF"]; ok {
+		nci.MergeRequestTargetBranchName = mrBaseRef
+	}
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
