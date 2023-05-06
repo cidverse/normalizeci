@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>philippheuer/renovate-config:preset-golang"
+    "github>cidverse/renovate-config:default",
+    "github>cidverse/renovate-config:assignee"
   ],
   "baseBranches": ["main"]
 }
