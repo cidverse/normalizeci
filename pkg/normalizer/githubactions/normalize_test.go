@@ -74,17 +74,6 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized.ProjectUrl)
 }
 
-func TestNormalizer_Normalize_PullRequest(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
-	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{
-		"GITHUB_EVENT_NAME": "pull_request",
-		"GITHUB_REF":        "refs/pull/519/merge",
-	})
-
-	assert.Equal(t, "519", normalized.MergeRequestId)
-}
-
 func TestNormalizer_Normalize_WorkflowAPI(t *testing.T) {
 	vcsrepository.MockClient = MockVCSClient(t)
 	githubMockClient = &http.Client{}

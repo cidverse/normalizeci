@@ -30,7 +30,9 @@ const (
 	NCI_PIPELINE_INPUT                   = "NCI_PIPELINE_INPUT"
 	NCI_MERGE_REQUEST_ID                 = "NCI_MERGE_REQUEST_ID"
 	NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME = "NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+	NCI_MERGE_REQUEST_SOURCE_HASH        = "NCI_MERGE_REQUEST_SOURCE_HASH"
 	NCI_MERGE_REQUEST_TARGET_BRANCH_NAME = "NCI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+	NCI_MERGE_REQUEST_TARGET_HASH        = "NCI_MERGE_REQUEST_TARGET_HASH"
 	NCI_PROJECT_ID                       = "NCI_PROJECT_ID"
 	NCI_PROJECT_NAME                     = "NCI_PROJECT_NAME"
 	NCI_PROJECT_PATH                     = "NCI_PROJECT_PATH"
@@ -104,7 +106,9 @@ type NormalizeCISpec struct {
 
 	MergeRequestId               string `validate:"required_if=PipelineTrigger merge_request"` // The number of the pull request, is only present if `PipelineTrigger` = pull_request.
 	MergeRequestSourceBranchName string
+	MergeRequestSourceHash       string
 	MergeRequestTargetBranchName string
+	MergeRequestTargetHash       string
 
 	ProjectId            string // Unique project id, can be used in deployments.
 	ProjectName          string // Unique project id, can be used in deployments.
@@ -196,7 +200,9 @@ func OfMap(data map[string]string) NormalizeCISpec {
 
 		MergeRequestId:               data[NCI_MERGE_REQUEST_ID],
 		MergeRequestSourceBranchName: data[NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME],
+		MergeRequestSourceHash:       data[NCI_MERGE_REQUEST_SOURCE_HASH],
 		MergeRequestTargetBranchName: data[NCI_MERGE_REQUEST_TARGET_BRANCH_NAME],
+		MergeRequestTargetHash:       data[NCI_MERGE_REQUEST_TARGET_HASH],
 
 		ProjectId:            data[NCI_PROJECT_ID],
 		ProjectName:          data[NCI_PROJECT_NAME],
@@ -281,7 +287,9 @@ func ToMap(spec NormalizeCISpec) map[string]string {
 
 	data[NCI_MERGE_REQUEST_ID] = spec.MergeRequestId
 	data[NCI_MERGE_REQUEST_SOURCE_BRANCH_NAME] = spec.MergeRequestSourceBranchName
+	data[NCI_MERGE_REQUEST_SOURCE_HASH] = spec.MergeRequestSourceHash
 	data[NCI_MERGE_REQUEST_TARGET_BRANCH_NAME] = spec.MergeRequestTargetBranchName
+	data[NCI_MERGE_REQUEST_TARGET_HASH] = spec.MergeRequestTargetHash
 
 	data[NCI_PROJECT_ID] = spec.ProjectId
 	data[NCI_PROJECT_NAME] = spec.ProjectName

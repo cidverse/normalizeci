@@ -28,12 +28,9 @@ on:
       - renovate.json
 
 jobs:
-  check:
+  cid:
     uses: cidverse/catalog/.github/workflows/shared-ci.yml@main
     with:
       cid-workflow: main
       cid-version: latest
-    secrets:
-      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    secrets: inherit
