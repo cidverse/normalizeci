@@ -78,6 +78,13 @@ func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.Workflow
 //   - github.Event: A struct representing the parsed GitHub event.
 //   - error: An error value, if any. If an error occurs while reading or parsing the file, it will be returned along with an informative error message.
 func ParseGithubEvent(eventType string, eventFile string) (interface{}, error) {
+	// maps GITHUB_EVENT_NAME to the corresponding event type
+	if eventType == "pull_request" {
+		eventType = "PullRequestEvent"
+	} else if eventType == "workflow_dispatch" {
+		eventType = "WorkflowDispatchEvent"
+	}
+
 	// read payload
 	eventJSONBytes, err := os.ReadFile(eventFile) // just pass the file name
 	if err != nil {
