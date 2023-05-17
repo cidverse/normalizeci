@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec"
@@ -56,6 +56,12 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 	nci.PipelineJobStartedAt = time.Now().UTC().Format(time.RFC3339)
 	nci.PipelineAttempt = env["GITHUB_RUN_ATTEMPT"]
 	nci.PipelineUrl = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
+
+	// pull request (fallback in case there are issues with the event json)
+	if nci.PipelineTrigger == ncispec.PipelineTriggerMergeRequest {
+		splitRef := strings.Split(env["GITHUB_REF"], "/")
+		nci.MergeRequestId = splitRef[2]
+	}
 
 	// repository
 	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
@@ -128,7 +134,7 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 
 		// pull request event
 		if pullRequestEvent, ok := githubEvent.(*github.PullRequestEvent); ok {
-			nci.MergeRequestId = strconv.FormatInt(pullRequestEvent.PullRequest.GetID(), 10)
+			nci.MergeRequestId = fmt.Sprintf("%d", pullRequestEvent.PullRequest.GetNumber())
 			nci.MergeRequestSourceBranchName = pullRequestEvent.PullRequest.Head.GetRef()
 			nci.MergeRequestSourceHash = pullRequestEvent.PullRequest.Head.GetSHA()
 			nci.MergeRequestTargetBranchName = pullRequestEvent.PullRequest.Base.GetRef()
