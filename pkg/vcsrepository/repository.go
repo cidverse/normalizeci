@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cidverse/normalizeci/pkg/ncispec"
+	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	gitclient "github.com/cidverse/normalizeci/pkg/vcsrepository/git"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/gosimple/slug"
@@ -37,7 +37,6 @@ func FindRepositoryDirectory(currentDirectory string) string {
 
 	for projectDirectory == "" {
 		// GIT
-
 		if _, err := os.Stat(path.Join(currentDirectory, ".git")); !os.IsNotExist(err) {
 			return currentDirectory
 		}
@@ -54,55 +53,55 @@ func FindRepositoryDirectory(currentDirectory string) string {
 	return ""
 }
 
+type RepositoryInformation struct {
+	Repository v1.Repository
+	Commit     v1.Commit
+}
+
 // GetVCSRepositoryInformation detects the repository type and gathers normalized information from the repository
-func GetVCSRepositoryInformation(dir string) (data map[string]string, err error) {
+func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	// init with default values
-	data = make(map[string]string)
-	data[ncispec.NCI_REPOSITORY_KIND] = "none"
-	data[ncispec.NCI_REPOSITORY_REMOTE] = "local"
-	data[ncispec.NCI_REPOSITORY_HOST_SERVER] = ""
-	data[ncispec.NCI_REPOSITORY_HOST_TYPE] = ""
-	data[ncispec.NCI_COMMIT_REF_TYPE] = "unknown"
-	data[ncispec.NCI_COMMIT_REF_NAME] = "unknown"
-	data[ncispec.NCI_COMMIT_REF_SLUG] = ""
-	data[ncispec.NCI_COMMIT_REF_PATH] = ""
-	data[ncispec.NCI_COMMIT_REF_VCS] = ""
-	data[ncispec.NCI_COMMIT_REF_RELEASE] = ""
-	data[ncispec.NCI_COMMIT_SHA] = ""
-	data[ncispec.NCI_COMMIT_SHA_SHORT] = ""
-	data[ncispec.NCI_COMMIT_TITLE] = ""
-	data[ncispec.NCI_COMMIT_DESCRIPTION] = ""
-	data[ncispec.NCI_REPOSITORY_STATUS] = "clean"
+	result := RepositoryInformation{
+		Repository: v1.Repository{
+			Kind:   "none",
+			Remote: "local",
+			Status: "clean",
+		},
+		Commit: v1.Commit{
+			RefType: "unknown",
+			RefName: "unknown",
+		},
+	}
 
 	// supported repository type
 	client, clientErr := GetVCSClient(dir)
 	if client == nil {
-		return data, clientErr
+		return result, clientErr
 	}
 
 	// repository type and remote
-	data[ncispec.NCI_REPOSITORY_KIND] = client.VCSType()
-	data[ncispec.NCI_REPOSITORY_REMOTE] = client.VCSRemote()
-	data[ncispec.NCI_REPOSITORY_HOST_SERVER] = client.VCSHostServer(data[ncispec.NCI_REPOSITORY_REMOTE])
-	data[ncispec.NCI_REPOSITORY_HOST_TYPE] = client.VCSHostType(data[ncispec.NCI_REPOSITORY_HOST_SERVER])
+	result.Repository.Kind = client.VCSType()
+	result.Repository.Remote = client.VCSRemote()
+	result.Repository.HostServer = client.VCSHostServer(result.Repository.Remote)
+	result.Repository.HostType = client.VCSHostType(result.Repository.HostServer)
 
 	// repository head
 	head, err := client.VCSHead()
 	if err != nil {
-		return data, err
+		return result, err
 	}
 	refName := head.Value
 	if head.Type == "tag" {
 		refName = strings.TrimPrefix(strings.TrimPrefix(refName, "tags/"), "refs/tags/")
 	}
-	data[ncispec.NCI_COMMIT_REF_TYPE] = head.Type
-	data[ncispec.NCI_COMMIT_REF_NAME] = refName
-	data[ncispec.NCI_COMMIT_REF_SLUG] = slug.Make(refName)
-	data[ncispec.NCI_COMMIT_REF_PATH] = head.Type + "/" + refName
-	data[ncispec.NCI_COMMIT_REF_VCS] = client.VCSRefToInternalRef(head)
+	result.Commit.RefType = head.Type
+	result.Commit.RefName = refName
+	result.Commit.RefSlug = slug.Make(refName)
+	result.Commit.RefPath = head.Type + "/" + refName
+	result.Commit.RefVCS = client.VCSRefToInternalRef(head)
 
 	// release name (=name, but without leading v, without slash)
-	data[ncispec.NCI_COMMIT_REF_RELEASE] = getReleaseName(data[ncispec.NCI_COMMIT_REF_NAME])
+	result.Commit.RefRelease = getReleaseName(result.Commit.RefName)
 
 	// repository status (data[ncispec.NCI_REPOSITORY_STATUS])
 	// TODO: current isClean by go-git detects newlines as change, see https://github.com/go-git/go-git/issues/436
@@ -129,23 +128,20 @@ func GetVCSRepositoryInformation(dir string) (data map[string]string, err error)
 	// commit info
 	commit, err := client.FindCommitByHash(head.Hash, false)
 	if err != nil {
-		return data, err
-	}
-	data[ncispec.NCI_COMMIT_SHA] = commit.Hash
-	data[ncispec.NCI_COMMIT_SHA_SHORT] = commit.ShortHash
-	data[ncispec.NCI_COMMIT_TITLE] = commit.Message
-	data[ncispec.NCI_COMMIT_DESCRIPTION] = commit.Description
-	data[ncispec.NCI_COMMIT_AUTHOR_NAME] = commit.Author.Name
-	data[ncispec.NCI_COMMIT_AUTHOR_EMAIL] = commit.Author.Email
-	data[ncispec.NCI_COMMIT_COMMITTER_NAME] = commit.Committer.Name
-	data[ncispec.NCI_COMMIT_COMMITTER_EMAIL] = commit.Committer.Email
-	data[ncispec.NCI_COMMIT_COUNT] = strconv.Itoa(0)
-
-	// commit count (only if clone is not shallow)
-	if true == false {
-		// can only be set, if the clone isn't shallow
-		data[ncispec.NCI_COMMIT_COUNT] = strconv.Itoa(50)
+		return result, err
 	}
 
-	return data, nil
+	result.Commit.Hash = commit.Hash
+	result.Commit.HashShort = commit.ShortHash
+	result.Commit.Title = commit.Message
+	result.Commit.Description = commit.Description
+	result.Commit.AuthorName = commit.Author.Name
+	result.Commit.AuthorEmail = commit.Author.Email
+	result.Commit.CommitterName = commit.Committer.Name
+	result.Commit.CommitterEmail = commit.Committer.Email
+	result.Commit.Count = strconv.Itoa(0)
+
+	// TODO: commit count (only if clone is not shallow)
+
+	return result, nil
 }

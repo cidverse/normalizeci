@@ -7,6 +7,10 @@
 
 **Documentation**: https://cidverse.github.io/normalizeci/
 
+**Quick Links**:
+
+- [standardized variables](https://cidverse.github.io/normalizeci/spec/)
+
 ## features
 
 - **normalization** - check the env vars and the local repository to provide a [common set of env vars](docs/spec/variables.md) on any ci platform.

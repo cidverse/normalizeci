@@ -4,13 +4,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/normalizer/common"
+	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetCommitByHashWithChanges(t *testing.T) {
-	projectDir, _ := common.GetProjectDirectory()
+	projectDir, _ := api.GetProjectDirectory()
 
 	client, clientErr := NewGitClient(projectDir)
 	assert.NoError(t, clientErr)
@@ -39,7 +39,7 @@ func TestGetCommitByHashWithChanges(t *testing.T) {
 }
 
 func TestFindGitCommitsBetweenRefs(t *testing.T) {
-	projectDir, _ := common.GetProjectDirectory()
+	projectDir, _ := api.GetProjectDirectory()
 
 	client, clientErr := NewGitClient(projectDir)
 	assert.NoError(t, clientErr)
@@ -80,7 +80,7 @@ func TestFindGitCommitsBetweenRefs(t *testing.T) {
 }
 
 func TestFindGitCommitsBetweenHashRefs(t *testing.T) {
-	projectDir, _ := common.GetProjectDirectory()
+	projectDir, _ := api.GetProjectDirectory()
 
 	client, clientErr := NewGitClient(projectDir)
 	assert.NoError(t, clientErr)
@@ -121,7 +121,7 @@ func TestFindGitCommitsBetweenHashRefs(t *testing.T) {
 }
 
 func TestFindLatestGitReleaseFromCommit(t *testing.T) {
-	projectDir, _ := common.GetProjectDirectory()
+	projectDir, _ := api.GetProjectDirectory()
 
 	client, clientErr := NewGitClient(projectDir)
 	assert.NoError(t, clientErr)

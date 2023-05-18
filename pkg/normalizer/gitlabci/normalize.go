@@ -3,123 +3,93 @@ package gitlabci
 import (
 	"runtime"
 
-	"github.com/cidverse/normalizeci/pkg/ncispec"
+	"github.com/cidverse/normalizeci/pkg/ncispec/common"
+	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
-	"github.com/cidverse/normalizeci/pkg/normalizer/common"
+	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
 )
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
-	var nci ncispec.NormalizeCISpec
-
-	// common
-	nci.Found = "true"
-	nci.Version = n.version
-	nci.ServiceName = n.name
-	nci.ServiceSlug = n.slug
+func (n Normalizer) Normalize(env map[string]string) v1.Spec {
+	nci := v1.Create(n.name, n.slug)
 
 	// worker
-	nci.WorkerId = env["CI_RUNNER_ID"]
-	nci.WorkerName = env["CI_RUNNER_DESCRIPTION"]
-	nci.WorkerType = "gitlab_hosted_vm"
-	nci.WorkerOS = ""
-	nci.WorkerVersion = env["CI_RUNNER_VERSION"]
-	nci.WorkerArch = runtime.GOOS + "/" + runtime.GOARCH
+	nci.Worker = v1.Worker{
+		Id:      env["CI_RUNNER_ID"],
+		Name:    env["CI_RUNNER_DESCRIPTION"],
+		Type:    "gitlab_hosted_vm",
+		OS:      "",
+		Version: env["CI_RUNNER_VERSION"],
+		Arch:    runtime.GOOS + "/" + runtime.GOARCH,
+	}
 
 	// pipeline
-	nci.PipelineId = env["CI_PIPELINE_ID"]
-	nci.PipelineTrigger = gitlabTriggerNormalize(env["CI_PIPELINE_SOURCE"])
-	nci.PipelineStageName = env["CI_JOB_STAGE"]
-	nci.PipelineStageSlug = slug.Make(env["CI_JOB_STAGE"])
-	nci.PipelineJobId = env["CI_JOB_ID"]
-	nci.PipelineJobName = env["CI_JOB_NAME"]
-	nci.PipelineJobSlug = slug.Make(env["CI_JOB_NAME"])
-	nci.PipelineJobStartedAt = env["CI_JOB_STARTED_AT"]
-	nci.PipelineAttempt = "1"
-	nci.PipelineConfigFile = "gitlab-ci.yml"
-	nci.PipelineUrl = env["CI_JOB_URL"]
+	nci.Pipeline.Id = env["CI_PIPELINE_ID"]
+	nci.Pipeline.Trigger = gitlabTriggerNormalize(env["CI_PIPELINE_SOURCE"])
+	nci.Pipeline.StageName = env["CI_JOB_STAGE"]
+	nci.Pipeline.StageSlug = slug.Make(env["CI_JOB_STAGE"])
+	nci.Pipeline.JobId = env["CI_JOB_ID"]
+	nci.Pipeline.JobName = env["CI_JOB_NAME"]
+	nci.Pipeline.JobSlug = slug.Make(env["CI_JOB_NAME"])
+	nci.Pipeline.JobStartedAt = env["CI_JOB_STARTED_AT"]
+	nci.Pipeline.Attempt = "1"
+	nci.Pipeline.ConfigFile = "gitlab-ci.yml"
+	nci.Pipeline.Url = env["CI_JOB_URL"]
 
 	// merge request
 	if mergeRequestId, isMergeRequest := env["CI_MERGE_REQUEST_IID"]; isMergeRequest {
-		nci.MergeRequestId = mergeRequestId
-		nci.MergeRequestSourceBranchName = env["CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"]
-		nci.MergeRequestTargetBranchName = env["CI_MERGE_REQUEST_TARGET_BRANCH_NAME"]
+		nci.MergeRequest.Id = mergeRequestId
+		nci.MergeRequest.SourceBranchName = env["CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"]
+		nci.MergeRequest.SourceHash = env["CI_MERGE_REQUEST_SOURCE_BRANCH_SHA"]
+		nci.MergeRequest.TargetBranchName = env["CI_MERGE_REQUEST_TARGET_BRANCH_NAME"]
+		nci.MergeRequest.TargetHash = env["CI_MERGE_REQUEST_SOURCE_BRANCH_SHA"]
 	}
 
 	// repository
-	projectDir := vcsrepository.FindRepositoryDirectory(common.GetWorkingDirectory())
+	projectDir := vcsrepository.FindRepositoryDirectory(api.GetWorkingDirectory())
 	vcsData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
 	if addDataErr != nil {
 		panic(addDataErr)
 	}
-	nci.RepositoryKind = vcsData[ncispec.NCI_REPOSITORY_KIND]
-	nci.RepositoryRemote = vcsData[ncispec.NCI_REPOSITORY_REMOTE]
-	nci.RepositoryHostServer = vcsData[ncispec.NCI_REPOSITORY_HOST_SERVER]
-	nci.RepositoryHostType = vcsData[ncispec.NCI_REPOSITORY_HOST_TYPE]
-	nci.RepositoryStatus = vcsData[ncispec.NCI_REPOSITORY_STATUS]
+	nci.Repository = vcsData.Repository
+	nci.Commit = vcsData.Commit
 	if len(env["CI_COMMIT_TAG"]) > 0 {
-		nci.CommitRefType = "tag"
-		nci.CommitRefName = env["CI_COMMIT_TAG"]
-		nci.CommitRefPath = nci.CommitRefType + "/" + env["CI_COMMIT_TAG"]
-		nci.CommitRefSlug = slug.Make(env["CI_COMMIT_TAG"])
-		nci.CommitRefVcs = "refs/tags/" + env["CI_COMMIT_TAG"]
+		nci.Commit.RefType = "tag"
+		nci.Commit.RefName = env["CI_COMMIT_TAG"]
+		nci.Commit.RefPath = nci.Commit.RefType + "/" + env["CI_COMMIT_TAG"]
+		nci.Commit.RefSlug = slug.Make(env["CI_COMMIT_TAG"])
+		nci.Commit.RefVCS = "refs/tags/" + env["CI_COMMIT_TAG"]
 	} else {
-		nci.CommitRefType = "branch"
-		nci.CommitRefName = env["CI_COMMIT_REF_NAME"]
-		nci.CommitRefPath = nci.CommitRefType + "/" + env["CI_COMMIT_REF_NAME"]
-		nci.CommitRefSlug = slug.Make(env["CI_COMMIT_REF_NAME"])
-		nci.CommitRefVcs = "refs/heads/" + env["CI_COMMIT_REF_NAME"]
+		nci.Commit.RefType = "branch"
+		nci.Commit.RefName = env["CI_COMMIT_REF_NAME"]
+		nci.Commit.RefPath = nci.Commit.RefType + "/" + env["CI_COMMIT_REF_NAME"]
+		nci.Commit.RefSlug = slug.Make(env["CI_COMMIT_REF_NAME"])
+		nci.Commit.RefVCS = "refs/heads/" + env["CI_COMMIT_REF_NAME"]
 	}
-	nci.CommitRefRelease = vcsData[ncispec.NCI_COMMIT_REF_RELEASE]
-	nci.CommitSha = vcsData[ncispec.NCI_COMMIT_SHA]
-	nci.CommitShaShort = vcsData[ncispec.NCI_COMMIT_SHA_SHORT]
-	nci.CommitTitle = vcsData[ncispec.NCI_COMMIT_TITLE]
-	nci.CommitDescription = vcsData[ncispec.NCI_COMMIT_DESCRIPTION]
-	nci.CommitAuthorName = vcsData[ncispec.NCI_COMMIT_AUTHOR_NAME]
-	nci.CommitAuthorEmail = vcsData[ncispec.NCI_COMMIT_AUTHOR_EMAIL]
-	nci.CommitCommitterName = vcsData[ncispec.NCI_COMMIT_COMMITTER_NAME]
-	nci.CommitCommitterEmail = vcsData[ncispec.NCI_COMMIT_COMMITTER_EMAIL]
-	nci.CommitCount = vcsData[ncispec.NCI_COMMIT_COUNT]
-	nci.LastreleaseRefName = vcsData[ncispec.NCI_LASTRELEASE_REF_NAME]
-	nci.LastreleaseRefSlug = vcsData[ncispec.NCI_LASTRELEASE_REF_SLUG]
-	nci.LastreleaseRefVcs = vcsData[ncispec.NCI_LASTRELEASE_REF_VCS]
-	nci.LastreleaseCommitAfterCount = vcsData[ncispec.NCI_LASTRELEASE_COMMIT_AFTER_COUNT]
 
 	// project details
-	projectData := projectdetails.GetProjectDetails(nci.RepositoryKind, nci.RepositoryRemote, nci.RepositoryHostType, nci.RepositoryHostServer)
-	nci.ProjectId = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ID)})
-	nci.ProjectName = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_NAME)})
-	nci.ProjectPath = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_NAME"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_PATH)})
-	nci.ProjectSlug = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH_SLUG"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_SLUG)})
-	nci.ProjectDescription = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_DESCRIPTION"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DESCRIPTION)})
-	nci.ProjectTopics = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_TOPICS)})
-	nci.ProjectIssueUrl = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_ISSUE_URL)})
-	nci.ProjectStargazers = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_STARGAZERS)})
-	nci.ProjectForks = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_FORKS)})
-	nci.ProjectDefaultBranch = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_DEFAULT_BRANCH"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_DEFAULT_BRANCH)})
-	nci.ProjectUrl = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_URL"), nciutil.GetValueFromMap(projectData, ncispec.NCI_PROJECT_URL)})
-	nci.ProjectDir = projectDir
+	projectData, _ := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)
+	nci.Project.Id = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), projectData.Id})
+	nci.Project.Name = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), projectData.Name})
+	nci.Project.Path = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_NAME"), projectData.Path})
+	nci.Project.Slug = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH_SLUG"), projectData.Slug})
+	nci.Project.Description = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_DESCRIPTION"), projectData.Description})
+	nci.Project.Topics = nciutil.FirstNonEmpty([]string{projectData.Topics})
+	nci.Project.IssueUrl = nciutil.FirstNonEmpty([]string{projectData.IssueUrl})
+	nci.Project.Stargazers = nciutil.FirstNonEmpty([]string{projectData.Stargazers})
+	nci.Project.Forks = nciutil.FirstNonEmpty([]string{projectData.Forks})
+	nci.Project.DefaultBranch = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_DEFAULT_BRANCH"), projectData.DefaultBranch})
+	nci.Project.Url = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_URL"), projectData.Url})
+	nci.Project.Dir = projectDir
 
-	// container registry
-	nci.ContainerRegistryHost = env["CI_REGISTRY"]
-	nci.ContainerRegistryRepository = env["CI_REGISTRY_IMAGE"]
-	if len(env["CI_DEPLOY_USER"]) > 0 {
-		nci.ContainerRegistryUsername = env["CI_DEPLOY_USER"]
-		nci.ContainerRegistryPassword = env["CI_DEPLOY_PASSWORD"]
-	} else {
-		nci.ContainerRegistryUsername = env["CI_REGISTRY_USER"]
-		nci.ContainerRegistryPassword = env["CI_REGISTRY_PASSWORD"]
-	}
-	nci.ContainerRegistryTag = nci.CommitRefRelease
-
-	// control
+	// flags
 	if _, ok := env["CI_DEPLOY_FREEZE"]; ok {
-		nci.DeployFreeze = env["CI_DEPLOY_FREEZE"]
+		nci.Flags.DeployFreeze = env["CI_DEPLOY_FREEZE"]
 	} else {
-		nci.DeployFreeze = "false"
+		nci.Flags.DeployFreeze = "false"
 	}
 
 	// custom input parameters
@@ -131,7 +101,7 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 			v[variable.Key] = variable.Value
 		}
 
-		nci.PipelineInput = v
+		nci.Pipeline.Input = v
 	}
 
 	return nci
@@ -139,10 +109,10 @@ func (n Normalizer) Normalize(env map[string]string) ncispec.NormalizeCISpec {
 
 func gitlabTriggerNormalize(input string) string {
 	if input == "merge_request_event" || input == "external_pull_request_event" {
-		return ncispec.PipelineTriggerMergeRequest
+		return common.PipelineTriggerMergeRequest
 	}
 	if input == "schedule" {
-		return ncispec.PipelineTriggerSchedule
+		return common.PipelineTriggerSchedule
 	}
 
 	return input

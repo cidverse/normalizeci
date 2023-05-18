@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cidverse/normalizeci/pkg/ncispec"
-	"github.com/cidverse/normalizeci/pkg/normalizer/common"
+	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
+	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/gosimple/slug"
 	"github.com/xanzy/go-gitlab"
 )
@@ -16,8 +16,8 @@ import (
 var gitlabMockClient *http.Client
 
 func GetGitLabToken(host string) string {
-	if len(os.Getenv(common.ToEnvName(host)+"_TOKEN")) > 0 {
-		return os.Getenv(common.ToEnvName(host) + "_TOKEN")
+	if len(os.Getenv(api.ToEnvName(host)+"_TOKEN")) > 0 {
+		return os.Getenv(api.ToEnvName(host) + "_TOKEN")
 	} else if len(os.Getenv("GITLAB_TOKEN")) > 0 {
 		return os.Getenv("GITLAB_TOKEN")
 	} else if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
@@ -29,8 +29,8 @@ func GetGitLabToken(host string) string {
 	return ""
 }
 
-func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string, error) {
-	projectDetails := make(map[string]string)
+func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error) {
+	result := v1.Project{}
 	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, fmt.Sprintf("https://%s/", host)), fmt.Sprintf("git@%s:", host)), ".git")
 	glToken := GetGitLabToken(host)
 	gitlabUrl := "https://" + host
@@ -38,7 +38,7 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string,
 	// client
 	gitlabClient, gitlabClientErr := gitlab.NewClient(glToken, gitlab.WithBaseURL(gitlabUrl))
 	if gitlabClientErr != nil {
-		return nil, gitlabClientErr
+		return result, gitlabClientErr
 	}
 	if gitlabMockClient != nil {
 		gitlabClient, _ = gitlab.NewClient(
@@ -51,20 +51,20 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (map[string]string,
 	// query project
 	project, _, projectErr := gitlabClient.Projects.GetProject(repoPath, &gitlab.GetProjectOptions{})
 	if projectErr != nil {
-		return nil, projectErr
+		return result, projectErr
 	}
 
-	projectDetails[ncispec.NCI_PROJECT_ID] = strconv.Itoa(project.ID)
-	projectDetails[ncispec.NCI_PROJECT_NAME] = project.Name
-	projectDetails[ncispec.NCI_PROJECT_PATH] = project.NameWithNamespace
-	projectDetails[ncispec.NCI_PROJECT_SLUG] = slug.Make(project.NameWithNamespace)
-	projectDetails[ncispec.NCI_PROJECT_DESCRIPTION] = project.Description
-	projectDetails[ncispec.NCI_PROJECT_TOPICS] = strings.Join(project.TagList, ",")
-	projectDetails[ncispec.NCI_PROJECT_ISSUE_URL] = project.WebURL + "/-/issues/{ID}"
-	projectDetails[ncispec.NCI_PROJECT_STARGAZERS] = strconv.Itoa(project.StarCount)
-	projectDetails[ncispec.NCI_PROJECT_FORKS] = strconv.Itoa(project.ForksCount)
-	projectDetails[ncispec.NCI_PROJECT_DEFAULT_BRANCH] = project.DefaultBranch
-	projectDetails[ncispec.NCI_PROJECT_URL] = project.WebURL
+	result.Id = strconv.Itoa(project.ID)
+	result.Name = project.Name
+	result.Path = project.NameWithNamespace
+	result.Slug = slug.Make(project.NameWithNamespace)
+	result.Description = project.Description
+	result.Topics = strings.Join(project.TagList, ",")
+	result.IssueUrl = project.WebURL + "/-/issues/{ID}"
+	result.Stargazers = strconv.Itoa(project.StarCount)
+	result.Forks = strconv.Itoa(project.ForksCount)
+	result.DefaultBranch = project.DefaultBranch
+	result.Url = project.WebURL
 
-	return projectDetails, nil
+	return result, nil
 }

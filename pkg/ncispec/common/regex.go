@@ -1,4 +1,4 @@
-package ncispec
+package common
 
 import "regexp"
 

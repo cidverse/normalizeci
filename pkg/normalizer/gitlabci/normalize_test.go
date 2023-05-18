@@ -15,7 +15,7 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 	var normalized = normalizer.Normalize(map[string]string{})
 
 	assert.Equal(t, "true", normalized.Found)
-	assert.Equal(t, normalizer.version, normalized.Version)
+	assert.Equal(t, "1.0.0", normalized.Version)
 	assert.Equal(t, normalizer.name, normalized.ServiceName)
 	assert.Equal(t, normalizer.slug, normalized.ServiceSlug)
 }
@@ -29,11 +29,11 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 		"CI_RUNNER_VERSION":     "14.10.0~beta.50.g1f2fe53e",
 	})
 
-	assert.Equal(t, "12270837", normalized.WorkerId)
-	assert.Equal(t, "4-blue.shared.runners-manager.gitlab.com/default", normalized.WorkerName)
-	assert.Equal(t, "gitlab_hosted_vm", normalized.WorkerType)
-	assert.Equal(t, "14.10.0~beta.50.g1f2fe53e", normalized.WorkerVersion)
-	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized.WorkerArch)
+	assert.Equal(t, "12270837", normalized.Worker.Id)
+	assert.Equal(t, "4-blue.shared.runners-manager.gitlab.com/default", normalized.Worker.Name)
+	assert.Equal(t, "gitlab_hosted_vm", normalized.Worker.Type)
+	assert.Equal(t, "14.10.0~beta.50.g1f2fe53e", normalized.Worker.Version)
+	assert.Equal(t, runtime.GOOS+"/"+runtime.GOARCH, normalized.Worker.Arch)
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
@@ -49,16 +49,16 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 		"CI_JOB_URL":         "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887",
 	})
 
-	assert.Equal(t, "535898514", normalized.PipelineId)
-	assert.Equal(t, "push", normalized.PipelineTrigger)
-	assert.Equal(t, "build", normalized.PipelineStageName)
-	assert.Equal(t, "build", normalized.PipelineStageSlug)
-	assert.Equal(t, "build", normalized.PipelineJobName)
-	assert.Equal(t, "build", normalized.PipelineJobSlug)
-	assert.Equal(t, "2022-05-10T20:20:01Z", normalized.PipelineJobStartedAt)
-	assert.Equal(t, "1", normalized.PipelineAttempt)
-	assert.Equal(t, "gitlab-ci.yml", normalized.PipelineConfigFile)
-	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887", normalized.PipelineUrl)
+	assert.Equal(t, "535898514", normalized.Pipeline.Id)
+	assert.Equal(t, "push", normalized.Pipeline.Trigger)
+	assert.Equal(t, "build", normalized.Pipeline.StageName)
+	assert.Equal(t, "build", normalized.Pipeline.StageSlug)
+	assert.Equal(t, "build", normalized.Pipeline.JobName)
+	assert.Equal(t, "build", normalized.Pipeline.JobSlug)
+	assert.Equal(t, "2022-05-10T20:20:01Z", normalized.Pipeline.JobStartedAt)
+	assert.Equal(t, "1", normalized.Pipeline.Attempt)
+	assert.Equal(t, "gitlab-ci.yml", normalized.Pipeline.ConfigFile)
+	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887", normalized.Pipeline.Url)
 }
 
 func TestNormalizer_Normalize_MergeRequest(t *testing.T) {
@@ -70,9 +70,9 @@ func TestNormalizer_Normalize_MergeRequest(t *testing.T) {
 		"CI_MERGE_REQUEST_TARGET_BRANCH_NAME": "main",
 	})
 
-	assert.Equal(t, "153", normalized.MergeRequestId)
-	assert.Equal(t, "feat/new-feature", normalized.MergeRequestSourceBranchName)
-	assert.Equal(t, "main", normalized.MergeRequestTargetBranchName)
+	assert.Equal(t, "153", normalized.MergeRequest.Id)
+	assert.Equal(t, "feat/new-feature", normalized.MergeRequest.SourceBranchName)
+	assert.Equal(t, "main", normalized.MergeRequest.TargetBranchName)
 }
 
 func TestNormalizer_Normalize_Project(t *testing.T) {
@@ -88,13 +88,13 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 		"CI_PROJECT_URL":         "https://gitlab.com/cidverse/cienvsamples",
 	})
 
-	assert.Equal(t, "35974876", normalized.ProjectId)
-	assert.Equal(t, "cienvsamples", normalized.ProjectName)
-	assert.Equal(t, "cienvsamples", normalized.ProjectPath)
-	assert.Equal(t, "cidverse-cienvsamples", normalized.ProjectSlug)
-	assert.Equal(t, "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.", normalized.ProjectDescription)
-	assert.Equal(t, "main", normalized.ProjectDefaultBranch)
-	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples", normalized.ProjectUrl)
+	assert.Equal(t, "35974876", normalized.Project.Id)
+	assert.Equal(t, "cienvsamples", normalized.Project.Name)
+	assert.Equal(t, "cienvsamples", normalized.Project.Path)
+	assert.Equal(t, "cidverse-cienvsamples", normalized.Project.Slug)
+	assert.Equal(t, "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.", normalized.Project.Description)
+	assert.Equal(t, "main", normalized.Project.DefaultBranch)
+	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples", normalized.Project.Url)
 }
 
 func TestNormalizer_Normalize_WorkflowAPI(t *testing.T) {

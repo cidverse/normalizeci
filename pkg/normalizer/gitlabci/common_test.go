@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/mocks"
+	"github.com/cidverse/normalizeci/mocks"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/rs/zerolog"
 )

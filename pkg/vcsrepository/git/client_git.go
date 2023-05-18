@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/cidverse/normalizeci/pkg/normalizer/common"
+	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -95,8 +95,8 @@ func (c GitClient) VCSHostType(server string) string {
 		return "github"
 	} else if server == "gitlab.com" || strings.Contains(server, "gitlab.") {
 		return "gitlab"
-	} else if len(os.Getenv(common.ToEnvName(server)+"_TYPE")) > 0 {
-		os.Getenv(common.ToEnvName(server) + "_TYPE")
+	} else if len(os.Getenv(api.ToEnvName(server)+"_TYPE")) > 0 {
+		os.Getenv(api.ToEnvName(server) + "_TYPE")
 	}
 
 	return ""

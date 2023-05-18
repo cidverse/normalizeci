@@ -1,9 +1,4 @@
-package ncispec
-
-// NCISpec is a common interface for all versions of the spec
-type NCISpec interface {
-	Validate() error
-}
+package common
 
 const (
 	PipelineTriggerCLI          = "cli"
