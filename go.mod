@@ -12,7 +12,7 @@ require (
 	github.com/jarcoal/httpmock v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 	github.com/xanzy/go-gitlab v0.83.0
 	golang.org/x/oauth2 v0.8.0
 )
