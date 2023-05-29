@@ -6,13 +6,13 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/cidverse/go-vcs"
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNormalizer_Normalize_Common(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{})
 
@@ -23,7 +23,7 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Worker(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"RUNNER_TRACKING_ID": "github_969396af-1899-4849-9318-7807141c54e9",
@@ -40,7 +40,7 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"GITHUB_RUN_ID":      "2303126757",
@@ -64,7 +64,7 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Project(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"GITHUB_SERVER_URL": "https://github.com",
@@ -75,7 +75,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_WorkflowAPI(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	githubMockClient = &http.Client{}
 	httpmock.ActivateNonDefault(githubMockClient)
 	defer httpmock.DeactivateAndReset()

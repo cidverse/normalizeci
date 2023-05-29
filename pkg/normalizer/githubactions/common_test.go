@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cidverse/normalizeci/mocks"
-	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
+	"github.com/cidverse/go-vcs/mocks"
+	"github.com/cidverse/go-vcs/vcsapi"
 	"github.com/rs/zerolog"
 )
 

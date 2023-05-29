@@ -1,57 +1,13 @@
 package vcsrepository
 
 import (
-	"errors"
-	"os"
-	"path"
-	"path/filepath"
 	"strconv"
 	"strings"
 
+	"github.com/cidverse/go-vcs"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
-	gitclient "github.com/cidverse/normalizeci/pkg/vcsrepository/git"
-	"github.com/cidverse/normalizeci/pkg/vcsrepository/vcsapi"
 	"github.com/gosimple/slug"
 )
-
-var MockClient vcsapi.Client
-
-func GetVCSClient(dir string) (vcsapi.Client, error) {
-	// mocked client
-	if MockClient != nil {
-		return MockClient, nil
-	}
-
-	// git
-	cg, _ := gitclient.NewGitClient(dir)
-	if cg.Check() {
-		return cg, nil
-	}
-
-	return nil, errors.New("directory is not a vcs repository")
-}
-
-func FindRepositoryDirectory(currentDirectory string) string {
-	var projectDirectory = ""
-	directoryParts := strings.Split(currentDirectory, string(os.PathSeparator))
-
-	for projectDirectory == "" {
-		// GIT
-		if _, err := os.Stat(path.Join(currentDirectory, ".git")); !os.IsNotExist(err) {
-			return currentDirectory
-		}
-
-		// abort when we reach the root directory, no repository found
-		if directoryParts[0]+"\\" == currentDirectory || currentDirectory == "/" {
-			return ""
-		}
-
-		// check parent directory in next iteration
-		currentDirectory = filepath.Dir(currentDirectory)
-	}
-
-	return ""
-}
 
 type RepositoryInformation struct {
 	Repository v1.Repository
@@ -74,7 +30,8 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	}
 
 	// supported repository type
-	client, clientErr := GetVCSClient(dir)
+	client, clientErr := vcs.GetVCSClient(dir)
+
 	if client == nil {
 		return result, clientErr
 	}
@@ -144,4 +101,12 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	// TODO: commit count (only if clone is not shallow)
 
 	return result, nil
+}
+
+func getReleaseName(input string) string {
+	input = slug.Substitute(input, map[string]string{
+		"/": "-",
+	})
+
+	return strings.TrimLeft(input, "v")
 }

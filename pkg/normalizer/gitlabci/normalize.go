@@ -3,10 +3,10 @@ package gitlabci
 import (
 	"runtime"
 
+	"github.com/cidverse/go-vcs/vcsutil"
 	"github.com/cidverse/normalizeci/pkg/ncispec/common"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
-	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
@@ -49,7 +49,7 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 	}
 
 	// repository
-	projectDir := vcsrepository.FindRepositoryDirectory(api.GetWorkingDirectory())
+	projectDir, _ := vcsutil.FindProjectDirectory()
 	vcsData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
 	if addDataErr != nil {
 		panic(addDataErr)

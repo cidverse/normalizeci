@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cidverse/go-vcs/vcsutil"
 	"github.com/cidverse/normalizeci/pkg/ncispec/common"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
-	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/google/go-github/v52/github"
@@ -60,7 +60,7 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 	}
 
 	// repository
-	projectDir := vcsrepository.FindRepositoryDirectory(api.GetWorkingDirectory())
+	projectDir, _ := vcsutil.FindProjectDirectory()
 	vcsData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
 	if addDataErr != nil {
 		panic(addDataErr)
@@ -92,11 +92,14 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 
 		// pull request event
 		if pullRequestEvent, ok := githubEvent.(*github.PullRequestEvent); ok {
-			nci.MergeRequest.Id = fmt.Sprintf("%d", pullRequestEvent.PullRequest.GetNumber())
-			nci.MergeRequest.SourceBranchName = pullRequestEvent.PullRequest.Head.GetRef()
-			nci.MergeRequest.SourceHash = pullRequestEvent.PullRequest.Head.GetSHA()
-			nci.MergeRequest.TargetBranchName = pullRequestEvent.PullRequest.Base.GetRef()
-			nci.MergeRequest.TargetHash = pullRequestEvent.PullRequest.Base.GetSHA()
+			nci.MergeRequest = v1.MergeRequest{
+				Id:               fmt.Sprintf("%d", pullRequestEvent.PullRequest.GetNumber()),
+				Title:            pullRequestEvent.PullRequest.GetTitle(),
+				SourceBranchName: pullRequestEvent.PullRequest.Head.GetRef(),
+				SourceHash:       pullRequestEvent.PullRequest.Head.GetSHA(),
+				TargetBranchName: pullRequestEvent.PullRequest.Base.GetRef(),
+				TargetHash:       pullRequestEvent.PullRequest.Base.GetSHA(),
+			}
 		}
 
 		// workflow dispatch event can have custom input parameters

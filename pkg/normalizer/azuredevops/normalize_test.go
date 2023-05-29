@@ -4,12 +4,12 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/cidverse/normalizeci/pkg/vcsrepository"
+	"github.com/cidverse/go-vcs"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNormalizer_Normalize_Common(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{})
 
@@ -20,7 +20,7 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Worker(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"AGENT_ID":          "9",
@@ -39,7 +39,7 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
-	vcsrepository.MockClient = MockVCSClient(t)
+	vcs.MockClient = MockVCSClient(t)
 	var normalizer = NewNormalizer()
 	var normalized = normalizer.Normalize(map[string]string{
 		"SYSTEM_PHASEID":                 "a11efe29-9b58-5a6c-3fa4-3e36996dcbd8",
