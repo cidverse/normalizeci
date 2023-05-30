@@ -1,6 +1,7 @@
 package gitlabci
 
 import (
+	"fmt"
 	"runtime"
 
 	"github.com/cidverse/go-vcs/vcsutil"
@@ -13,7 +14,7 @@ import (
 )
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env map[string]string) v1.Spec {
+func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	nci := v1.Create(n.name, n.slug)
 
 	// worker
@@ -49,10 +50,13 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 	}
 
 	// repository
-	projectDir, _ := vcsutil.FindProjectDirectory()
-	vcsData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
-	if addDataErr != nil {
-		panic(addDataErr)
+	projectDir, err := vcsutil.FindProjectDirectoryFromWorkDir()
+	if err != nil {
+		return nci, fmt.Errorf("failed to find project directory: %v", err)
+	}
+	vcsData, err := vcsrepository.GetVCSRepositoryInformation(projectDir)
+	if err != nil {
+		return nci, fmt.Errorf("failed to get repository details: %v", err)
 	}
 	nci.Repository = vcsData.Repository
 	nci.Commit = vcsData.Commit
@@ -71,7 +75,10 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 	}
 
 	// project details
-	projectData, _ := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)
+	projectData, err := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)
+	if err != nil {
+		return nci, fmt.Errorf("failed to get project details: %v", err)
+	}
 	nci.Project.Id = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), projectData.Id})
 	nci.Project.Name = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), projectData.Name})
 	nci.Project.Path = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_NAME"), projectData.Path})
@@ -104,7 +111,7 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 		nci.Pipeline.Input = v
 	}
 
-	return nci
+	return nci, nil
 }
 
 func gitlabTriggerNormalize(input string) string {

@@ -15,8 +15,8 @@ type Normalizer interface {
 	GetName() string
 	GetSlug() string
 	Check(env map[string]string) bool
-	Normalize(env map[string]string) v1.Spec
-	Denormalize(spec v1.Spec) map[string]string
+	Normalize(env map[string]string) (v1.Spec, error)
+	Denormalize(spec v1.Spec) (map[string]string, error)
 }
 
 // GetMachineEnvironment returns a map with all environment variables set on the machine

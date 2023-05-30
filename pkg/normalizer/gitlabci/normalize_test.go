@@ -5,15 +5,17 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/cidverse/go-vcs"
+	"github.com/cidverse/normalizeci/pkg/nciutil"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNormalizer_Normalize_Common(t *testing.T) {
-	vcs.MockClient = MockVCSClient(t)
-	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{})
+	nciutil.MockVCSClient(t)
 
+	var normalizer = NewNormalizer()
+	var normalized, err = normalizer.Normalize(map[string]string{})
+
+	assert.NoError(t, err)
 	assert.Equal(t, "true", normalized.Found)
 	assert.Equal(t, "1.0.0", normalized.Version)
 	assert.Equal(t, normalizer.name, normalized.ServiceName)
@@ -21,14 +23,16 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Worker(t *testing.T) {
-	vcs.MockClient = MockVCSClient(t)
+	nciutil.MockVCSClient(t)
+
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{
+	var normalized, err = normalizer.Normalize(map[string]string{
 		"CI_RUNNER_ID":          "12270837",
 		"CI_RUNNER_DESCRIPTION": "4-blue.shared.runners-manager.gitlab.com/default",
 		"CI_RUNNER_VERSION":     "14.10.0~beta.50.g1f2fe53e",
 	})
 
+	assert.NoError(t, err)
 	assert.Equal(t, "12270837", normalized.Worker.Id)
 	assert.Equal(t, "4-blue.shared.runners-manager.gitlab.com/default", normalized.Worker.Name)
 	assert.Equal(t, "gitlab_hosted_vm", normalized.Worker.Type)
@@ -37,9 +41,10 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
-	vcs.MockClient = MockVCSClient(t)
+	nciutil.MockVCSClient(t)
+
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{
+	var normalized, err = normalizer.Normalize(map[string]string{
 		"CI_PIPELINE_ID":     "535898514",
 		"CI_PIPELINE_SOURCE": "push",
 		"CI_JOB_STAGE":       "build",
@@ -49,6 +54,7 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 		"CI_JOB_URL":         "https://gitlab.com/cidverse/cienvsamples/-/jobs/2438765887",
 	})
 
+	assert.NoError(t, err)
 	assert.Equal(t, "535898514", normalized.Pipeline.Id)
 	assert.Equal(t, "push", normalized.Pipeline.Trigger)
 	assert.Equal(t, "build", normalized.Pipeline.StageName)
@@ -62,23 +68,26 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_MergeRequest(t *testing.T) {
-	vcs.MockClient = MockVCSClient(t)
+	nciutil.MockVCSClient(t)
+
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{
+	var normalized, err = normalizer.Normalize(map[string]string{
 		"CI_MERGE_REQUEST_IID":                "153",
 		"CI_MERGE_REQUEST_SOURCE_BRANCH_NAME": "feat/new-feature",
 		"CI_MERGE_REQUEST_TARGET_BRANCH_NAME": "main",
 	})
 
+	assert.NoError(t, err)
 	assert.Equal(t, "153", normalized.MergeRequest.Id)
 	assert.Equal(t, "feat/new-feature", normalized.MergeRequest.SourceBranchName)
 	assert.Equal(t, "main", normalized.MergeRequest.TargetBranchName)
 }
 
 func TestNormalizer_Normalize_Project(t *testing.T) {
-	vcs.MockClient = MockVCSClient(t)
+	nciutil.MockVCSClient(t)
+
 	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{
+	var normalized, err = normalizer.Normalize(map[string]string{
 		"CI_PROJECT_ID":          "35974876",
 		"CI_PROJECT_TITLE":       "cienvsamples",
 		"CI_PROJECT_NAME":        "cienvsamples",
@@ -88,6 +97,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 		"CI_PROJECT_URL":         "https://gitlab.com/cidverse/cienvsamples",
 	})
 
+	assert.NoError(t, err)
 	assert.Equal(t, "35974876", normalized.Project.Id)
 	assert.Equal(t, "cienvsamples", normalized.Project.Name)
 	assert.Equal(t, "cienvsamples", normalized.Project.Path)

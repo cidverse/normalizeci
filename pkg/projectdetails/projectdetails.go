@@ -6,18 +6,20 @@ import (
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 )
 
+var MockProjectDetails *v1.Project
+
 func GetProjectDetails(repoType string, repoRemote string, hostType string, hostServer string) (v1.Project, error) {
+	if MockProjectDetails != nil {
+		return *MockProjectDetails, nil
+	}
+
 	if repoType == "git" {
 		if hostType == "github" {
-			projectDetails, projectDetailsErr := GetProjectDetailsGitHub(hostServer, repoRemote)
-			if projectDetailsErr == nil {
-				return projectDetails, nil
-			}
+			projectDetails, err := GetProjectDetailsGitHub(hostServer, repoRemote)
+			return projectDetails, err
 		} else if hostType == "gitlab" {
-			projectDetails, projectDetailsErr := GetProjectDetailsGitLab(hostServer, repoRemote)
-			if projectDetailsErr == nil {
-				return projectDetails, nil
-			}
+			projectDetails, err := GetProjectDetailsGitLab(hostServer, repoRemote)
+			return projectDetails, err
 		}
 	}
 

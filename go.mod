@@ -4,14 +4,14 @@ go 1.20
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/cidverse/go-vcs v0.0.0-20230529213837-4a8cf1f1f85c
+	github.com/cidverse/go-vcs v0.0.0-20230530192143-6e74dd46f9f8
 	github.com/go-playground/validator/v10 v10.14.0
 	github.com/google/go-github/v52 v52.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/jarcoal/httpmock v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	github.com/xanzy/go-gitlab v0.83.0
 	golang.org/x/oauth2 v0.8.0
 )

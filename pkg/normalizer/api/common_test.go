@@ -1,17 +1,8 @@
 package api
 
 import (
-	"os"
 	"testing"
-
-	"github.com/rs/zerolog"
 )
-
-func TestMain(m *testing.M) {
-	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	code := m.Run()
-	os.Exit(code)
-}
 
 func TestGetHostFromURL(t *testing.T) {
 	host := GetHostFromURL("http://github.com/user/repository")

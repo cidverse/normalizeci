@@ -35,6 +35,9 @@ func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.Workflow
 	rPath := strings.SplitN(repositoryPath, "/", 2)
 	owner := rPath[0]
 	name := rPath[1]
+	if owner == "" || name == "" {
+		return nil, nil, fmt.Errorf("invalid repositoryPath provided: %s", repositoryPath)
+	}
 
 	// GitHub client
 	ctx := context.Background()
@@ -83,6 +86,11 @@ func ParseGithubEvent(eventType string, eventFile string) (interface{}, error) {
 		eventType = "PullRequestEvent"
 	} else if eventType == "workflow_dispatch" {
 		eventType = "WorkflowDispatchEvent"
+	}
+
+	// file exists?
+	if _, err := os.Stat(eventFile); os.IsNotExist(err) {
+		return github.Event{}, fmt.Errorf("GITHUB_EVENT_PATH file does not exist: %w", err)
 	}
 
 	// read payload
