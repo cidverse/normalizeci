@@ -1,22 +1,15 @@
 package localgit
 
 import (
-	"os"
 	"testing"
 
 	"github.com/cidverse/normalizeci/pkg/ncispec/common"
+	"github.com/cidverse/normalizeci/pkg/nciutil"
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
-	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )
 
 var testEnvironment []string
-
-func TestMain(m *testing.M) {
-	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	code := m.Run()
-	os.Exit(code)
-}
 
 func TestEnvironmentCheck(t *testing.T) {
 	var normalizer = NewNormalizer()
@@ -26,9 +19,12 @@ func TestEnvironmentCheck(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Common(t *testing.T) {
-	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{})
+	nciutil.MockVCSClient(t)
 
+	var normalizer = NewNormalizer()
+	var normalized, err = normalizer.Normalize(map[string]string{})
+
+	assert.NoError(t, err)
 	assert.Equal(t, "true", normalized.Found)
 	assert.Equal(t, "1.0.0", normalized.Version)
 	assert.Equal(t, normalizer.name, normalized.ServiceName)
@@ -36,9 +32,12 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Worker(t *testing.T) {
-	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{})
+	nciutil.MockVCSClient(t)
 
+	var normalizer = NewNormalizer()
+	var normalized, err = normalizer.Normalize(map[string]string{})
+
+	assert.NoError(t, err)
 	assert.Equal(t, "local", normalized.Worker.Id)
 	assert.Equal(t, "localhost", normalized.Worker.Name)
 	assert.Equal(t, "local", normalized.Worker.Type)
@@ -48,9 +47,12 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 }
 
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
-	var normalizer = NewNormalizer()
-	var normalized = normalizer.Normalize(map[string]string{})
+	nciutil.MockVCSClient(t)
 
+	var normalizer = NewNormalizer()
+	var normalized, err = normalizer.Normalize(map[string]string{})
+
+	assert.NoError(t, err)
 	assert.NotNil(t, normalized.Pipeline.Id)
 	assert.Equal(t, common.PipelineTriggerCLI, normalized.Pipeline.Trigger)
 	assert.NotNil(t, normalized.Pipeline.StageId)

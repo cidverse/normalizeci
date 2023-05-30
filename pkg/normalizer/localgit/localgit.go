@@ -1,6 +1,7 @@
 package localgit
 
 import (
+	"fmt"
 	"runtime"
 	"time"
 
@@ -35,7 +36,7 @@ func (n Normalizer) Check(env map[string]string) bool {
 }
 
 // Normalize normalizes the environment variables into the common format
-func (n Normalizer) Normalize(env map[string]string) v1.Spec {
+func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	nci := v1.Create(n.name, n.slug)
 
 	// worker
@@ -59,27 +60,33 @@ func (n Normalizer) Normalize(env map[string]string) v1.Spec {
 	nci.Pipeline.Attempt = "1"
 
 	// repository
-	projectDir, _ := vcsutil.FindProjectDirectory()
-	vcsData, addDataErr := vcsrepository.GetVCSRepositoryInformation(projectDir)
-	if addDataErr != nil {
-		panic(addDataErr)
+	projectDir, err := vcsutil.FindProjectDirectory()
+	if err != nil {
+		return nci, fmt.Errorf("failed to find project directory: %v", err)
+	}
+	vcsData, err := vcsrepository.GetVCSRepositoryInformation(projectDir)
+	if err != nil {
+		return nci, fmt.Errorf("failed to get repository details: %v", err)
 	}
 	nci.Repository = vcsData.Repository
 	nci.Commit = vcsData.Commit
 
 	// project details
-	projectData, _ := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)
+	projectData, err := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)
+	if err != nil {
+		return nci, fmt.Errorf("failed to get project details: %v", err)
+	}
 	nci.Project = projectData
 	nci.Project.Dir = projectDir
 
 	// flags
 	nci.Flags.DeployFreeze = "false"
 
-	return nci
+	return nci, nil
 }
 
-func (n Normalizer) Denormalize(spec v1.Spec) map[string]string {
-	return make(map[string]string)
+func (n Normalizer) Denormalize(spec v1.Spec) (map[string]string, error) {
+	return nil, fmt.Errorf("not implemented")
 }
 
 // NewNormalizer gets an instance of the normalizer

@@ -26,43 +26,41 @@ func init() {
 	normalizers = append(normalizers, localgit.NewNormalizer())
 }
 
-func Normalize() v1.Spec {
+func Normalize() (v1.Spec, error) {
 	env := api.GetMachineEnvironment()
 	return NormalizeEnv(env)
 }
 
 // NormalizeEnv executes the ci normalization for all supported services
-func NormalizeEnv(env map[string]string) v1.Spec {
+func NormalizeEnv(env map[string]string) (v1.Spec, error) {
 	// normalize (iterate over all supported systems and normalize variables if possible)
-	var normalized v1.Spec
 	for _, normalizer := range normalizers {
 		if normalizer.Check(env) {
 			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
-			normalized = normalizer.Normalize(env)
-			break
+			normalized, err := normalizer.Normalize(env)
+			return normalized, err
 		} else {
 			log.Debug().Msg("Didn't match in " + normalizer.GetName())
 		}
 	}
 
-	return normalized
+	return v1.Spec{}, errors.New("no matching normalizer found")
 }
 
 // Denormalize will generate ci variables for the target service
-func Denormalize(target string, env v1.Spec) map[string]string {
+func Denormalize(target string, env v1.Spec) (map[string]string, error) {
 	// denormalize
-	var normalized map[string]string
 	for _, normalizer := range normalizers {
 		if target == normalizer.GetSlug() {
 			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
-			normalized = normalizer.Denormalize(env)
-			break
+			normalized, err := normalizer.Denormalize(env)
+			return normalized, err
 		} else {
 			log.Debug().Msg("Didn't match in " + normalizer.GetName())
 		}
 	}
 
-	return normalized
+	return nil, errors.New("no matching denormalizer found")
 }
 
 // FormatEnvironment makes the normalized environment available in the current session
