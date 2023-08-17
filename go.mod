@@ -7,6 +7,7 @@ require (
 	github.com/cidverse/go-vcs v0.0.0-20230530192143-6e74dd46f9f8
 	github.com/go-playground/validator/v10 v10.15.1
 	github.com/google/go-github/v53 v53.2.0
+	github.com/google/go-github/v54 v54.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/rs/zerolog v1.30.0
