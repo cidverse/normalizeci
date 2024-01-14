@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cidverse/go-vcs v0.0.0-20230530192143-6e74dd46f9f8
-	github.com/go-playground/validator/v10 v10.16.0
+	github.com/go-playground/validator/v10 v10.17.0
 	github.com/google/go-github/v58 v58.0.0
 	github.com/gosimple/slug v1.13.1
 	github.com/jarcoal/httpmock v1.3.1
