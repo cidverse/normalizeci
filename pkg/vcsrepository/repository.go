@@ -1,6 +1,7 @@
 package vcsrepository
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -31,9 +32,8 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 
 	// supported repository type
 	client, clientErr := vcs.GetVCSClient(dir)
-
-	if client == nil {
-		return result, clientErr
+	if clientErr != nil {
+		return result, fmt.Errorf("failed to initialize vcs client: %w", clientErr)
 	}
 
 	// repository type and remote
@@ -43,9 +43,9 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	result.Repository.HostType = client.VCSHostType(result.Repository.HostServer)
 
 	// repository head
-	head, err := client.VCSHead()
-	if err != nil {
-		return result, err
+	head, headErr := client.VCSHead()
+	if headErr != nil {
+		return result, fmt.Errorf("failed to get repository head: %w", headErr)
 	}
 	refName := head.Value
 	if head.Type == "tag" {
@@ -83,9 +83,9 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	*/
 
 	// commit info
-	commit, err := client.FindCommitByHash(head.Hash, false)
-	if err != nil {
-		return result, err
+	commit, commitErr := client.FindCommitByHash(head.Hash, false)
+	if commitErr != nil {
+		return result, fmt.Errorf("failed to get commit by hash: %w", commitErr)
 	}
 
 	result.Commit.Hash = commit.Hash
