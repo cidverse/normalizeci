@@ -23,5 +23,5 @@ func GetProjectDetails(repoType string, repoRemote string, hostType string, host
 		}
 	}
 
-	return v1.Project{}, fmt.Errorf("repository host type %s is not supported", hostType)
+	return v1.Project{}, fmt.Errorf("repository hoster %s is not supported", hostType)
 }

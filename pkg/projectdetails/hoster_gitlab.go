@@ -1,7 +1,6 @@
 package projectdetails
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -31,7 +30,10 @@ func GetGitLabToken(host string) string {
 
 func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error) {
 	result := v1.Project{}
-	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, fmt.Sprintf("https://%s/", host)), fmt.Sprintf("git@%s:", host)), ".git")
+	repoPath, err := repoPathFromRemote(repoRemote, host)
+	if err != nil {
+		return result, err
+	}
 	glToken := GetGitLabToken(host)
 	gitlabUrl := "https://" + host
 

@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/cidverse/go-vcs v0.0.0-20240112214122-40b10a2394bb
+	github.com/cidverse/go-vcs v0.0.0-20240114124206-55cd79bb1b6b
 	github.com/go-playground/validator/v10 v10.18.0
 	github.com/google/go-github/v59 v59.0.0
 	github.com/gosimple/slug v1.13.1
@@ -20,7 +20,7 @@ require (
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Masterminds/semver/v3 v3.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20230923063757-afb1ddc0824c // indirect
+	github.com/ProtonMail/go-crypto v1.0.0 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -49,12 +49,12 @@ require (
 	github.com/stretchr/objx v0.5.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.19.0 // indirect
-	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.18.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect

@@ -18,8 +18,10 @@ var githubMockClient *http.Client
 
 func GetProjectDetailsGitHub(host string, repoRemote string) (v1.Project, error) {
 	result := v1.Project{}
-
-	repoPath := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(repoRemote, "https://github.com/"), "git@github.com:"), ".git")
+	repoPath, err := repoPathFromRemote(repoRemote, host)
+	if err != nil {
+		return result, err
+	}
 	repoPathSplit := strings.SplitN(repoPath, "/", 2)
 
 	ghToken := ""
