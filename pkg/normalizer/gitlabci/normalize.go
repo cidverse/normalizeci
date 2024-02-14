@@ -11,6 +11,7 @@ import (
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
+	"github.com/rs/zerolog/log"
 )
 
 // Normalize normalizes the environment variables into the common format
@@ -77,7 +78,8 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	// project details
 	projectData, err := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)
 	if err != nil {
-		return nci, fmt.Errorf("failed to get project details: %v", err)
+		// CI_JOB_TOKEN read_project access is pending for 6 years (https://gitlab.com/gitlab-org/gitlab/-/issues/17511)
+		log.Debug().Err(err).Msg("failed to get project details")
 	}
 	nci.Project.Id = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), projectData.Id})
 	nci.Project.Name = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), projectData.Name})

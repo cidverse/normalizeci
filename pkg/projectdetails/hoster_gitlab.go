@@ -19,8 +19,6 @@ func GetGitLabToken(host string) string {
 		return os.Getenv(api.ToEnvName(host) + "_TOKEN")
 	} else if len(os.Getenv("GITLAB_TOKEN")) > 0 {
 		return os.Getenv("GITLAB_TOKEN")
-	} else if os.Getenv("CI") == "true" && len(os.Getenv("CI_BUILD_TOKEN")) > 0 {
-		return os.Getenv("CI_BUILD_TOKEN")
 	} else if os.Getenv("CI") == "true" && len(os.Getenv("CI_JOB_TOKEN")) > 0 {
 		return os.Getenv("CI_JOB_TOKEN")
 	}
@@ -43,11 +41,7 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error)
 		return result, gitlabClientErr
 	}
 	if gitlabMockClient != nil {
-		gitlabClient, _ = gitlab.NewClient(
-			glToken,
-			gitlab.WithBaseURL(gitlabUrl),
-			gitlab.WithHTTPClient(gitlabMockClient),
-		)
+		gitlabClient, _ = gitlab.NewClient("", gitlab.WithBaseURL(gitlabUrl), gitlab.WithHTTPClient(gitlabMockClient))
 	}
 
 	// query project
