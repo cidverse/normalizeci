@@ -74,6 +74,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 		nci.Commit.RefSlug = slug.Make(env["CI_COMMIT_REF_NAME"])
 		nci.Commit.RefVCS = "refs/heads/" + env["CI_COMMIT_REF_NAME"]
 	}
+	nci.Commit.RefRelease = vcsrepository.ToReleaseName(nci.Commit.RefName)
 
 	// project details
 	projectData, err := projectdetails.GetProjectDetails(nci.Repository.Kind, nci.Repository.Remote, nci.Repository.HostType, nci.Repository.HostServer)

@@ -58,7 +58,7 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	result.Commit.RefVCS = client.VCSRefToInternalRef(head)
 
 	// release name (=name, but without leading v, without slash)
-	result.Commit.RefRelease = getReleaseName(result.Commit.RefName)
+	result.Commit.RefRelease = ToReleaseName(result.Commit.RefName)
 
 	// repository status (data[ncispec.NCI_REPOSITORY_STATUS])
 	// TODO: current isClean by go-git detects newlines as change, see https://github.com/go-git/go-git/issues/436
@@ -103,7 +103,7 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	return result, nil
 }
 
-func getReleaseName(input string) string {
+func ToReleaseName(input string) string {
 	input = slug.Substitute(input, map[string]string{
 		"/": "-",
 	})
