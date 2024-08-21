@@ -91,6 +91,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 		"CI_PROJECT_ID":          "35974876",
 		"CI_PROJECT_TITLE":       "cienvsamples",
 		"CI_PROJECT_NAME":        "cienvsamples",
+		"CI_PROJECT_PATH":        "cidverse/cienvsamples",
 		"CI_PROJECT_PATH_SLUG":   "cidverse-cienvsamples",
 		"CI_PROJECT_DESCRIPTION": "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.",
 		"CI_DEFAULT_BRANCH":      "main",
@@ -100,7 +101,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "35974876", normalized.Project.Id)
 	assert.Equal(t, "cienvsamples", normalized.Project.Name)
-	assert.Equal(t, "cienvsamples", normalized.Project.Path)
+	assert.Equal(t, "cidverse/cienvsamples", normalized.Project.Path)
 	assert.Equal(t, "cidverse-cienvsamples", normalized.Project.Slug)
 	assert.Equal(t, "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.", normalized.Project.Description)
 	assert.Equal(t, "main", normalized.Project.DefaultBranch)

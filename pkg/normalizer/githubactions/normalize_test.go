@@ -85,6 +85,9 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	})
 
 	assert.NoError(t, err)
+	assert.Equal(t, "normalizeci", normalized.Project.Name)
+	assert.Equal(t, "cidverse/normalizeci", normalized.Project.Path)
+	assert.Equal(t, "cidverse-normalizeci", normalized.Project.Slug)
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized.Project.Url)
 }
 
