@@ -12,6 +12,9 @@ func GetProjectDetails(repoType string, repoRemote string, hostType string, host
 	if MockProjectDetails != nil {
 		return *MockProjectDetails, nil
 	}
+	if repoRemote == "local" {
+		return v1.Project{}, nil // no remote, therefore no project details available
+	}
 
 	if repoType == "git" {
 		if hostType == "github" {
