@@ -102,7 +102,9 @@ var normalized = normalizeci.RunDefaultNormalization()
 
 | NAME                  | SLUG             |
 |-----------------------|------------------|
+| AppVeyor              | `appveyor`       |
 | Azure DevOps Pipeline | `azure-devops`   |
+| CircleCI              | `circleci`       |
 | GitLab CI/CD          | `gitlab-ci`      |
 | GitHub Actions        | `github-actions` |
 | Local Git Repository  | `local`          |
@@ -119,14 +121,12 @@ var normalized = normalizeci.RunDefaultNormalization()
 
 | NAME          | SLUG            |
 |---------------|-----------------|
-| AppVeyor      | `appveyor`      |
 | AWS CodeBuild | `aws-codebuild` |
 | Bamboo        | `bamboo`        |
 | Bitbucket     | `bitbucket`     |
 | Bitrise       | `bitrise`       |
 | Buddy         | `buddy`         |
 | Buildkite     | `buildkite`     |
-| CircleCI      | `circleci`      |
 | Cirrus CI     | `cirrusci`      |
 | Codefresh     | `codefresh`     |
 | Codeship      | `codeship`      |

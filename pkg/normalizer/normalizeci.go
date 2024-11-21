@@ -9,7 +9,9 @@ import (
 
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
+	"github.com/cidverse/normalizeci/pkg/normalizer/appveyor"
 	"github.com/cidverse/normalizeci/pkg/normalizer/azuredevops"
+	"github.com/cidverse/normalizeci/pkg/normalizer/circleci"
 	"github.com/cidverse/normalizeci/pkg/normalizer/githubactions"
 	"github.com/cidverse/normalizeci/pkg/normalizer/gitlabci"
 	"github.com/cidverse/normalizeci/pkg/normalizer/localgit"
@@ -20,7 +22,9 @@ import (
 var normalizers []api.Normalizer
 
 func init() {
+	normalizers = append(normalizers, appveyor.NewNormalizer())
 	normalizers = append(normalizers, azuredevops.NewNormalizer())
+	normalizers = append(normalizers, circleci.NewNormalizer())
 	normalizers = append(normalizers, githubactions.NewNormalizer())
 	normalizers = append(normalizers, gitlabci.NewNormalizer())
 	normalizers = append(normalizers, localgit.NewNormalizer())

@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cidverse/go-ptr"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/google/go-github/v66/github"
@@ -49,21 +50,17 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (v1.Project, error)
 		return result, repoErr
 	}
 
-	result.Id = strconv.FormatInt(*repo.ID, 10)
-	result.Name = *repo.Name
-	result.Path = *repo.FullName
-	result.Slug = slug.Make(*repo.FullName)
-	if repo.Description != nil {
-		result.Description = *repo.Description
-	} else {
-		result.Description = ""
-	}
+	result.Id = strconv.FormatInt(ptr.Value(repo.ID), 10)
+	result.Name = ptr.Value(repo.Name)
+	result.Path = ptr.Value(repo.FullName)
+	result.Slug = slug.Make(ptr.Value(repo.FullName))
+	result.Description = ptr.Value(repo.Description)
 	result.Topics = strings.Join(repo.Topics, ",")
-	result.IssueUrl = strings.Replace(*repo.IssuesURL, "{/number}", "/{ID}", 1)
-	result.Stargazers = strconv.Itoa(*repo.StargazersCount)
-	result.Forks = strconv.Itoa(*repo.ForksCount)
-	result.DefaultBranch = *repo.DefaultBranch
-	result.Url = strings.TrimSuffix(*repo.CloneURL, ".git")
+	result.IssueUrl = strings.Replace(ptr.Value(repo.IssuesURL), "{/number}", "/{ID}", 1)
+	result.Stargazers = strconv.Itoa(ptr.Value(repo.StargazersCount))
+	result.Forks = strconv.Itoa(ptr.Value(repo.ForksCount))
+	result.DefaultBranch = ptr.Value(repo.DefaultBranch)
+	result.Url = strings.TrimSuffix(ptr.Value(repo.CloneURL), ".git")
 
 	return result, nil
 }
