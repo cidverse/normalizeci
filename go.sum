@@ -13,8 +13,8 @@ github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5 h1:0CwZNZbxp69SHPd
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
 github.com/bwmarrin/snowflake v0.3.0 h1:xm67bEhkKh6ij1790JB83OujPR5CzNe8QuQqAgISZN0=
 github.com/bwmarrin/snowflake v0.3.0/go.mod h1:NdZxfVWX+oR6y2K0o6qAYv6gIOP9rjG0/E9WsDpxqwE=
-github.com/cidverse/cidverseutils/zerologconfig v0.1.0 h1:iUJ9ANUCHH6IsM8MoeOv5Q8QvCd+iDl4X8QL/nfAdVw=
-github.com/cidverse/cidverseutils/zerologconfig v0.1.0/go.mod h1:X3mGXDU1BtdGk818+a0UL6vzhU9lLb8/oEslSnVQzuA=
+github.com/cidverse/cidverseutils/zerologconfig v0.1.1 h1:+DU7kB7rNqPLIYIZtPtvHkMWSu9cenXpxcZuqZ7SZtY=
+github.com/cidverse/cidverseutils/zerologconfig v0.1.1/go.mod h1:ax/tFT2mPv9hNkNkcSyilwuvwzxw6v93R0GxMKEKsZg=
 github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf h1:/DLETx+e0J8mWZyOOK8dAOMrdHUpJo8KQRuMt1IymtE=
 github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf/go.mod h1:nvQPqid2KB17xXiiFp/Fhd+dO5lusCSuBQtOXfsd+mk=
 github.com/cidverse/go-vcs v0.0.0-20241119223235-10216c2ea4c7 h1:93OqJYGhRwt6XJAoY0BbLhwolsMzQ35l3gYZCRvC4Pk=
