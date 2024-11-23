@@ -6,7 +6,7 @@ toolchain go1.23.3
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/cidverse/cidverseutils/zerologconfig v0.1.0
+	github.com/cidverse/cidverseutils/zerologconfig v0.1.1
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
 	github.com/cidverse/go-vcs v0.0.0-20241119223235-10216c2ea4c7
 	github.com/go-playground/validator/v10 v10.23.0
