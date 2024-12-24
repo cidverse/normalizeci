@@ -11,7 +11,7 @@ require (
 	github.com/cidverse/go-vcs v0.0.0-20241119223235-10216c2ea4c7
 	github.com/go-playground/validator/v10 v10.23.0
 	github.com/google/go-github/v67 v67.0.0
-	github.com/gosimple/slug v1.14.0
+	github.com/gosimple/slug v1.15.0
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/rs/zerolog v1.33.0
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
