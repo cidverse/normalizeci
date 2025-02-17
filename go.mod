@@ -10,7 +10,7 @@ require (
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
 	github.com/cidverse/go-vcs v0.0.0-20250211002934-091a1ea9479f
 	github.com/go-playground/validator/v10 v10.25.0
-	github.com/google/go-github/v69 v69.1.0
+	github.com/google/go-github/v69 v69.2.0
 	github.com/gosimple/slug v1.15.0
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/rs/zerolog v1.33.0
