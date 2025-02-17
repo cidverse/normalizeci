@@ -17,8 +17,8 @@ github.com/cidverse/cidverseutils/zerologconfig v0.1.1 h1:+DU7kB7rNqPLIYIZtPtvHk
 github.com/cidverse/cidverseutils/zerologconfig v0.1.1/go.mod h1:ax/tFT2mPv9hNkNkcSyilwuvwzxw6v93R0GxMKEKsZg=
 github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf h1:/DLETx+e0J8mWZyOOK8dAOMrdHUpJo8KQRuMt1IymtE=
 github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf/go.mod h1:nvQPqid2KB17xXiiFp/Fhd+dO5lusCSuBQtOXfsd+mk=
-github.com/cidverse/go-vcs v0.0.0-20250211002934-091a1ea9479f h1:TjIVfxWXLc3V9yXnni+1bmUiSnI8lKSJbGGNG/Qn3s0=
-github.com/cidverse/go-vcs v0.0.0-20250211002934-091a1ea9479f/go.mod h1:6nPpMWszsQc72mjV3/nWMPm2SKW7kgnuYnb6OtQquYU=
+github.com/cidverse/go-vcs v0.0.0-20250217213613-f5cbb063737e h1:Bw3z32TnUGEqDjjPSLKhbjD+L6lYOgU0fFsjrpWpDss=
+github.com/cidverse/go-vcs v0.0.0-20250217213613-f5cbb063737e/go.mod h1:FmwV7HFspf+Yw6MHG7QHNxNxk68tOW60BbzFtAGKzxo=
 github.com/cloudflare/circl v1.6.0 h1:cr5JKic4HI+LkINy2lg3W2jF8sHCVTBncJr5gIIq7qk=
 github.com/cloudflare/circl v1.6.0/go.mod h1:uddAzsPgqdMAYatqJ0lsjX1oECcQLIlRpzZh3pJrofs=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
