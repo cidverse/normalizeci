@@ -1,6 +1,6 @@
 module github.com/cidverse/normalizeci
 
-go 1.22.0
+go 1.23.0
 
 toolchain go1.24.0
 
@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	gitlab.com/gitlab-org/api/client-go v0.123.0
-	golang.org/x/oauth2 v0.26.0
+	golang.org/x/oauth2 v0.27.0
 )
 
 require (
