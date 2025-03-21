@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -93,4 +94,19 @@ func GetHostFromURL(addr string) string {
 
 func ToEnvName(input string) string {
 	return strings.Replace(strings.ToUpper(input), ".", "_", -1)
+}
+
+func GetProjectUID(repository v1.Repository, project v1.Project) string {
+	if os.Getenv("NCI_PROJECT_UID_TEMPLATE") != "" {
+		input := os.Getenv("NCI_PROJECT_UID_TEMPLATE")
+
+		input = strings.ReplaceAll(input, "{{NCI_REPOSITORY_HOST_SERVER}}", repository.HostServer)
+		input = strings.ReplaceAll(input, "{{NCI_REPOSITORY_HOST_SERVER_SLUG}}", repository.HostServerSlug)
+		input = strings.ReplaceAll(input, "{{NCI_PROJECT_ID}}", project.ID)
+		input = strings.ReplaceAll(input, "{{NCI_PROJECT_SLUG}}", project.Slug)
+
+		return input
+	}
+
+	return fmt.Sprintf("%s-%s", repository.HostServerSlug, project.ID)
 }

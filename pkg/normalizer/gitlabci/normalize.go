@@ -8,6 +8,7 @@ import (
 	"github.com/cidverse/normalizeci/pkg/ncispec/common"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
+	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/gosimple/slug"
@@ -82,7 +83,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 		// CI_JOB_TOKEN read_project access is pending for 6 years (https://gitlab.com/gitlab-org/gitlab/-/issues/17511)
 		log.Debug().Err(err).Msg("failed to get project details")
 	}
-	nci.Project.Id = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), projectData.Id})
+	nci.Project.ID = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), projectData.ID})
 	nci.Project.Name = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), projectData.Name})
 	nci.Project.Path = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH"), projectData.Path})
 	nci.Project.Slug = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH_SLUG"), projectData.Slug})
@@ -94,6 +95,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	nci.Project.DefaultBranch = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_DEFAULT_BRANCH"), projectData.DefaultBranch})
 	nci.Project.Url = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_URL"), projectData.Url})
 	nci.Project.Dir = projectDir
+	nci.Project.UID = api.GetProjectUID(nci.Repository, nci.Project)
 
 	// flags
 	if _, ok := env["CI_DEPLOY_FREEZE"]; ok {

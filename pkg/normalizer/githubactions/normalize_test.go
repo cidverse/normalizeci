@@ -85,10 +85,27 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	})
 
 	assert.NoError(t, err)
+	assert.Equal(t, "205438004", normalized.Project.ID)
 	assert.Equal(t, "normalizeci", normalized.Project.Name)
 	assert.Equal(t, "cidverse/normalizeci", normalized.Project.Path)
 	assert.Equal(t, "cidverse-normalizeci", normalized.Project.Slug)
+	assert.Equal(t, "github-com-205438004", normalized.Project.UID)
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized.Project.Url)
+}
+
+func TestNormalizer_Normalize_Repository(t *testing.T) {
+	nciutil.MockVCSClient(t)
+
+	var normalizer = NewNormalizer()
+	var normalized, err = normalizer.Normalize(map[string]string{
+		"GITHUB_SERVER_URL": "https://github.com",
+		"GITHUB_REPOSITORY": "cidverse/cienvsamples",
+	})
+
+	assert.NoError(t, err)
+	assert.Equal(t, "github", normalized.Repository.HostType)
+	assert.Equal(t, "github.com", normalized.Repository.HostServer)
+	assert.Equal(t, "github-com", normalized.Repository.HostServerSlug)
 }
 
 func TestNormalizer_Normalize_WorkflowAPI(t *testing.T) {

@@ -17,7 +17,7 @@ func TestGetProjectDetailsGitLab(t *testing.T) {
 
 	details, _ := GetProjectDetailsGitLab("gitlab.com", "https://gitlab.com/PhilippHeuer/events4j.git")
 
-	assert.Equal(t, "6364957", details.Id)
+	assert.Equal(t, "6364957", details.ID)
 	assert.Equal(t, "Events4J", details.Name)
 	assert.Equal(t, "philipp-heuer-events4j", details.Slug)
 	assert.Equal(t, "Java Event Dispatcher / Consumer", details.Description)

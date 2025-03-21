@@ -40,15 +40,17 @@ type Pipeline struct {
 }
 
 type Repository struct {
-	Kind       string `env:"NCI_REPOSITORY_KIND" validate:"required"`        //  The used version control system. (git)
-	Remote     string `env:"NCI_REPOSITORY_REMOTE" validate:"required"`      // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
-	HostServer string `env:"NCI_REPOSITORY_HOST_SERVER" validate:"required"` // Host of the git repository server, for example github.com
-	HostType   string `env:"NCI_REPOSITORY_HOST_TYPE" validate:"required"`   // Type of the git repository server (github, gitlab, ...)
-	Status     string `env:"NCI_REPOSITORY_STATUS" validate:"required"`      // The repository status (dirty, clean)
+	Kind           string `env:"NCI_REPOSITORY_KIND" validate:"required"`                     //  The used version control system. (git)
+	Remote         string `env:"NCI_REPOSITORY_REMOTE" validate:"required"`                   // The remote url pointing at the repository. (git remote url or `local` if no remote was found)
+	HostServer     string `env:"NCI_REPOSITORY_HOST_SERVER" validate:"required"`              // Host of the git repository server, for example github.com
+	HostServerSlug string `env:"NCI_REPOSITORY_HOST_SERVER_SLUG" validate:"required,is-slug"` // Host of the git repository server, for example github-com
+	HostType       string `env:"NCI_REPOSITORY_HOST_TYPE" validate:"required"`                // Type of the git repository server (github, gitlab, ...)
+	Status         string `env:"NCI_REPOSITORY_STATUS" validate:"required"`                   // The repository status (dirty, clean)
 }
 
 type Project struct {
-	Id            string `env:"NCI_PROJECT_ID" validate:"required"`           // Unique project id, can be used in deployments.
+	UID           string `env:"NCI_PROJECT_UID" validate:"required,is-slug"`  // UID returns a unique identifier by combining the host slug and project id. (e.g. github-com-123456)
+	ID            string `env:"NCI_PROJECT_ID" validate:"required"`           // Unique project id, can be used in deployments.
 	Name          string `env:"NCI_PROJECT_NAME" validate:"required"`         // Unique project id, can be used in deployments.
 	Path          string `env:"NCI_PROJECT_PATH" validate:"required"`         // Path of the Namespace and the project
 	Slug          string `env:"NCI_PROJECT_SLUG" validate:"required,is-slug"` // Project slug, that can be used in deployments.

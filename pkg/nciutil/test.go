@@ -22,7 +22,7 @@ func MockVCSClient(t *testing.T) vcsapi.Client {
 
 	vcs.MockClient = mockClient
 	projectdetails.MockProjectDetails = &v1.Project{
-		Id:            "205438004",
+		ID:            "205438004",
 		Name:          "normalizeci",
 		Path:          "cidverse/normalizeci",
 		Slug:          "cidverse-normalizeci",

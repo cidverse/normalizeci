@@ -50,7 +50,7 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (v1.Project, error)
 		return result, repoErr
 	}
 
-	result.Id = strconv.FormatInt(ptr.Value(repo.ID), 10)
+	result.ID = strconv.FormatInt(ptr.Value(repo.ID), 10)
 	result.Name = ptr.Value(repo.Name)
 	result.Path = ptr.Value(repo.FullName)
 	result.Slug = slug.Make(ptr.Value(repo.FullName))

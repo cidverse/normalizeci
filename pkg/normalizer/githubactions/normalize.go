@@ -12,6 +12,7 @@ import (
 	"github.com/cidverse/normalizeci/pkg/ncispec/common"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
+	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/google/go-github/v70/github"
@@ -79,6 +80,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	nci.Project = projectData
 	nci.Project.Url = nciutil.GetValueFromMap(env, "GITHUB_SERVER_URL") + "/" + nciutil.GetValueFromMap(env, "GITHUB_REPOSITORY")
 	nci.Project.Dir = projectDir
+	nci.Project.UID = api.GetProjectUID(nci.Repository, nci.Project)
 
 	// flags
 	nci.Flags.DeployFreeze = "false"

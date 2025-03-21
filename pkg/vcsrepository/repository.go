@@ -40,6 +40,7 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	result.Repository.Kind = client.VCSType()
 	result.Repository.Remote = client.VCSRemote()
 	result.Repository.HostServer = client.VCSHostServer(result.Repository.Remote)
+	result.Repository.HostServerSlug = slug.Make(result.Repository.HostServer)
 	result.Repository.HostType = client.VCSHostType(result.Repository.HostServer)
 
 	// repository head

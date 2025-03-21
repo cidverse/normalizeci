@@ -99,7 +99,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	})
 
 	assert.NoError(t, err)
-	assert.Equal(t, "35974876", normalized.Project.Id)
+	assert.Equal(t, "35974876", normalized.Project.ID)
 	assert.Equal(t, "cienvsamples", normalized.Project.Name)
 	assert.Equal(t, "cidverse/cienvsamples", normalized.Project.Path)
 	assert.Equal(t, "cidverse-cienvsamples", normalized.Project.Slug)
