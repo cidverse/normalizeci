@@ -108,5 +108,9 @@ func GetProjectUID(repository v1.Repository, project v1.Project) string {
 		return input
 	}
 
+	if repository.HostServerSlug == "" || project.ID == "" {
+		return ""
+	}
+
 	return fmt.Sprintf("%s-%s", repository.HostServerSlug, project.ID)
 }
