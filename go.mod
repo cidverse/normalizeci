@@ -9,7 +9,7 @@ require (
 	github.com/cidverse/cidverseutils/zerologconfig v0.1.1
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
 	github.com/cidverse/go-vcs v0.0.0-20250227174958-f70c3e161d9e
-	github.com/go-playground/validator/v10 v10.25.0
+	github.com/go-playground/validator/v10 v10.26.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gosimple/slug v1.15.0
 	github.com/jarcoal/httpmock v1.3.1
