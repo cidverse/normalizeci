@@ -31,7 +31,7 @@ func denormalizeCmd() *cobra.Command {
 			// targets
 			if len(targets) > 0 {
 				for _, target := range targets {
-					denormalized, err := normalizer.Denormalize(target, normalized)
+					denormalized, err := normalizer.Denormalize(normalizer.Options{}, target, normalized)
 					if err != nil {
 						log.Fatal().Err(err).Str("target", target).Msg("denormalization failed")
 					}

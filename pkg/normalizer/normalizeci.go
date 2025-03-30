@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/cidverse/go-vcs/vcsutil"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/normalizer/appveyor"
@@ -18,25 +19,42 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// holds all known normalizers
-var normalizers []api.Normalizer
+type Options struct {
+	ProjectDir string
+}
 
-func init() {
-	normalizers = append(normalizers, appveyor.NewNormalizer())
-	normalizers = append(normalizers, azuredevops.NewNormalizer())
-	normalizers = append(normalizers, circleci.NewNormalizer())
-	normalizers = append(normalizers, githubactions.NewNormalizer())
-	normalizers = append(normalizers, gitlabci.NewNormalizer())
-	normalizers = append(normalizers, localgit.NewNormalizer())
+func GetNormalizers(opts Options) ([]api.Normalizer, error) {
+	if opts.ProjectDir != "" {
+		projectDir, err := vcsutil.FindProjectDirectoryFromWorkDir()
+		if err != nil {
+			return nil, fmt.Errorf("failed to find project directory: %v", err)
+		}
+
+		opts.ProjectDir = projectDir
+	}
+
+	return []api.Normalizer{
+		appveyor.NewNormalizer(),
+		azuredevops.NewNormalizer(),
+		circleci.NewNormalizer(),
+		githubactions.NewNormalizer(),
+		gitlabci.NewNormalizer(),
+		localgit.NewNormalizer(opts.ProjectDir),
+	}, nil
 }
 
 func Normalize() (v1.Spec, error) {
 	env := api.GetMachineEnvironment()
-	return NormalizeEnv(env)
+	return NormalizeEnv(Options{}, env)
 }
 
 // NormalizeEnv executes the ci normalization for all supported services
-func NormalizeEnv(env map[string]string) (v1.Spec, error) {
+func NormalizeEnv(opts Options, env map[string]string) (v1.Spec, error) {
+	normalizers, err := GetNormalizers(opts)
+	if err != nil {
+		return v1.Spec{}, err
+	}
+
 	// normalize (iterate over all supported systems and normalize variables if possible)
 	for _, normalizer := range normalizers {
 		if normalizer.Check(env) {
@@ -52,7 +70,12 @@ func NormalizeEnv(env map[string]string) (v1.Spec, error) {
 }
 
 // Denormalize will generate ci variables for the target service
-func Denormalize(target string, env v1.Spec) (map[string]string, error) {
+func Denormalize(opts Options, target string, env v1.Spec) (map[string]string, error) {
+	normalizers, err := GetNormalizers(opts)
+	if err != nil {
+		return nil, err
+	}
+
 	// denormalize
 	for _, normalizer := range normalizers {
 		if target == normalizer.GetSlug() {

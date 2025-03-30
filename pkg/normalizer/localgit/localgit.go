@@ -5,7 +5,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/cidverse/go-vcs/vcsutil"
 	"github.com/cidverse/normalizeci/pkg/ncispec/common"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/nciutil"
@@ -19,6 +18,7 @@ type Normalizer struct {
 	version string
 	name    string
 	slug    string
+	projectDir     string
 }
 
 // GetName returns the name of the normalizer
@@ -61,11 +61,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	nci.Pipeline.Attempt = "1"
 
 	// repository
-	projectDir, err := vcsutil.FindProjectDirectoryFromWorkDir()
-	if err != nil {
-		return nci, fmt.Errorf("failed to find project directory: %v", err)
-	}
-	vcsData, err := vcsrepository.GetVCSRepositoryInformation(projectDir)
+	vcsData, err := vcsrepository.GetVCSRepositoryInformation(n.projectDir)
 	if err != nil {
 		return nci, fmt.Errorf("failed to get repository details: %v", err)
 	}
@@ -78,7 +74,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 		return nci, fmt.Errorf("failed to get project details: %v", err)
 	}
 	nci.Project = projectData
-	nci.Project.Dir = projectDir
+	nci.Project.Dir = n.projectDir
 	nci.Project.UID = api.GetProjectUID(nci.Repository, nci.Project)
 
 	// flags
@@ -92,11 +88,12 @@ func (n Normalizer) Denormalize(spec v1.Spec) (map[string]string, error) {
 }
 
 // NewNormalizer gets an instance of the normalizer
-func NewNormalizer() Normalizer {
+func NewNormalizer(projectDir string) Normalizer {
 	entity := Normalizer{
 		version: "0.3.0",
 		name:    "Local Git Repository",
 		slug:    "local-git",
+		projectDir: projectDir,
 	}
 
 	return entity

@@ -17,8 +17,8 @@ github.com/cidverse/cidverseutils/zerologconfig v0.1.1 h1:+DU7kB7rNqPLIYIZtPtvHk
 github.com/cidverse/cidverseutils/zerologconfig v0.1.1/go.mod h1:ax/tFT2mPv9hNkNkcSyilwuvwzxw6v93R0GxMKEKsZg=
 github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf h1:/DLETx+e0J8mWZyOOK8dAOMrdHUpJo8KQRuMt1IymtE=
 github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf/go.mod h1:nvQPqid2KB17xXiiFp/Fhd+dO5lusCSuBQtOXfsd+mk=
-github.com/cidverse/go-vcs v0.0.0-20250227174958-f70c3e161d9e h1:Lf7Zfj1PZBtc0xRu3W2LJJqG5t12P5OopKW2JPXSIM0=
-github.com/cidverse/go-vcs v0.0.0-20250227174958-f70c3e161d9e/go.mod h1:lvQ6FBaZypoSSxoQKxb7Z3kAqEAfLEzkkBzNCmF5dCg=
+github.com/cidverse/go-vcs v0.0.0-20250322081629-e413fe0cd7a4 h1:PehhoUIVjeTMI6fQFSbTt8YqdJ3uhC1gAiBQR2Vt0HA=
+github.com/cidverse/go-vcs v0.0.0-20250322081629-e413fe0cd7a4/go.mod h1:Gokt4QEURwB6169UMzmGKqXRFCng7OiO84CdUrLynqU=
 github.com/cloudflare/circl v1.6.0 h1:cr5JKic4HI+LkINy2lg3W2jF8sHCVTBncJr5gIIq7qk=
 github.com/cloudflare/circl v1.6.0/go.mod h1:uddAzsPgqdMAYatqJ0lsjX1oECcQLIlRpzZh3pJrofs=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
@@ -143,8 +143,8 @@ golang.org/x/crypto v0.36.0/go.mod h1:Y4J0ReaxCR1IMaabaSMugxJES1EpwhBHhv2bDHklZv
 golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 h1:2dVuKD2vS7b0QIHQbpyTISPd0LeHDbnYEryqj5Q1ug8=
 golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56/go.mod h1:M4RDyNAINzryxdtnbRXRL/OHtkFuWGRjvuhBJpk2IlY=
 golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
-golang.org/x/net v0.37.0 h1:1zLorHbz+LYj7MQlSf1+2tPIIgibq2eL5xkrGk6f+2c=
-golang.org/x/net v0.37.0/go.mod h1:ivrbrMbzFq5J41QOQh0siUuly180yBYtLp+CKbEaFx8=
+golang.org/x/net v0.38.0 h1:vRMAPTMaeGqVhG5QyLJHqNDwecKTomGeqbnfZyKlBI8=
+golang.org/x/net v0.38.0/go.mod h1:ivrbrMbzFq5J41QOQh0siUuly180yBYtLp+CKbEaFx8=
 golang.org/x/oauth2 v0.28.0 h1:CrgCKl8PPAVtLnU3c+EDw6x11699EWlsDeWNWKdIOkc=
 golang.org/x/oauth2 v0.28.0/go.mod h1:onh5ek6nERTohokkhCD/y2cV4Do3fxFHFuAejCkRWT8=
 golang.org/x/sys v0.0.0-20191026070338-33540a1f6037/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

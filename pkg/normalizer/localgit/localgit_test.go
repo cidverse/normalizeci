@@ -12,7 +12,7 @@ import (
 var testEnvironment []string
 
 func TestEnvironmentCheck(t *testing.T) {
-	var normalizer = NewNormalizer()
+	var normalizer = NewNormalizer("")
 	if normalizer.Check(api.GetEnvironmentFrom(testEnvironment)) != true {
 		t.Errorf("Check should succeed, since this project is a git repository")
 	}
@@ -21,7 +21,7 @@ func TestEnvironmentCheck(t *testing.T) {
 func TestNormalizer_Normalize_Common(t *testing.T) {
 	nciutil.MockVCSClient(t)
 
-	var normalizer = NewNormalizer()
+	var normalizer = NewNormalizer("")
 	var normalized, err = normalizer.Normalize(map[string]string{})
 
 	assert.NoError(t, err)
@@ -34,7 +34,7 @@ func TestNormalizer_Normalize_Common(t *testing.T) {
 func TestNormalizer_Normalize_Worker(t *testing.T) {
 	nciutil.MockVCSClient(t)
 
-	var normalizer = NewNormalizer()
+	var normalizer = NewNormalizer("")
 	var normalized, err = normalizer.Normalize(map[string]string{})
 
 	assert.NoError(t, err)
@@ -49,7 +49,7 @@ func TestNormalizer_Normalize_Worker(t *testing.T) {
 func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 	nciutil.MockVCSClient(t)
 
-	var normalizer = NewNormalizer()
+	var normalizer = NewNormalizer("")
 	var normalized, err = normalizer.Normalize(map[string]string{})
 
 	assert.NoError(t, err)

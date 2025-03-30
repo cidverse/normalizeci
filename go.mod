@@ -8,7 +8,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cidverse/cidverseutils/zerologconfig v0.1.1
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
-	github.com/cidverse/go-vcs v0.0.0-20250227174958-f70c3e161d9e
+	github.com/cidverse/go-vcs v0.0.0-20250322081629-e413fe0cd7a4
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gosimple/slug v1.15.0
@@ -55,7 +55,7 @@ require (
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
