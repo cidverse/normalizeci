@@ -26,7 +26,7 @@ type Options struct {
 
 func GetNormalizers(opts Options) ([]api.Normalizer, error) {
 	// try to find the project directory if not set
-	if opts.ProjectDir != "" {
+	if opts.ProjectDir == "" {
 		projectDir, err := vcsutil.FindProjectDirectoryFromWorkDir()
 		if err != nil {
 			return nil, fmt.Errorf("failed to find project directory: %v", err)
