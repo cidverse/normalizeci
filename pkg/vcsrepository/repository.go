@@ -86,7 +86,7 @@ func GetVCSRepositoryInformation(dir string) (RepositoryInformation, error) {
 	// commit info
 	commit, commitErr := client.FindCommitByHash(head.Hash, false)
 	if commitErr != nil {
-		return result, fmt.Errorf("failed to get commit by hash: %w", commitErr)
+		return result, fmt.Errorf("commit hash [%s] in repo [%s] not found: %w", dir, head.Hash, commitErr)
 	}
 
 	result.Commit.Hash = commit.Hash

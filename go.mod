@@ -6,7 +6,7 @@ toolchain go1.24.0
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/cidverse/cidverseutils/zerologconfig v0.1.1
+	github.com/cidverse/cidverseutils/zerologconfig v0.1.2-0.20250329161944-cee6e2f5f53c
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
 	github.com/cidverse/go-vcs v0.0.0-20250322081629-e413fe0cd7a4
 	github.com/go-playground/validator/v10 v10.26.0
@@ -49,6 +49,9 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/pjbgf/sha1cd v0.3.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/samber/lo v1.49.1 // indirect
+	github.com/samber/slog-common v0.18.1 // indirect
+	github.com/samber/slog-zerolog/v2 v2.7.3 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect

@@ -3,6 +3,7 @@ package normalizer
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"runtime"
 	"strings"
@@ -16,19 +17,21 @@ import (
 	"github.com/cidverse/normalizeci/pkg/normalizer/githubactions"
 	"github.com/cidverse/normalizeci/pkg/normalizer/gitlabci"
 	"github.com/cidverse/normalizeci/pkg/normalizer/localgit"
-	"github.com/rs/zerolog/log"
 )
 
 type Options struct {
+	Env        map[string]string
 	ProjectDir string
 }
 
 func GetNormalizers(opts Options) ([]api.Normalizer, error) {
+	// try to find the project directory if not set
 	if opts.ProjectDir != "" {
 		projectDir, err := vcsutil.FindProjectDirectoryFromWorkDir()
 		if err != nil {
 			return nil, fmt.Errorf("failed to find project directory: %v", err)
 		}
+		slog.With("dir", projectDir).Debug("Automatically detected and set project directory")
 
 		opts.ProjectDir = projectDir
 	}
@@ -44,25 +47,28 @@ func GetNormalizers(opts Options) ([]api.Normalizer, error) {
 }
 
 func Normalize() (v1.Spec, error) {
-	env := api.GetMachineEnvironment()
-	return NormalizeEnv(Options{}, env)
+	return NormalizeEnv(Options{})
 }
 
 // NormalizeEnv executes the ci normalization for all supported services
-func NormalizeEnv(opts Options, env map[string]string) (v1.Spec, error) {
+func NormalizeEnv(opts Options) (v1.Spec, error) {
 	normalizers, err := GetNormalizers(opts)
 	if err != nil {
 		return v1.Spec{}, err
 	}
 
+	// default to machine environment
+	if opts.Env == nil {
+		opts.Env = api.GetMachineEnvironment()
+	}
+
 	// normalize (iterate over all supported systems and normalize variables if possible)
 	for _, normalizer := range normalizers {
-		if normalizer.Check(env) {
-			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
-			normalized, err := normalizer.Normalize(env)
-			return normalized, err
+		if normalizer.Check(opts.Env) {
+			slog.With("normalizer", normalizer.GetName()).With("dir", opts.ProjectDir).Debug("Matched normalizer, not checking for any other matches.")
+			return normalizer.Normalize(opts.Env)
 		} else {
-			log.Debug().Msg("Didn't match in " + normalizer.GetName())
+			slog.With("normalizer", normalizer.GetName()).With("dir", opts.ProjectDir).Debug("Skipping normalizer, check failed")
 		}
 	}
 
@@ -76,14 +82,18 @@ func Denormalize(opts Options, target string, env v1.Spec) (map[string]string, e
 		return nil, err
 	}
 
+	// default to machine environment
+	if opts.Env == nil {
+		opts.Env = api.GetMachineEnvironment()
+	}
+
 	// denormalize
 	for _, normalizer := range normalizers {
 		if target == normalizer.GetSlug() {
-			log.Debug().Msg("Matched " + normalizer.GetName() + ", not checking for any other matches.")
-			normalized, err := normalizer.Denormalize(env)
-			return normalized, err
+			slog.With("normalizer", normalizer.GetName()).With("dir", opts.ProjectDir).Debug("Matched normalizer, not checking for any other matches.")
+			return normalizer.Denormalize(env)
 		} else {
-			log.Debug().Msg("Didn't match in " + normalizer.GetName())
+			slog.With("normalizer", normalizer.GetName()).With("dir", opts.ProjectDir).Debug("Skipping normalizer, check failed")
 		}
 	}
 
@@ -117,7 +127,7 @@ func SetProcessEnvironment(normalized map[string]string) {
 	for key, element := range normalized {
 		err := os.Setenv(key, element)
 		if err != nil {
-			log.Err(err).Str("key", key).Str("value", element).Msg("failed to set env property")
+			slog.With("key", key).With("value", element).Error("failed to set env property")
 		}
 	}
 }

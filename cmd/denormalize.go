@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/cidverse/normalizeci/pkg/normalizer"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,8 @@ func denormalizeCmd() *cobra.Command {
 			// run normalization
 			var normalized, err = normalizer.Normalize()
 			if err != nil {
-				log.Fatal().Err(err).Msg("normalization failed")
+				slog.With("err", err).Error("failed to normalize CI environment")
+				os.Exit(1)
 			}
 
 			// output
@@ -33,7 +34,8 @@ func denormalizeCmd() *cobra.Command {
 				for _, target := range targets {
 					denormalized, err := normalizer.Denormalize(normalizer.Options{}, target, normalized)
 					if err != nil {
-						log.Fatal().Err(err).Str("target", target).Msg("denormalization failed")
+						slog.With("err", err).With("target", target).Error("failed to denormalize CI environment")
+						os.Exit(1)
 					}
 
 					for key, value := range denormalized {
@@ -48,7 +50,8 @@ func denormalizeCmd() *cobra.Command {
 			// content?
 			content, err := normalizer.FormatEnvironment(outputEnv, format)
 			if err != nil {
-				log.Fatal().Str("format", format).Str("supported", "export,powershell,cmd").Msg("unsupported format!")
+				slog.With("format", format).With("supported-formats", "export,powershell,cmd").Error("unsupported format!")
+				os.Exit(1)
 			}
 
 			// validate?

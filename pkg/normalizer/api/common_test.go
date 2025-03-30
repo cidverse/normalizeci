@@ -2,13 +2,14 @@ package api
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetHostFromURL(t *testing.T) {
-	host := GetHostFromURL("http://github.com/user/repository")
-	if host != "github.com" {
-		t.Errorf("Host should be github.com, not " + host + "!")
-	}
+	host, err := GetHostFromURL("http://github.com/user/repository")
+	assert.NoError(t, err)
+	assert.Equal(t, "github.com", host)
 }
 
 func TestGetDirectoryNameFromPath(t *testing.T) {

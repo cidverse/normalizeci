@@ -3,6 +3,7 @@ package githubactions
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"os"
 	"runtime"
 	"strings"
@@ -17,7 +18,6 @@ import (
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
 	"github.com/google/go-github/v70/github"
 	"github.com/gosimple/slug"
-	"github.com/rs/zerolog/log"
 )
 
 // Normalize normalizes the environment variables into the common format
@@ -114,9 +114,9 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 		if dispatchEvent, ok := githubEvent.(*github.WorkflowDispatchEvent); ok {
 			if dispatchEvent.Inputs != nil {
 				var inputs map[string]interface{}
-				err := json.Unmarshal(dispatchEvent.Inputs, &inputs)
+				err = json.Unmarshal(dispatchEvent.Inputs, &inputs)
 				if err != nil {
-					log.Error().Err(err).Msg("failed to parse inputs in github workflow dispatch event")
+					slog.With("err", err).Error("failed to unmarshal github workflow dispatch event")
 				}
 
 				for key, value := range inputs {

@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
-	"github.com/rs/zerolog/log"
 )
 
 // Normalizer is a common interface to work with all normalizers
@@ -82,14 +81,14 @@ func GetDirectoryNameFromPath(path string) string {
 	return parent
 }
 
-// GetHostFromURL gets the host from an url
-func GetHostFromURL(addr string) string {
+// GetHostFromURL gets the host from a url
+func GetHostFromURL(addr string) (string, error) {
 	u, err := url.Parse(addr)
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to get host part from url")
+		return "", fmt.Errorf("failed to parse URL: %w", err)
 	}
 
-	return u.Host
+	return u.Host, nil
 }
 
 func ToEnvName(input string) string {
