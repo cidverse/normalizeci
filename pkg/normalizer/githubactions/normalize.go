@@ -48,10 +48,12 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 
 	nci.Pipeline.StageName = env["GITHUB_WORKFLOW"]
 	nci.Pipeline.StageSlug = slug.Make(env["GITHUB_WORKFLOW"])
+	nci.Pipeline.JobId = fmt.Sprintf("%s-%s", env["GITHUB_RUN_ID"], env["GITHUB_JOB"])
 	nci.Pipeline.JobName = env["GITHUB_ACTION"]
 	nci.Pipeline.JobSlug = slug.Make(env["GITHUB_ACTION"])
 	nci.Pipeline.JobStartedAt = time.Now().UTC().Format(time.RFC3339)
 	nci.Pipeline.Attempt = env["GITHUB_RUN_ATTEMPT"]
+	nci.Pipeline.ConfigFile = env["GITHUB_WORKFLOW_REF"]
 	nci.Pipeline.Url = fmt.Sprintf("%s/%s/actions/runs/%s", env["GITHUB_SERVER_URL"], env["GITHUB_REPOSITORY"], env["GITHUB_RUN_ID"])
 
 	// pull request (fallback in case there are issues with the event json)

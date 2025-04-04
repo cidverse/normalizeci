@@ -8,7 +8,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cidverse/cidverseutils/zerologconfig v0.1.2-0.20250329161944-cee6e2f5f53c
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
-	github.com/cidverse/go-vcs v0.0.0-20250322081629-e413fe0cd7a4
+	github.com/cidverse/go-vcs v0.0.0-20250401201942-98fa0819aba6
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gosimple/slug v1.15.0

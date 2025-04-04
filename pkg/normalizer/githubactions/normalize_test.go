@@ -59,6 +59,7 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 		"GITHUB_WORKFLOW":    "ci",
 		"GITHUB_ACTION":      "__run",
 		"GITHUB_RUN_ATTEMPT": "1",
+		"GITHUB_JOB":         "build",
 		"GITHUB_SERVER_URL":  "https://github.com",
 		"GITHUB_REPOSITORY":  "cidverse/cienvsamples",
 	})
@@ -68,10 +69,12 @@ func TestNormalizer_Normalize_Pipeline(t *testing.T) {
 	assert.Equal(t, "push", normalized.Pipeline.Trigger)
 	assert.Equal(t, "ci", normalized.Pipeline.StageName)
 	assert.Equal(t, "ci", normalized.Pipeline.StageSlug)
+	assert.Equal(t, "2303126757-build", normalized.Pipeline.JobId)
 	assert.Equal(t, "__run", normalized.Pipeline.JobName)
 	assert.Equal(t, "run", normalized.Pipeline.JobSlug)
 	assert.NotNil(t, normalized.Pipeline.JobStartedAt)
 	assert.Equal(t, "1", normalized.Pipeline.Attempt)
+	assert.Equal(t, ".github/workflows/ci.yml", normalized.Pipeline.ConfigFile)
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples/actions/runs/2303126757", normalized.Pipeline.Url)
 }
 
