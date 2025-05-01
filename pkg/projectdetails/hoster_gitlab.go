@@ -54,6 +54,8 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error)
 	result.Name = project.Name
 	result.Path = project.NameWithNamespace
 	result.Slug = slug.Make(project.NameWithNamespace)
+	result.Namespace = project.Namespace.Path
+	result.NamespaceSlug = slug.Make(project.Namespace.Path)
 	result.Description = project.Description
 	result.Topics = strings.Join(project.TagList, ",")
 	result.IssueUrl = project.WebURL + "/-/issues/{ID}"

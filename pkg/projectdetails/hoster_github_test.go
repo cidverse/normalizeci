@@ -19,6 +19,8 @@ func TestGetProjectDetailsGitHub(t *testing.T) {
 	assert.Equal(t, "205438004", details.ID)
 	assert.Equal(t, "normalizeci", details.Name)
 	assert.Equal(t, "cidverse-normalizeci", details.Slug)
+	assert.Equal(t, "cidverse", details.Namespace)
+	assert.Equal(t, "cidverse", details.NamespaceSlug)
 	assert.Equal(t, "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.", details.Description)
 	assert.Equal(t, "cicd,normalization", details.Topics)
 	assert.Equal(t, "https://api.github.com/repos/cidverse/normalizeci/issues/{ID}", details.IssueUrl)

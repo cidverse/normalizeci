@@ -49,19 +49,21 @@ type Repository struct {
 }
 
 type Project struct {
-	UID           string `env:"NCI_PROJECT_UID" validate:"required,is-slug"`  // UID returns a unique identifier by combining the host slug and project id. (e.g. github-com-123456)
-	ID            string `env:"NCI_PROJECT_ID" validate:"required"`           // Unique project id, can be used in deployments.
-	Name          string `env:"NCI_PROJECT_NAME" validate:"required"`         // Unique project id, can be used in deployments.
-	Path          string `env:"NCI_PROJECT_PATH" validate:"required"`         // Path of the Namespace and the project
-	Slug          string `env:"NCI_PROJECT_SLUG" validate:"required,is-slug"` // Project slug, that can be used in deployments.
-	Description   string `env:"NCI_PROJECT_DESCRIPTION"`                      // The project description.
-	Topics        string `env:"NCI_PROJECT_TOPICS"`                           // The topics / tags of the project.
-	IssueUrl      string `env:"NCI_PROJECT_ISSUE_URL"`                        // A template for links to issues, contains a `{ID}` placeholder.
-	Stargazers    string `env:"NCI_PROJECT_STARGAZERS"`                       // The number of people who `follow` / `bookmarked` the project.
-	Forks         string `env:"NCI_PROJECT_FORKS"`                            // The number of forks of the project.
-	Dir           string `env:"NCI_PROJECT_DIR" validate:"required"`          // Project directory on the local filesystem.
-	Url           string `env:"NCI_PROJECT_URL"`                              // Project URL
-	DefaultBranch string `env:"NCI_PROJECT_DEFAULT_BRANCH"`                   // The default branch
+	UID           string `env:"NCI_PROJECT_UID" validate:"required,is-slug"`            // UID returns a unique identifier by combining the host slug and project id. (e.g. github-com-123456)
+	ID            string `env:"NCI_PROJECT_ID" validate:"required"`                     // Unique project id, can be used in deployments.
+	Name          string `env:"NCI_PROJECT_NAME" validate:"required"`                   // Unique project id, can be used in deployments.
+	Path          string `env:"NCI_PROJECT_PATH" validate:"required"`                   // Path of the Namespace and the project
+	Slug          string `env:"NCI_PROJECT_SLUG" validate:"required,is-slug"`           // Project slug, that can be used in deployments.
+	Namespace     string `env:"NCI_PROJECT_NAMESPACE" validate:"required"`              // Namespace returns the name of the namespace.
+	NamespaceSlug string `env:"NCI_PROJECT_NAMESPACE_SLUG" validate:"required,is-slug"` // NamespaceSlug returns the slug of the namespace.
+	Description   string `env:"NCI_PROJECT_DESCRIPTION"`                                // The project description.
+	Topics        string `env:"NCI_PROJECT_TOPICS"`                                     // The topics / tags of the project.
+	IssueUrl      string `env:"NCI_PROJECT_ISSUE_URL"`                                  // A template for links to issues, contains a `{ID}` placeholder.
+	Stargazers    string `env:"NCI_PROJECT_STARGAZERS"`                                 // The number of people who `follow` / `bookmarked` the project.
+	Forks         string `env:"NCI_PROJECT_FORKS"`                                      // The number of forks of the project.
+	Dir           string `env:"NCI_PROJECT_DIR" validate:"required"`                    // Project directory on the local filesystem.
+	Url           string `env:"NCI_PROJECT_URL"`                                        // Project URL
+	DefaultBranch string `env:"NCI_PROJECT_DEFAULT_BRANCH"`                             // The default branch
 }
 
 type Commit struct {
