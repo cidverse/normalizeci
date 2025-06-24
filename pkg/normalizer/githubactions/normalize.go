@@ -16,7 +16,7 @@ import (
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/cidverse/normalizeci/pkg/projectdetails"
 	"github.com/cidverse/normalizeci/pkg/vcsrepository"
-	"github.com/google/go-github/v72/github"
+	"github.com/google/go-github/v73/github"
 	"github.com/gosimple/slug"
 )
 
