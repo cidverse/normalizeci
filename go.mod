@@ -17,7 +17,7 @@ require (
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
-	gitlab.com/gitlab-org/api/client-go v0.131.0
+	gitlab.com/gitlab-org/api/client-go v0.133.0
 	golang.org/x/oauth2 v0.30.0
 )
 
@@ -61,7 +61,7 @@ require (
 	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
-	golang.org/x/time v0.11.0 // indirect
+	golang.org/x/time v0.12.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
