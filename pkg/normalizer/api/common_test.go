@@ -17,16 +17,16 @@ func TestGetDirectoryNameFromPath(t *testing.T) {
 
 	dirName = GetDirectoryNameFromPath("/home/arnie/amelia.jpg")
 	if dirName != "arnie" {
-		t.Errorf(dirName + "should be arnie!")
+		t.Errorf("%s should be arnie!", dirName)
 	}
 
 	dirName = GetDirectoryNameFromPath("/mnt/photos/")
 	if dirName != "photos" {
-		t.Errorf(dirName + "should be photos!")
+		t.Errorf("%s should be photos!", dirName)
 	}
 
 	dirName = GetDirectoryNameFromPath("/usr/local//go")
 	if dirName != "local" {
-		t.Errorf(dirName + "should be local!")
+		t.Errorf("%s should be local!", dirName)
 	}
 }
