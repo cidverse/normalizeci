@@ -1,0 +1,2908 @@
+{
+  "workflows": {
+    "Nightly": {
+      "version": "0.5.0",
+      "name": "Nightly",
+      "name_slug": "nightly",
+      "job_timeout": 10,
+      "default_branch": "main",
+      "container_runtime": "podman",
+      "workflow_key": "nightly",
+      "workflow_config": {
+        "type": "nightly",
+        "trigger_manual": true,
+        "trigger_cron": true,
+        "trigger_cron_schedule": "55 1 * * 6",
+        "environment_pattern": "nightly-.*"
+      },
+      "plan": {
+        "name": "main",
+        "stages": [
+          "build",
+          "test",
+          "lint",
+          "scan"
+        ],
+        "steps": [
+          {
+            "id": "0",
+            "name": "go-build [github.com/cidverse/normalizeci]",
+            "slug": "go-build-github-com-cidverse-normalizeci",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/go-build",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "binary"
+                }
+              ]
+            },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "go-test [github.com/cidverse/normalizeci]",
+            "slug": "go-test-github-com-cidverse-normalizeci",
+            "stage": "test",
+            "scope": "module",
+            "action": "builtin://actions/go-test",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                },
+                {
+                  "name": "go-junit-report",
+                  "constraint": "\u003e= 0.0.0-0"
+                },
+                {
+                  "name": "gocover-cobertura",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "go-coverage"
+                },
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "order": 1
+          },
+          {
+            "id": "2",
+            "name": "golangci-lint [github.com/cidverse/normalizeci]",
+            "slug": "golangci-lint-github-com-cidverse-normalizeci",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/golangci-lint",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "golangci-lint",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 2
+          },
+          {
+            "id": "3",
+            "name": "gitleaks-scan",
+            "slug": "gitleaks-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/gitleaks-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "gitleaks",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 3
+          },
+          {
+            "id": "4",
+            "name": "semgrep-scan",
+            "slug": "semgrep-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/semgrep-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "SEMGREP_RULES",
+                  "description": "See option --config."
+                },
+                {
+                  "name": "SEMGREP_APP_TOKEN",
+                  "description": "Semgrep AppSec Platform Token",
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "semgrep",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "semgrep.dev:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 4
+          },
+          {
+            "id": "5",
+            "name": "trivyfs-scan",
+            "slug": "trivyfs-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/trivyfs-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "trivy",
+                  "constraint": "=\u003e 0.61.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "mirror.gcr.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 5
+          },
+          {
+            "id": "7",
+            "name": "zizmor-scan",
+            "slug": "zizmor-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/zizmor-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "GH_HOSTNAME",
+                  "description": "GH_HOSTNAME is required for some online audits"
+                },
+                {
+                  "name": "GH_TOKEN",
+                  "description": "GH_TOKEN is required for some online audits"
+                }
+              ],
+              "executables": [
+                {
+                  "name": "zizmor",
+                  "constraint": "=\u003e 1.4.1"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "6",
+            "name": "sonarqube-scan",
+            "slug": "sonarqube-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/sonarqube-scan",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "SONAR_HOST_URL",
+                  "description": "The SonarQube host URL."
+                },
+                {
+                  "name": "SONAR_ORGANIZATION",
+                  "description": "The SonarQube organization."
+                },
+                {
+                  "name": "SONAR_PROJECTKEY",
+                  "description": "The SonarQube project key."
+                },
+                {
+                  "name": "SONAR_DEFAULT_BRANCH",
+                  "description": "The SonarQube default branch."
+                },
+                {
+                  "name": "SONAR_REGION",
+                  "description": "Can be used to switch to the US-based SonarCloud instance."
+                },
+                {
+                  "name": "SONAR_TOKEN",
+                  "description": "The SonarQube authentication token.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "sonar-scanner",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "sonarcloud.io:443"
+                },
+                {
+                  "host": "api.sonarcloud.io:443"
+                },
+                {
+                  "host": "scanner.sonarcloud.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "trx"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 7
+          },
+          {
+            "id": "8",
+            "name": "codecov-upload",
+            "slug": "codecov-upload",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/codecov-upload",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "CODECOV_TOKEN",
+                  "description": "The Codecov token to use for uploading the report.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "codecov",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "ingest.codecov.io:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "api.codecov.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 8
+          }
+        ]
+      },
+      "workflow_dependency": {},
+      "ignore_files": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        ".gitattributes",
+        ".editorconfig",
+        "renovate.json",
+        "CODEOWNERS"
+      ]
+    },
+    "Pull Request": {
+      "version": "0.5.0",
+      "name": "Pull Request",
+      "name_slug": "pull-request",
+      "job_timeout": 10,
+      "default_branch": "main",
+      "container_runtime": "podman",
+      "workflow_key": "pull-request",
+      "workflow_config": {
+        "type": "pull-request",
+        "trigger_pull_request": true,
+        "environment_pattern": "pr-.*"
+      },
+      "plan": {
+        "name": "main",
+        "stages": [
+          "build",
+          "test",
+          "lint",
+          "scan"
+        ],
+        "steps": [
+          {
+            "id": "0",
+            "name": "go-build [github.com/cidverse/normalizeci]",
+            "slug": "go-build-github-com-cidverse-normalizeci",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/go-build",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "binary"
+                }
+              ]
+            },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "go-test [github.com/cidverse/normalizeci]",
+            "slug": "go-test-github-com-cidverse-normalizeci",
+            "stage": "test",
+            "scope": "module",
+            "action": "builtin://actions/go-test",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                },
+                {
+                  "name": "go-junit-report",
+                  "constraint": "\u003e= 0.0.0-0"
+                },
+                {
+                  "name": "gocover-cobertura",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "go-coverage"
+                },
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "order": 1
+          },
+          {
+            "id": "2",
+            "name": "golangci-lint [github.com/cidverse/normalizeci]",
+            "slug": "golangci-lint-github-com-cidverse-normalizeci",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/golangci-lint",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "golangci-lint",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 2
+          },
+          {
+            "id": "3",
+            "name": "gitleaks-scan",
+            "slug": "gitleaks-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/gitleaks-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "gitleaks",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 3
+          },
+          {
+            "id": "4",
+            "name": "semgrep-scan",
+            "slug": "semgrep-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/semgrep-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "SEMGREP_RULES",
+                  "description": "See option --config."
+                },
+                {
+                  "name": "SEMGREP_APP_TOKEN",
+                  "description": "Semgrep AppSec Platform Token",
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "semgrep",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "semgrep.dev:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 4
+          },
+          {
+            "id": "5",
+            "name": "trivyfs-scan",
+            "slug": "trivyfs-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/trivyfs-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "trivy",
+                  "constraint": "=\u003e 0.61.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "mirror.gcr.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 5
+          },
+          {
+            "id": "7",
+            "name": "zizmor-scan",
+            "slug": "zizmor-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/zizmor-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "GH_HOSTNAME",
+                  "description": "GH_HOSTNAME is required for some online audits"
+                },
+                {
+                  "name": "GH_TOKEN",
+                  "description": "GH_TOKEN is required for some online audits"
+                }
+              ],
+              "executables": [
+                {
+                  "name": "zizmor",
+                  "constraint": "=\u003e 1.4.1"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "6",
+            "name": "sonarqube-scan",
+            "slug": "sonarqube-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/sonarqube-scan",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "SONAR_HOST_URL",
+                  "description": "The SonarQube host URL."
+                },
+                {
+                  "name": "SONAR_ORGANIZATION",
+                  "description": "The SonarQube organization."
+                },
+                {
+                  "name": "SONAR_PROJECTKEY",
+                  "description": "The SonarQube project key."
+                },
+                {
+                  "name": "SONAR_DEFAULT_BRANCH",
+                  "description": "The SonarQube default branch."
+                },
+                {
+                  "name": "SONAR_REGION",
+                  "description": "Can be used to switch to the US-based SonarCloud instance."
+                },
+                {
+                  "name": "SONAR_TOKEN",
+                  "description": "The SonarQube authentication token.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "sonar-scanner",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "sonarcloud.io:443"
+                },
+                {
+                  "host": "api.sonarcloud.io:443"
+                },
+                {
+                  "host": "scanner.sonarcloud.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "trx"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 7
+          },
+          {
+            "id": "8",
+            "name": "codecov-upload",
+            "slug": "codecov-upload",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/codecov-upload",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "CODECOV_TOKEN",
+                  "description": "The Codecov token to use for uploading the report.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "codecov",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "ingest.codecov.io:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "api.codecov.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 8
+          }
+        ]
+      },
+      "workflow_dependency": {},
+      "ignore_files": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        ".gitattributes",
+        ".editorconfig",
+        "renovate.json",
+        "CODEOWNERS"
+      ]
+    },
+    "Release": {
+      "version": "0.5.0",
+      "name": "Release",
+      "name_slug": "release",
+      "job_timeout": 10,
+      "default_branch": "main",
+      "container_runtime": "podman",
+      "workflow_key": "release",
+      "workflow_config": {
+        "type": "release",
+        "trigger_manual": true,
+        "trigger_push": true,
+        "trigger_push_tags": [
+          "v[0-9]+.[0-9]+.[0-9]+"
+        ],
+        "environment_pattern": "release-.*"
+      },
+      "plan": {
+        "name": "main",
+        "stages": [
+          "build",
+          "test",
+          "scan",
+          "publish"
+        ],
+        "steps": [
+          {
+            "id": "0",
+            "name": "go-build [github.com/cidverse/normalizeci]",
+            "slug": "go-build-github-com-cidverse-normalizeci",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/go-build",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "binary"
+                }
+              ]
+            },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "go-test [github.com/cidverse/normalizeci]",
+            "slug": "go-test-github-com-cidverse-normalizeci",
+            "stage": "test",
+            "scope": "module",
+            "action": "builtin://actions/go-test",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                },
+                {
+                  "name": "go-junit-report",
+                  "constraint": "\u003e= 0.0.0-0"
+                },
+                {
+                  "name": "gocover-cobertura",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "go-coverage"
+                },
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "order": 1
+          },
+          {
+            "id": "2",
+            "name": "gitleaks-scan",
+            "slug": "gitleaks-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/gitleaks-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "gitleaks",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 2
+          },
+          {
+            "id": "3",
+            "name": "semgrep-scan",
+            "slug": "semgrep-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/semgrep-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "SEMGREP_RULES",
+                  "description": "See option --config."
+                },
+                {
+                  "name": "SEMGREP_APP_TOKEN",
+                  "description": "Semgrep AppSec Platform Token",
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "semgrep",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "semgrep.dev:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 3
+          },
+          {
+            "id": "4",
+            "name": "trivyfs-scan",
+            "slug": "trivyfs-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/trivyfs-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "trivy",
+                  "constraint": "=\u003e 0.61.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "mirror.gcr.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 4
+          },
+          {
+            "id": "6",
+            "name": "zizmor-scan",
+            "slug": "zizmor-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/zizmor-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "GH_HOSTNAME",
+                  "description": "GH_HOSTNAME is required for some online audits"
+                },
+                {
+                  "name": "GH_TOKEN",
+                  "description": "GH_TOKEN is required for some online audits"
+                }
+              ],
+              "executables": [
+                {
+                  "name": "zizmor",
+                  "constraint": "=\u003e 1.4.1"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 5
+          },
+          {
+            "id": "5",
+            "name": "sonarqube-scan",
+            "slug": "sonarqube-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/sonarqube-scan",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "SONAR_HOST_URL",
+                  "description": "The SonarQube host URL."
+                },
+                {
+                  "name": "SONAR_ORGANIZATION",
+                  "description": "The SonarQube organization."
+                },
+                {
+                  "name": "SONAR_PROJECTKEY",
+                  "description": "The SonarQube project key."
+                },
+                {
+                  "name": "SONAR_DEFAULT_BRANCH",
+                  "description": "The SonarQube default branch."
+                },
+                {
+                  "name": "SONAR_REGION",
+                  "description": "Can be used to switch to the US-based SonarCloud instance."
+                },
+                {
+                  "name": "SONAR_TOKEN",
+                  "description": "The SonarQube authentication token.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "sonar-scanner",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "sonarcloud.io:443"
+                },
+                {
+                  "host": "api.sonarcloud.io:443"
+                },
+                {
+                  "host": "scanner.sonarcloud.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "trx"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 6
+          },
+          {
+            "id": "7",
+            "name": "codecov-upload",
+            "slug": "codecov-upload",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/codecov-upload",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "CODECOV_TOKEN",
+                  "description": "The Codecov token to use for uploading the report.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "codecov",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "ingest.codecov.io:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "api.codecov.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 7
+          },
+          {
+            "id": "8",
+            "name": "changelog-generate",
+            "slug": "changelog-generate",
+            "stage": "publish",
+            "scope": "project",
+            "action": "builtin://actions/changelog-generate",
+            "run-after": [
+              "codecov-upload",
+              "gitleaks-scan",
+              "go-build-github-com-cidverse-normalizeci",
+              "go-test-github-com-cidverse-normalizeci",
+              "semgrep-scan",
+              "sonarqube-scan",
+              "trivyfs-scan",
+              "zizmor-scan"
+            ],
+            "run-after-by-name": [
+              "codecov-upload",
+              "gitleaks-scan",
+              "go-build [github.com/cidverse/normalizeci]",
+              "go-test [github.com/cidverse/normalizeci]",
+              "semgrep-scan",
+              "sonarqube-scan",
+              "trivyfs-scan",
+              "zizmor-scan"
+            ],
+            "access": {
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "changelog"
+                }
+              ]
+            },
+            "order": 8
+          },
+          {
+            "id": "9",
+            "name": "github-release-publish",
+            "slug": "github-release-publish",
+            "stage": "publish",
+            "scope": "project",
+            "action": "builtin://actions/github-release-publish",
+            "run-after": [
+              "changelog-generate",
+              "codecov-upload",
+              "gitleaks-scan",
+              "go-build-github-com-cidverse-normalizeci",
+              "go-test-github-com-cidverse-normalizeci",
+              "semgrep-scan",
+              "sonarqube-scan",
+              "trivyfs-scan",
+              "zizmor-scan"
+            ],
+            "run-after-by-name": [
+              "changelog-generate",
+              "codecov-upload",
+              "gitleaks-scan",
+              "go-build [github.com/cidverse/normalizeci]",
+              "go-test [github.com/cidverse/normalizeci]",
+              "semgrep-scan",
+              "sonarqube-scan",
+              "trivyfs-scan",
+              "zizmor-scan"
+            ],
+            "uses-output-of": [
+              "changelog-generate",
+              "go-build-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "changelog-generate",
+              "go-build [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "changelog"
+                },
+                {
+                  "type": "binary"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 9
+          }
+        ]
+      },
+      "workflow_dependency": {},
+      "ignore_files": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        ".gitattributes",
+        ".editorconfig",
+        "renovate.json",
+        "CODEOWNERS"
+      ]
+    },
+    "Main": {
+      "version": "0.5.0",
+      "name": "Main",
+      "name_slug": "main",
+      "job_timeout": 10,
+      "default_branch": "main",
+      "container_runtime": "podman",
+      "workflow_key": "main",
+      "workflow_config": {
+        "type": "main",
+        "trigger_manual": true,
+        "trigger_push": true,
+        "trigger_push_branches": [
+          "main"
+        ]
+      },
+      "plan": {
+        "name": "main",
+        "stages": [
+          "build",
+          "test",
+          "lint",
+          "scan"
+        ],
+        "steps": [
+          {
+            "id": "0",
+            "name": "go-build [github.com/cidverse/normalizeci]",
+            "slug": "go-build-github-com-cidverse-normalizeci",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/go-build",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "binary"
+                }
+              ]
+            },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "go-test [github.com/cidverse/normalizeci]",
+            "slug": "go-test-github-com-cidverse-normalizeci",
+            "stage": "test",
+            "scope": "module",
+            "action": "builtin://actions/go-test",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "go",
+                  "constraint": "=\u003e 1.16.0"
+                },
+                {
+                  "name": "go-junit-report",
+                  "constraint": "\u003e= 0.0.0-0"
+                },
+                {
+                  "name": "gocover-cobertura",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "go-coverage"
+                },
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "order": 1
+          },
+          {
+            "id": "2",
+            "name": "golangci-lint [github.com/cidverse/normalizeci]",
+            "slug": "golangci-lint-github-com-cidverse-normalizeci",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/golangci-lint",
+            "module": "gomod-go-mod",
+            "module-dir": ".",
+            "access": {
+              "executables": [
+                {
+                  "name": "golangci-lint",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "proxy.golang.org:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "sum.golang.org:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 2
+          },
+          {
+            "id": "3",
+            "name": "gitleaks-scan",
+            "slug": "gitleaks-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/gitleaks-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "gitleaks",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 3
+          },
+          {
+            "id": "4",
+            "name": "semgrep-scan",
+            "slug": "semgrep-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/semgrep-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "SEMGREP_RULES",
+                  "description": "See option --config."
+                },
+                {
+                  "name": "SEMGREP_APP_TOKEN",
+                  "description": "Semgrep AppSec Platform Token",
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "semgrep",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "semgrep.dev:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 4
+          },
+          {
+            "id": "5",
+            "name": "trivyfs-scan",
+            "slug": "trivyfs-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/trivyfs-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "trivy",
+                  "constraint": "=\u003e 0.61.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "mirror.gcr.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 5
+          },
+          {
+            "id": "7",
+            "name": "zizmor-scan",
+            "slug": "zizmor-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/zizmor-scan",
+            "access": {
+              "env": [
+                {
+                  "name": "GH_HOSTNAME",
+                  "description": "GH_HOSTNAME is required for some online audits"
+                },
+                {
+                  "name": "GH_TOKEN",
+                  "description": "GH_TOKEN is required for some online audits"
+                }
+              ],
+              "executables": [
+                {
+                  "name": "zizmor",
+                  "constraint": "=\u003e 1.4.1"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "6",
+            "name": "sonarqube-scan",
+            "slug": "sonarqube-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/sonarqube-scan",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "SONAR_HOST_URL",
+                  "description": "The SonarQube host URL."
+                },
+                {
+                  "name": "SONAR_ORGANIZATION",
+                  "description": "The SonarQube organization."
+                },
+                {
+                  "name": "SONAR_PROJECTKEY",
+                  "description": "The SonarQube project key."
+                },
+                {
+                  "name": "SONAR_DEFAULT_BRANCH",
+                  "description": "The SonarQube default branch."
+                },
+                {
+                  "name": "SONAR_REGION",
+                  "description": "Can be used to switch to the US-based SonarCloud instance."
+                },
+                {
+                  "name": "SONAR_TOKEN",
+                  "description": "The SonarQube authentication token.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "sonar-scanner",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "sonarcloud.io:443"
+                },
+                {
+                  "host": "api.sonarcloud.io:443"
+                },
+                {
+                  "host": "scanner.sonarcloud.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "trx"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 7
+          },
+          {
+            "id": "8",
+            "name": "codecov-upload",
+            "slug": "codecov-upload",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/codecov-upload",
+            "run-after": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "run-after-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "uses-output-of": [
+              "go-test-github-com-cidverse-normalizeci"
+            ],
+            "uses-output-of-by-name": [
+              "go-test [github.com/cidverse/normalizeci]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "CODECOV_TOKEN",
+                  "description": "The Codecov token to use for uploading the report.",
+                  "required": true,
+                  "secret": true
+                }
+              ],
+              "executables": [
+                {
+                  "name": "codecov",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "ingest.codecov.io:443"
+                },
+                {
+                  "host": "storage.googleapis.com:443"
+                },
+                {
+                  "host": "api.codecov.io:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "junit"
+                },
+                {
+                  "type": "report",
+                  "format": "jacoco"
+                },
+                {
+                  "type": "report",
+                  "format": "cobertura"
+                }
+              ]
+            },
+            "outputs": {},
+            "order": 8
+          }
+        ]
+      },
+      "workflow_dependency": {},
+      "ignore_files": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        ".gitattributes",
+        ".editorconfig",
+        "renovate.json",
+        "CODEOWNERS"
+      ]
+    }
+  }
+}
