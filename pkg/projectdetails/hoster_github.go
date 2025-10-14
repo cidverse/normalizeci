@@ -28,8 +28,10 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (v1.Project, error)
 	ghToken := ""
 	if len(os.Getenv(api.ToEnvName(host)+"_TOKEN")) > 0 {
 		ghToken = os.Getenv(api.ToEnvName(host) + "_TOKEN")
-	} else if len(os.Getenv("GITHUB_TOKEN")) > 0 {
+	} else if len(os.Getenv("GITHUB_ACTIONS")) > 0 && len(os.Getenv("GITHUB_TOKEN")) > 0 {
 		ghToken = os.Getenv("GITHUB_TOKEN")
+	} else if len(os.Getenv("GH_TOKEN")) > 0 {
+		ghToken = os.Getenv("GH_TOKEN")
 	}
 
 	ctx := context.Background()

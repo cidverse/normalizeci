@@ -8,7 +8,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cidverse/cidverseutils/zerologconfig v0.1.2-0.20250329161944-cee6e2f5f53c
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
-	github.com/cidverse/go-vcs v0.0.0-20250827180914-98ba84f67766
+	github.com/cidverse/go-vcs v0.0.0-20251005222405-c613bd4d3028
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/google/go-github/v76 v76.0.0
 	github.com/gosimple/slug v1.15.0
@@ -27,13 +27,13 @@ require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.3.0 // indirect
 	github.com/cloudflare/circl v1.6.1 // indirect
-	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
+	github.com/cyphar/filepath-securejoin v0.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.6.2 // indirect
-	github.com/go-git/go-git/v5 v5.16.2 // indirect
+	github.com/go-git/go-git/v5 v5.16.3 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
@@ -50,20 +50,20 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/pjbgf/sha1cd v0.5.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/samber/lo v1.51.0 // indirect
+	github.com/samber/lo v1.52.0 // indirect
 	github.com/samber/slog-common v0.19.0 // indirect
 	github.com/samber/slog-zerolog/v2 v2.7.3 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
-	github.com/skeema/knownhosts v1.3.1 // indirect
+	github.com/skeema/knownhosts v1.3.2 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/stretchr/objx v0.5.2 // indirect
+	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.42.0 // indirect
-	golang.org/x/exp v0.0.0-20250911091902-df9299821621 // indirect
-	golang.org/x/net v0.44.0 // indirect
-	golang.org/x/sys v0.36.0 // indirect
-	golang.org/x/text v0.29.0 // indirect
-	golang.org/x/time v0.13.0 // indirect
+	golang.org/x/crypto v0.43.0 // indirect
+	golang.org/x/exp v0.0.0-20251009144603-d2f985daa21b // indirect
+	golang.org/x/net v0.46.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/text v0.30.0 // indirect
+	golang.org/x/time v0.14.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
