@@ -92,6 +92,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "go-build-github-com-cidverse-normalizeci"
       - name: Upload Outputs
@@ -142,6 +143,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "go-test-github-com-cidverse-normalizeci"
       - name: Upload Outputs
@@ -192,6 +194,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "golangci-lint-github-com-cidverse-normalizeci"
       - name: Upload Outputs
@@ -240,6 +243,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "gitleaks-scan"
       - name: Upload Outputs
@@ -289,6 +293,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           SEMGREP_RULES: "${{ secrets.SEMGREP_RULES || vars.SEMGREP_RULES }}"
           SEMGREP_APP_TOKEN: "${{ secrets.SEMGREP_APP_TOKEN }}"
         run: |
@@ -340,6 +345,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "trivyfs-scan"
       - name: Upload Outputs
@@ -388,9 +394,9 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           GH_HOSTNAME: "${{ secrets.GH_HOSTNAME || vars.GH_HOSTNAME }}"
           GH_TOKEN: "${{ secrets.GH_TOKEN || vars.GH_TOKEN }}"
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN || vars.GITHUB_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "zizmor-scan"
       - name: Upload Outputs
@@ -449,6 +455,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           SONAR_HOST_URL: "${{ secrets.SONAR_HOST_URL || vars.SONAR_HOST_URL }}"
           SONAR_ORGANIZATION: "${{ secrets.SONAR_ORGANIZATION || vars.SONAR_ORGANIZATION }}"
           SONAR_PROJECTKEY: "${{ secrets.SONAR_PROJECTKEY || vars.SONAR_PROJECTKEY }}"
@@ -513,6 +520,7 @@ jobs:
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}"
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "nightly" --step "codecov-upload"
