@@ -434,7 +434,11 @@
                 },
                 {
                   "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits"
+                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
+                },
+                {
+                  "name": "GITHUB_TOKEN",
+                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
                 }
               ],
               "executables": [
@@ -702,7 +706,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     },
     "Pull Request": {
@@ -1137,7 +1142,11 @@
                 },
                 {
                   "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits"
+                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
+                },
+                {
+                  "name": "GITHUB_TOKEN",
+                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
                 }
               ],
               "executables": [
@@ -1405,7 +1414,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     },
     "Release": {
@@ -1778,7 +1788,11 @@
                 },
                 {
                   "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits"
+                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
+                },
+                {
+                  "name": "GITHUB_TOKEN",
+                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
                 }
               ],
               "executables": [
@@ -2142,6 +2156,13 @@
               "go-build [github.com/cidverse/normalizeci]"
             ],
             "access": {
+              "env": [
+                {
+                  "name": "GITHUB_TOKEN",
+                  "description": "The GitHub token to use for creating the release.",
+                  "required": true
+                }
+              ],
               "network": [
                 {
                   "host": "github.com:443"
@@ -2195,7 +2216,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     },
     "Main": {
@@ -2633,7 +2655,11 @@
                 },
                 {
                   "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits"
+                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
+                },
+                {
+                  "name": "GITHUB_TOKEN",
+                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
                 }
               ],
               "executables": [
@@ -2901,7 +2927,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     }
   }
