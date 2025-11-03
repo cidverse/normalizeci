@@ -144,8 +144,8 @@ github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/xanzy/ssh-agent v0.3.3 h1:+/15pJfg/RsTxqYcX6fHqOXZwwMP+2VyYWJeWM2qQFM=
 github.com/xanzy/ssh-agent v0.3.3/go.mod h1:6dzNDKs0J9rVPHPhaGCukekBHKqfl+L3KghI1Bc68Uw=
-gitlab.com/gitlab-org/api/client-go v0.157.1 h1:oYbOYk0A2Q+bc1drw8fikSvgi5GImQ9Cj0L0zkZ+PfY=
-gitlab.com/gitlab-org/api/client-go v0.157.1/go.mod h1:CQVoxjEswJZeXft4Mi+H+OF1MVrpNVF6m4xvlPTQ2J4=
+gitlab.com/gitlab-org/api/client-go v0.158.0 h1:CfWA94ZaU4STlIfsYBGcpks3eUVojXvNFaytmNptbX8=
+gitlab.com/gitlab-org/api/client-go v0.158.0/go.mod h1:D0DHF7ILUfFo/JcoGMAEndiKMm8SiP/WjyJ4OfXxCKw=
 golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.43.0 h1:dduJYIi3A3KOfdGOHX8AVZ/jGiyPa3IbBozJ5kNuE04=
 golang.org/x/crypto v0.43.0/go.mod h1:BFbav4mRNlXJL4wNeejLpWxB7wMbc79PdRGhWKncxR0=
