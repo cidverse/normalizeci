@@ -50,7 +50,7 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error)
 		return result, projectErr
 	}
 
-	result.ID = strconv.Itoa(project.ID)
+	result.ID = strconv.Itoa(int(project.ID))
 	result.Name = project.Name
 	result.Path = project.NameWithNamespace
 	result.Slug = slug.Make(project.NameWithNamespace)
@@ -59,8 +59,8 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error)
 	result.Description = project.Description
 	result.Topics = strings.Join(project.TagList, ",")
 	result.IssueUrl = project.WebURL + "/-/issues/{ID}"
-	result.Stargazers = strconv.Itoa(project.StarCount)
-	result.Forks = strconv.Itoa(project.ForksCount)
+	result.Stargazers = strconv.Itoa(int(project.StarCount))
+	result.Forks = strconv.Itoa(int(project.ForksCount))
 	result.DefaultBranch = project.DefaultBranch
 	result.Url = project.WebURL
 

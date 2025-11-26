@@ -29,7 +29,7 @@ func GetGitlabPipelineRun(server string, project string, pipelineIdText string, 
 	if err != nil {
 		return nil, err
 	}
-	variables, _, err := client.Pipelines.GetPipelineVariables(project, pipelineId)
+	variables, _, err := client.Pipelines.GetPipelineVariables(project, int64(pipelineId))
 	if err != nil {
 		return nil, err
 	}
