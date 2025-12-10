@@ -698,7 +698,43 @@
           }
         ]
       },
-      "workflow_dependency": {},
+      "workflow_dependency": {
+        "actions/checkout": {
+          "id": "actions/checkout",
+          "type": "github-action",
+          "version": "v6.0.1",
+          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+        },
+        "actions/download-artifact": {
+          "id": "actions/download-artifact",
+          "type": "github-action",
+          "version": "v6.0.0",
+          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+        },
+        "actions/upload-artifact": {
+          "id": "actions/upload-artifact",
+          "type": "github-action",
+          "version": "v5.0.0",
+          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+        },
+        "cid": {
+          "id": "cid",
+          "type": "binary",
+          "version": "0.6.0"
+        },
+        "cidverse/ghact-cid-setup": {
+          "id": "cidverse/ghact-cid-setup",
+          "type": "github-action",
+          "version": "v0.2.0",
+          "hash": "c6dac0517d28bd8871c195fee9a6bd5a5854d5cb"
+        },
+        "step-security/harden-runner": {
+          "id": "step-security/harden-runner",
+          "type": "github-action",
+          "version": "v2.14.0",
+          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+        }
+      },
       "ignore_files": [
         "README.md",
         "LICENSE",
@@ -1406,7 +1442,43 @@
           }
         ]
       },
-      "workflow_dependency": {},
+      "workflow_dependency": {
+        "actions/checkout": {
+          "id": "actions/checkout",
+          "type": "github-action",
+          "version": "v6.0.1",
+          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+        },
+        "actions/download-artifact": {
+          "id": "actions/download-artifact",
+          "type": "github-action",
+          "version": "v6.0.0",
+          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+        },
+        "actions/upload-artifact": {
+          "id": "actions/upload-artifact",
+          "type": "github-action",
+          "version": "v5.0.0",
+          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+        },
+        "cid": {
+          "id": "cid",
+          "type": "binary",
+          "version": "0.6.0"
+        },
+        "cidverse/ghact-cid-setup": {
+          "id": "cidverse/ghact-cid-setup",
+          "type": "github-action",
+          "version": "v0.2.0",
+          "hash": "c6dac0517d28bd8871c195fee9a6bd5a5854d5cb"
+        },
+        "step-security/harden-runner": {
+          "id": "step-security/harden-runner",
+          "type": "github-action",
+          "version": "v2.14.0",
+          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+        }
+      },
       "ignore_files": [
         "README.md",
         "LICENSE",
@@ -2208,7 +2280,43 @@
           }
         ]
       },
-      "workflow_dependency": {},
+      "workflow_dependency": {
+        "actions/checkout": {
+          "id": "actions/checkout",
+          "type": "github-action",
+          "version": "v6.0.1",
+          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+        },
+        "actions/download-artifact": {
+          "id": "actions/download-artifact",
+          "type": "github-action",
+          "version": "v6.0.0",
+          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+        },
+        "actions/upload-artifact": {
+          "id": "actions/upload-artifact",
+          "type": "github-action",
+          "version": "v5.0.0",
+          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+        },
+        "cid": {
+          "id": "cid",
+          "type": "binary",
+          "version": "0.6.0"
+        },
+        "cidverse/ghact-cid-setup": {
+          "id": "cidverse/ghact-cid-setup",
+          "type": "github-action",
+          "version": "v0.2.0",
+          "hash": "c6dac0517d28bd8871c195fee9a6bd5a5854d5cb"
+        },
+        "step-security/harden-runner": {
+          "id": "step-security/harden-runner",
+          "type": "github-action",
+          "version": "v2.14.0",
+          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+        }
+      },
       "ignore_files": [
         "README.md",
         "LICENSE",
@@ -2919,7 +3027,43 @@
           }
         ]
       },
-      "workflow_dependency": {},
+      "workflow_dependency": {
+        "actions/checkout": {
+          "id": "actions/checkout",
+          "type": "github-action",
+          "version": "v6.0.1",
+          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+        },
+        "actions/download-artifact": {
+          "id": "actions/download-artifact",
+          "type": "github-action",
+          "version": "v6.0.0",
+          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+        },
+        "actions/upload-artifact": {
+          "id": "actions/upload-artifact",
+          "type": "github-action",
+          "version": "v5.0.0",
+          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+        },
+        "cid": {
+          "id": "cid",
+          "type": "binary",
+          "version": "0.6.0"
+        },
+        "cidverse/ghact-cid-setup": {
+          "id": "cidverse/ghact-cid-setup",
+          "type": "github-action",
+          "version": "v0.2.0",
+          "hash": "c6dac0517d28bd8871c195fee9a6bd5a5854d5cb"
+        },
+        "step-security/harden-runner": {
+          "id": "step-security/harden-runner",
+          "type": "github-action",
+          "version": "v2.14.0",
+          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+        }
+      },
       "ignore_files": [
         "README.md",
         "LICENSE",
