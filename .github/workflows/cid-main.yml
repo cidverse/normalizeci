@@ -71,7 +71,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -88,15 +88,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - go-build [github.com/cidverse/normalizeci]
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -105,7 +104,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "go-build-github-com-cidverse-normalizeci"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "go-build-github-com-cidverse-normalizeci-${{ github.run_id }}"
           path: ".dist/go-build-github-com-cidverse-normalizeci/"
@@ -122,7 +121,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -139,15 +138,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - go-test [github.com/cidverse/normalizeci]
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -156,7 +154,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "go-test-github-com-cidverse-normalizeci"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "go-test-github-com-cidverse-normalizeci-${{ github.run_id }}"
           path: ".dist/go-test-github-com-cidverse-normalizeci/"
@@ -173,7 +171,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -190,15 +188,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - golangci-lint [github.com/cidverse/normalizeci]
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -207,7 +204,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "golangci-lint-github-com-cidverse-normalizeci"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "golangci-lint-github-com-cidverse-normalizeci-${{ github.run_id }}"
           path: ".dist/golangci-lint-github-com-cidverse-normalizeci/"
@@ -225,7 +222,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -239,15 +236,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - gitleaks-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -256,7 +252,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "gitleaks-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "gitleaks-scan-${{ github.run_id }}"
           path: ".dist/gitleaks-scan/"
@@ -274,7 +270,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -289,15 +285,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - semgrep-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -308,7 +303,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "semgrep-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "semgrep-scan-${{ github.run_id }}"
           path: ".dist/semgrep-scan/"
@@ -326,7 +321,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -341,15 +336,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - trivyfs-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -358,7 +352,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "trivyfs-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "trivyfs-scan-${{ github.run_id }}"
           path: ".dist/trivyfs-scan/"
@@ -376,7 +370,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -390,15 +384,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - zizmor-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -409,7 +402,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "zizmor-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "zizmor-scan-${{ github.run_id }}"
           path: ".dist/zizmor-scan/"
@@ -428,7 +421,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -445,17 +438,16 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Download Inputs > go-test-github-com-cidverse-normalizeci
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: "go-test-github-com-cidverse-normalizeci-${{ github.run_id }}"
           path: ".dist/go-test-github-com-cidverse-normalizeci"
@@ -474,7 +466,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "sonarqube-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "sonarqube-scan-${{ github.run_id }}"
           path: ".dist/sonarqube-scan/"
@@ -493,7 +485,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -510,17 +502,16 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Download Inputs > go-test-github-com-cidverse-normalizeci
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: "go-test-github-com-cidverse-normalizeci-${{ github.run_id }}"
           path: ".dist/go-test-github-com-cidverse-normalizeci"
@@ -534,7 +525,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "main" --step "codecov-upload"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "codecov-upload-${{ github.run_id }}"
           path: ".dist/codecov-upload/"
