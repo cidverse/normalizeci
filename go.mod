@@ -1,6 +1,6 @@
 module github.com/cidverse/normalizeci
 
-go 1.24.0
+go 1.25.0
 
 toolchain go1.25.7
 
@@ -10,7 +10,7 @@ require (
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
 	github.com/cidverse/go-vcs v0.0.0-20251005222405-c613bd4d3028
 	github.com/go-playground/validator/v10 v10.30.1
-	github.com/google/go-github/v83 v83.0.0
+	github.com/google/go-github/v84 v84.0.0
 	github.com/gosimple/slug v1.15.0
 	github.com/jarcoal/httpmock v1.4.1
 	github.com/rs/zerolog v1.34.0
