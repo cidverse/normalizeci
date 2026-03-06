@@ -2,7 +2,7 @@ module github.com/cidverse/normalizeci
 
 go 1.25.0
 
-toolchain go1.25.7
+toolchain go1.26.1
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
