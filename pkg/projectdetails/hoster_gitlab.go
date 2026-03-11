@@ -9,7 +9,7 @@ import (
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
 	"github.com/gosimple/slug"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 var gitlabMockClient *http.Client
