@@ -19,7 +19,9 @@ func TestGetProjectDetailsGitLab(t *testing.T) {
 
 	assert.Equal(t, "6364957", details.ID)
 	assert.Equal(t, "Events4J", details.Name)
-	assert.Equal(t, "philipp-heuer-events4j", details.Slug)
+	assert.Equal(t, "events4j", details.NameSlug)
+	assert.Equal(t, "Philipp Heuer / Events4J", details.Path)
+	assert.Equal(t, "philipp-heuer-events4j", details.PathSlug)
 	assert.Equal(t, "PhilippHeuer", details.Namespace)
 	assert.Equal(t, "philippheuer", details.NamespaceSlug)
 	assert.Equal(t, "Java Event Dispatcher / Consumer", details.Description)

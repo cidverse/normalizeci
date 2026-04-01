@@ -102,7 +102,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	assert.Equal(t, "35974876", normalized.Project.ID)
 	assert.Equal(t, "cienvsamples", normalized.Project.Name)
 	assert.Equal(t, "cidverse/cienvsamples", normalized.Project.Path)
-	assert.Equal(t, "cidverse-cienvsamples", normalized.Project.Slug)
+	assert.Equal(t, "cidverse-cienvsamples", normalized.Project.PathSlug)
 	assert.Equal(t, "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.", normalized.Project.Description)
 	assert.Equal(t, "main", normalized.Project.DefaultBranch)
 	assert.Equal(t, "https://gitlab.com/cidverse/cienvsamples", normalized.Project.Url)

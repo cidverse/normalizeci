@@ -84,7 +84,7 @@ func (n Normalizer) Normalize(env map[string]string) (v1.Spec, error) {
 	nci.Project.ID = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_ID"), projectData.ID})
 	nci.Project.Name = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_TITLE"), projectData.Name})
 	nci.Project.Path = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH"), projectData.Path})
-	nci.Project.Slug = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH_SLUG"), projectData.Slug})
+	nci.Project.PathSlug = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_PATH_SLUG"), projectData.PathSlug})
 	nci.Project.Description = nciutil.FirstNonEmpty([]string{nciutil.GetValueFromMap(env, "CI_PROJECT_DESCRIPTION"), projectData.Description})
 	nci.Project.Topics = nciutil.FirstNonEmpty([]string{projectData.Topics})
 	nci.Project.IssueUrl = nciutil.FirstNonEmpty([]string{projectData.IssueUrl})

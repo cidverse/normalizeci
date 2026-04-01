@@ -91,7 +91,7 @@ func TestNormalizer_Normalize_Project(t *testing.T) {
 	assert.Equal(t, "205438004", normalized.Project.ID)
 	assert.Equal(t, "normalizeci", normalized.Project.Name)
 	assert.Equal(t, "cidverse/normalizeci", normalized.Project.Path)
-	assert.Equal(t, "cidverse-normalizeci", normalized.Project.Slug)
+	assert.Equal(t, "cidverse-normalizeci", normalized.Project.PathSlug)
 	assert.Equal(t, "github-com-205438004", normalized.Project.UID)
 	assert.Equal(t, "https://github.com/cidverse/cienvsamples", normalized.Project.Url)
 }

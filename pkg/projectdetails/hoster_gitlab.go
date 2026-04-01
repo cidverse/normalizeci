@@ -52,8 +52,9 @@ func GetProjectDetailsGitLab(host string, repoRemote string) (v1.Project, error)
 
 	result.ID = strconv.Itoa(int(project.ID))
 	result.Name = project.Name
+	result.NameSlug = slug.Make(project.Name)
 	result.Path = project.NameWithNamespace
-	result.Slug = slug.Make(project.NameWithNamespace)
+	result.PathSlug = slug.Make(project.NameWithNamespace)
 	result.Namespace = project.Namespace.Path
 	result.NamespaceSlug = slug.Make(project.Namespace.Path)
 	result.Description = project.Description

@@ -52,8 +52,9 @@ type Project struct {
 	UID           string `env:"NCI_PROJECT_UID" validate:"required,is-slug"`            // UID returns a unique identifier by combining the host slug and project id. (e.g. github-com-123456)
 	ID            string `env:"NCI_PROJECT_ID" validate:"required"`                     // Unique project id, can be used in deployments.
 	Name          string `env:"NCI_PROJECT_NAME" validate:"required"`                   // Unique project id, can be used in deployments.
+	NameSlug      string `env:"NCI_PROJECT_NAME_SLUG" validate:"required,is-slug"`      // NameSlug returns the slug of the project name, that can be used in deployments.
 	Path          string `env:"NCI_PROJECT_PATH" validate:"required"`                   // Path of the Namespace and the project
-	Slug          string `env:"NCI_PROJECT_SLUG" validate:"required,is-slug"`           // Project slug, that can be used in deployments.
+	PathSlug      string `env:"NCI_PROJECT_PATH_SLUG" validate:"required,is-slug"`      // PathSlug returns the slug of the path of the project, that can be used in deployments.
 	Namespace     string `env:"NCI_PROJECT_NAMESPACE" validate:"required"`              // Namespace returns the name of the namespace.
 	NamespaceSlug string `env:"NCI_PROJECT_NAMESPACE_SLUG" validate:"required,is-slug"` // NamespaceSlug returns the slug of the namespace.
 	Description   string `env:"NCI_PROJECT_DESCRIPTION"`                                // The project description.

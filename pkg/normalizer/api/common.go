@@ -102,7 +102,7 @@ func GetProjectUID(repository v1.Repository, project v1.Project) string {
 		input = strings.ReplaceAll(input, "{{NCI_REPOSITORY_HOST_SERVER}}", repository.HostServer)
 		input = strings.ReplaceAll(input, "{{NCI_REPOSITORY_HOST_SERVER_SLUG}}", repository.HostServerSlug)
 		input = strings.ReplaceAll(input, "{{NCI_PROJECT_ID}}", project.ID)
-		input = strings.ReplaceAll(input, "{{NCI_PROJECT_SLUG}}", project.Slug)
+		input = strings.ReplaceAll(input, "{{NCI_PROJECT_PATH_SLUG}}", project.PathSlug)
 
 		return input
 	}

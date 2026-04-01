@@ -24,8 +24,11 @@ func MockVCSClient(t *testing.T) vcsapi.Client {
 	projectdetails.MockProjectDetails = &v1.Project{
 		ID:            "205438004",
 		Name:          "normalizeci",
+		NameSlug:      "normalizeci",
 		Path:          "cidverse/normalizeci",
-		Slug:          "cidverse-normalizeci",
+		PathSlug:      "cidverse-normalizeci",
+		Namespace:     "cidverse",
+		NamespaceSlug: "cidverse",
 		Description:   "A tool to turn the continuous integration / deployment variables into a common format for generally usable scripts without any dependencies.",
 		Topics:        "cicd,normalization",
 		IssueUrl:      "https://api.github.com/repos/cidverse/normalizeci/issues/{ID}",
