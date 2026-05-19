@@ -45,9 +45,12 @@ func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.Workflow
 		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
 	)
 	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	client, err := github.NewClient(github.WithHTTPClient(tc))
 	if githubMockClient != nil {
-		client = github.NewClient(githubMockClient)
+		client, err = github.NewClient(github.WithHTTPClient(githubMockClient))
+	}
+	if err != nil {
+		return nil, nil, fmt.Errorf("creating github client: %w", err)
 	}
 
 	// parse runID

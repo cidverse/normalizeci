@@ -2,6 +2,7 @@ package projectdetails
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -35,16 +36,20 @@ func GetProjectDetailsGitHub(host string, repoRemote string) (v1.Project, error)
 	}
 
 	ctx := context.Background()
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+
 	if len(ghToken) > 0 {
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: ghToken},
 		)
 		tc := oauth2.NewClient(ctx, ts)
-		client = github.NewClient(tc)
+		client, err = github.NewClient(github.WithHTTPClient(tc))
 	}
 	if githubMockClient != nil {
-		client = github.NewClient(githubMockClient)
+		client, err = github.NewClient(github.WithHTTPClient(githubMockClient))
+	}
+	if err != nil {
+		return result, fmt.Errorf("creating github client: %w", err)
 	}
 
 	repo, _, repoErr := client.Repositories.Get(ctx, repoPathSplit[0], repoPathSplit[1])
