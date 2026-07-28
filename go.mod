@@ -12,7 +12,7 @@ require (
 	github.com/go-playground/validator/v10 v10.30.3
 	github.com/google/go-github/v89 v89.0.0
 	github.com/gosimple/slug v1.15.0
-	github.com/jarcoal/httpmock v1.4.1
+	github.com/jarcoal/httpmock v1.4.2
 	github.com/rs/zerolog v1.35.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/spf13/cobra v1.10.2
