@@ -11,7 +11,7 @@ import (
 	"github.com/cidverse/go-ptr"
 	v1 "github.com/cidverse/normalizeci/pkg/ncispec/v1"
 	"github.com/cidverse/normalizeci/pkg/normalizer/api"
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 	"github.com/gosimple/slug"
 	"golang.org/x/oauth2"
 )
