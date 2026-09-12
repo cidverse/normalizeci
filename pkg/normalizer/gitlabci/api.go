@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"gitlab.com/gitlab-org/api/client-go/v2"
+	"gitlab.com/gitlab-org/api/client-go/v3"
 )
 
 var gitlabMockClient *http.Client
