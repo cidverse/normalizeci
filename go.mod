@@ -1,8 +1,6 @@
 module github.com/cidverse/normalizeci
 
-go 1.25.0
-
-toolchain go1.25.7
+go 1.26.0
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
@@ -17,7 +15,7 @@ require (
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.12.1
-	gitlab.com/gitlab-org/api/client-go/v2 v2.64.0
+	gitlab.com/gitlab-org/api/client-go/v3 v3.8.0
 	golang.org/x/oauth2 v0.36.0
 )
 
