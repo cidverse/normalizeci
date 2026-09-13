@@ -56,7 +56,7 @@ func GetGithubWorkflowRun(repositoryPath string, runId string) (*github.Workflow
 	// parse runID
 	runID, err := strconv.ParseInt(runId, 10, 64)
 	if err != nil {
-		return nil, nil, fmt.Errorf("parsing run ID %q: %w", runID, err)
+		return nil, nil, fmt.Errorf("parsing run ID %d: %w", runID, err)
 	}
 
 	// query run
