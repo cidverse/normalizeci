@@ -8,7 +8,7 @@ require (
 	github.com/cidverse/go-ptr v0.0.0-20240331160646-489e694bebbf
 	github.com/cidverse/go-vcs v0.0.0-20260819161816-517b87c34796
 	github.com/go-playground/validator/v10 v10.30.4
-	github.com/google/go-github/v91 v91.0.0
+	github.com/google/go-github/v92 v92.0.0
 	github.com/gosimple/slug v1.15.0
 	github.com/jarcoal/httpmock v1.4.2
 	github.com/rs/zerolog v1.35.1
