@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.11.10",
+      "version": "0.11.11",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 20,
@@ -675,14 +675,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.2",
-          "hash": "dc2769abcc0fcfbadfc1df54081c1608579ef6b2"
+          "version": "v2.22.3",
+          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.10",
-          "hash": "f137e1b1fce0d83821c2b96d8c65e5ea33270546ab0aac376a421c191a4864d0",
+          "version": "0.11.11",
+          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -698,7 +698,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.11.10",
+      "version": "0.11.11",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 20,
@@ -1370,14 +1370,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.2",
-          "hash": "dc2769abcc0fcfbadfc1df54081c1608579ef6b2"
+          "version": "v2.22.3",
+          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.10",
-          "hash": "f137e1b1fce0d83821c2b96d8c65e5ea33270546ab0aac376a421c191a4864d0",
+          "version": "0.11.11",
+          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -1393,7 +1393,7 @@
       ]
     },
     "Release": {
-      "version": "0.11.10",
+      "version": "0.11.11",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 20,
@@ -2120,6 +2120,10 @@
                 },
                 {
                   "type": "binary"
+                },
+                {
+                  "type": "signature",
+                  "format": "pgp"
                 }
               ]
             },
@@ -2155,14 +2159,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.2",
-          "hash": "dc2769abcc0fcfbadfc1df54081c1608579ef6b2"
+          "version": "v2.22.3",
+          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.10",
-          "hash": "f137e1b1fce0d83821c2b96d8c65e5ea33270546ab0aac376a421c191a4864d0",
+          "version": "0.11.11",
+          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -2178,7 +2182,7 @@
       ]
     },
     "Main": {
-      "version": "0.11.10",
+      "version": "0.11.11",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 20,
@@ -2850,14 +2854,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.2",
-          "hash": "dc2769abcc0fcfbadfc1df54081c1608579ef6b2"
+          "version": "v2.22.3",
+          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.10",
-          "hash": "f137e1b1fce0d83821c2b96d8c65e5ea33270546ab0aac376a421c191a4864d0",
+          "version": "0.11.11",
+          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
