@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.11.11",
+      "version": "0.11.12",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 20,
@@ -453,81 +453,6 @@
             "order": 5
           },
           {
-            "id": "7",
-            "name": "zizmor-scan",
-            "slug": "zizmor-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/zizmor-scan",
-            "access": {
-              "env": [
-                {
-                  "name": "GH_HOSTNAME",
-                  "description": "GH_HOSTNAME is required for some online audits"
-                },
-                {
-                  "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
-                },
-                {
-                  "name": "GITHUB_TOKEN",
-                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
-                }
-              ],
-              "executables": [
-                {
-                  "name": "zizmor",
-                  "constraint": "=\u003e 1.4.1"
-                }
-              ],
-              "network": [
-                {
-                  "host": "keyserver.ubuntu.com:443"
-                },
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ],
-              "resources": [
-                "security-events"
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "report",
-                  "format": "sarif"
-                }
-              ]
-            },
-            "order": 6
-          },
-          {
             "id": "6",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
@@ -644,7 +569,7 @@
               ]
             },
             "outputs": {},
-            "order": 7
+            "order": 6
           }
         ]
       },
@@ -681,8 +606,8 @@
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.11",
-          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
+          "version": "0.11.12",
+          "hash": "279aaa33e33a96c7c740d961e710de7f804bfeea13a374de80a4ae3a5452206c",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -698,7 +623,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.11.11",
+      "version": "0.11.12",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 20,
@@ -1148,81 +1073,6 @@
             "order": 5
           },
           {
-            "id": "7",
-            "name": "zizmor-scan",
-            "slug": "zizmor-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/zizmor-scan",
-            "access": {
-              "env": [
-                {
-                  "name": "GH_HOSTNAME",
-                  "description": "GH_HOSTNAME is required for some online audits"
-                },
-                {
-                  "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
-                },
-                {
-                  "name": "GITHUB_TOKEN",
-                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
-                }
-              ],
-              "executables": [
-                {
-                  "name": "zizmor",
-                  "constraint": "=\u003e 1.4.1"
-                }
-              ],
-              "network": [
-                {
-                  "host": "keyserver.ubuntu.com:443"
-                },
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ],
-              "resources": [
-                "security-events"
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "report",
-                  "format": "sarif"
-                }
-              ]
-            },
-            "order": 6
-          },
-          {
             "id": "6",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
@@ -1339,7 +1189,7 @@
               ]
             },
             "outputs": {},
-            "order": 7
+            "order": 6
           }
         ]
       },
@@ -1376,8 +1226,8 @@
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.11",
-          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
+          "version": "0.11.12",
+          "hash": "279aaa33e33a96c7c740d961e710de7f804bfeea13a374de80a4ae3a5452206c",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -1393,7 +1243,7 @@
       ]
     },
     "Release": {
-      "version": "0.11.11",
+      "version": "0.11.12",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 20,
@@ -1772,81 +1622,6 @@
             "order": 4
           },
           {
-            "id": "6",
-            "name": "zizmor-scan",
-            "slug": "zizmor-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/zizmor-scan",
-            "access": {
-              "env": [
-                {
-                  "name": "GH_HOSTNAME",
-                  "description": "GH_HOSTNAME is required for some online audits"
-                },
-                {
-                  "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
-                },
-                {
-                  "name": "GITHUB_TOKEN",
-                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
-                }
-              ],
-              "executables": [
-                {
-                  "name": "zizmor",
-                  "constraint": "=\u003e 1.4.1"
-                }
-              ],
-              "network": [
-                {
-                  "host": "keyserver.ubuntu.com:443"
-                },
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ],
-              "resources": [
-                "security-events"
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "report",
-                  "format": "sarif"
-                }
-              ]
-            },
-            "order": 5
-          },
-          {
             "id": "5",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
@@ -1963,10 +1738,10 @@
               ]
             },
             "outputs": {},
-            "order": 6
+            "order": 5
           },
           {
-            "id": "7",
+            "id": "6",
             "name": "changelog-generate",
             "slug": "changelog-generate",
             "stage": "publish",
@@ -1978,8 +1753,7 @@
               "go-test-github-com-cidverse-normalizeci",
               "semgrep-scan",
               "sonarqube-scan",
-              "trivyfs-scan",
-              "zizmor-scan"
+              "trivyfs-scan"
             ],
             "run-after-by-name": [
               "gitleaks-scan",
@@ -1987,8 +1761,7 @@
               "go-test [github.com/cidverse/normalizeci]",
               "semgrep-scan",
               "sonarqube-scan",
-              "trivyfs-scan",
-              "zizmor-scan"
+              "trivyfs-scan"
             ],
             "access": {
               "network": [
@@ -2032,10 +1805,10 @@
                 }
               ]
             },
-            "order": 7
+            "order": 6
           },
           {
-            "id": "8",
+            "id": "7",
             "name": "github-release-publish",
             "slug": "github-release-publish",
             "stage": "publish",
@@ -2048,8 +1821,7 @@
               "go-test-github-com-cidverse-normalizeci",
               "semgrep-scan",
               "sonarqube-scan",
-              "trivyfs-scan",
-              "zizmor-scan"
+              "trivyfs-scan"
             ],
             "run-after-by-name": [
               "changelog-generate",
@@ -2058,8 +1830,7 @@
               "go-test [github.com/cidverse/normalizeci]",
               "semgrep-scan",
               "sonarqube-scan",
-              "trivyfs-scan",
-              "zizmor-scan"
+              "trivyfs-scan"
             ],
             "uses-output-of": [
               "changelog-generate",
@@ -2128,7 +1899,7 @@
               ]
             },
             "outputs": {},
-            "order": 8
+            "order": 7
           }
         ]
       },
@@ -2165,8 +1936,8 @@
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.11",
-          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
+          "version": "0.11.12",
+          "hash": "279aaa33e33a96c7c740d961e710de7f804bfeea13a374de80a4ae3a5452206c",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -2182,7 +1953,7 @@
       ]
     },
     "Main": {
-      "version": "0.11.11",
+      "version": "0.11.12",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 20,
@@ -2632,81 +2403,6 @@
             "order": 5
           },
           {
-            "id": "7",
-            "name": "zizmor-scan",
-            "slug": "zizmor-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/zizmor-scan",
-            "access": {
-              "env": [
-                {
-                  "name": "GH_HOSTNAME",
-                  "description": "GH_HOSTNAME is required for some online audits"
-                },
-                {
-                  "name": "GH_TOKEN",
-                  "description": "GH_TOKEN is required for some online audits. Takes precedence over GITHUB_TOKEN"
-                },
-                {
-                  "name": "GITHUB_TOKEN",
-                  "description": "GITHUB_TOKEN is set automatically by GitHub Actions"
-                }
-              ],
-              "executables": [
-                {
-                  "name": "zizmor",
-                  "constraint": "=\u003e 1.4.1"
-                }
-              ],
-              "network": [
-                {
-                  "host": "keyserver.ubuntu.com:443"
-                },
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ],
-              "resources": [
-                "security-events"
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "report",
-                  "format": "sarif"
-                }
-              ]
-            },
-            "order": 6
-          },
-          {
             "id": "6",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
@@ -2823,7 +2519,7 @@
               ]
             },
             "outputs": {},
-            "order": 7
+            "order": 6
           }
         ]
       },
@@ -2860,8 +2556,8 @@
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.11",
-          "hash": "54c0f1b33145072ba51ed2c7420886e5b35f01d92fbf85dc2c8fdc3ccf57c0a1",
+          "version": "0.11.12",
+          "hash": "279aaa33e33a96c7c740d961e710de7f804bfeea13a374de80a4ae3a5452206c",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
